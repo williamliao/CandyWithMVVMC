@@ -2,8 +2,8 @@
 //  AppDelegate.swift
 //  CandyWithMVVMC
 //
-//  Created by 雲端開發部-廖彥勛 on 2018/12/26.
-//  Copyright © 2018 雲端開發部-廖彥勛. All rights reserved.
+//  Created by William on 2018/12/26.
+//  Copyright © 2018 William. All rights reserved.
 //
 
 import UIKit
@@ -12,10 +12,18 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    var mainCoordinator: AppCoordinator?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        let navController = UINavigationController()
+        
+        let coordinator = AppCoordinator(navigationController: navController, window: window)
+        coordinator.start()
+        mainCoordinator = coordinator
+        
+        window = UIWindow(frame: UIScreen.main.bounds)
+        window?.rootViewController = navController
+        window?.makeKeyAndVisible()
         return true
     }
 
