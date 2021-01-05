@@ -53,23 +53,7 @@ class ApiClient: NSObject {
     
     
     func getAllCandies() -> [Candy] {
-        return [
-            Candy(category:"Chocolate", name:"Chocolate Bar"),
-            Candy(category:"Chocolate", name:"Chocolate Chip"),
-            Candy(category:"Chocolate", name:"Dark Chocolate"),
-            Candy(category:"Hard", name:"Lollipop"),
-            Candy(category:"Hard", name:"Candy Cane"),
-            Candy(category:"Hard", name:"Jaw Breaker"),
-            Candy(category:"Other", name:"Caramel"),
-            Candy(category:"Other", name:"Sour Chew"),
-            Candy(category:"Other", name:"Gummi Bear"),
-            Candy(category:"Other", name:"Candy Floss"),
-            Candy(category:"Chocolate", name:"Chocolate Coin"),
-            Candy(category:"Chocolate", name:"Chocolate Egg"),
-            Candy(category:"Other", name:"Jelly Beans"),
-            Candy(category:"Other", name:"Liquorice"),
-            Candy(category:"Hard", name:"Toffee Apple")
-        ]
+        return Candy.candies()
     }
 }
 

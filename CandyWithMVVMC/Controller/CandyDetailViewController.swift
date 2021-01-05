@@ -35,10 +35,10 @@ extension CandyDetailViewController : CandyDetailViewModelViewDelegate {
             guard let candy = viewModel.selectCandy() else {
                 return
             }
-                descriptionLabel.text = candy.name
-                detailDescriptionLabel.text = candy.category
-                candyImageView.image = UIImage(named: candy.name)
-                title = candy.category
-            }
+            descriptionLabel.text = candy.name
+            detailDescriptionLabel.text = candy.category.rawValue
+            candyImageView.image = UIImage(named: candy.name)
+            title = candy.category.rawValue
+        }
     }
 }
