@@ -32,6 +32,8 @@ protocol CandyViewModelType {
 
     func numberOfItems(searchFooter: SearchFooter) -> Int
     
+    func cellForRowAt(tableView: UITableView, row:Int, identifier: String) -> UITableViewCell
+    
     func itemFor(row: Int) -> CandyDetailViewDataType
     
     // Events

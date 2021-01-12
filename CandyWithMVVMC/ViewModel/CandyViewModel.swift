@@ -104,6 +104,29 @@ extension CandyViewModel: CandyViewModelType {
         return dataType
     }
     
+    func cellForRowAt(tableView: UITableView, row:Int, identifier: String) -> UITableViewCell   {
+        
+        let cell: UITableViewCell = {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: identifier) else {
+                return UITableViewCell(style: UITableViewCell.CellStyle.subtitle, reuseIdentifier: identifier)
+            }
+            return cell
+        }()
+        
+        cell.contentView.backgroundColor = UIColor(red: 41.0/255.0, green: 42.0/255.0, blue: 48.0/255.0, alpha: 1.0)
+        cell.textLabel?.textColor = UIColor.white
+        cell.textLabel?.backgroundColor = UIColor.clear
+        cell.detailTextLabel?.textColor = UIColor.white
+        cell.detailTextLabel?.backgroundColor = UIColor.clear
+        
+        let candyName = self.candiesTitle(row: row)
+        cell.textLabel?.text = candyName
+        
+        cell.detailTextLabel?.text = self.candiesCategory(row: row)
+        cell.imageView?.image = UIImage(named: candyName)
+        return cell
+    }
+    
     func searchFor(text: String,  category: Candy.Category) {
 
         filterContentForSearchText(text, category: category)

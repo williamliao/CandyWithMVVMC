@@ -111,25 +111,7 @@ extension CandyListViewController:  UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        let cell: UITableViewCell = {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "CandyCell") else {
-                // Never fails:
-                return UITableViewCell(style: UITableViewCell.CellStyle.subtitle, reuseIdentifier: "CandyCell")
-            }
-            return cell
-        }()
-        
-        cell.contentView.backgroundColor = UIColor(red: 41.0/255.0, green: 42.0/255.0, blue: 48.0/255.0, alpha: 1.0)
-        cell.textLabel?.textColor = UIColor.white
-        cell.textLabel?.backgroundColor = UIColor.clear
-        cell.detailTextLabel?.textColor = UIColor.white
-        cell.detailTextLabel?.backgroundColor = UIColor.clear
-        
-        let candyName = viewModel.candiesTitle(row: indexPath.row)
-        cell.textLabel?.text = candyName
-        cell.detailTextLabel?.text = viewModel.candiesCategory(row: indexPath.row)
-        cell.imageView?.image = UIImage(named: candyName)
+        let cell = viewModel.cellForRowAt(tableView: tableView, row: indexPath.row, identifier: "CandyCell")
         return cell
     }
 }
