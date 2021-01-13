@@ -53,19 +53,21 @@ class CandyListCoordinator: Coordinator {
         
     }
     
-    func createListView() -> CandyListViewController {
+    func createListView() -> UINavigationController {
         let candyListVC = CandyListViewController.instantiate()
         candyListVC.viewModel = candyViewModel
         candyListVC.candyListViewModel = candyListViewModel
         candyListVC.coordinator = self
-        return candyListVC
+        let nav = UINavigationController(rootViewController: candyListVC)
+        return nav
     }
     
-    func createMapView() -> CandyMapViewController {
+    func createMapView() -> UINavigationController {
         let candyMapVC = CandyMapViewController.instantiate()
         candyMapVC.viewModel = candyViewModel
         candyMapVC.title = "Map"
-        return candyMapVC
+        let nav = UINavigationController(rootViewController: candyMapVC)
+        return nav
     }
 }
 
@@ -74,8 +76,10 @@ extension CandyListCoordinator {
         candyDetailViewModel.candyDataType = candy
         let candyDetailVC = CandyDetailViewController.instantiate()
         candyDetailVC.viewModel = candyDetailViewModel
-        let nav:UINavigationController = self.rootViewController.viewControllers![0] as! UINavigationController
-        nav.pushViewController(candyDetailVC, animated: true)
+        
+        if let currentNavController = self.rootViewController.selectedViewController as? UINavigationController {
+            currentNavController.pushViewController(candyDetailVC, animated: true)
+        }
     }
 }
 
