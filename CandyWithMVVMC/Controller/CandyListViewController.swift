@@ -16,6 +16,7 @@ class CandyListViewController: UIViewController, Storyboarded {
     var coordinator :CandyListCoordinator?
     
     var viewModel: CandyViewModelType!
+    var candyListViewModel: CandyListViewModelType!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,11 +29,13 @@ class CandyListViewController: UIViewController, Storyboarded {
   
     func render() {
         
+        self.viewModel.fetchCandies()
+        
         viewModel.candies.bind { [weak self] (_) in
             self?.candyTableView.reloadData()
         }
         
-        viewModel.filterCandies.bind { [weak self] (_) in
+        candyListViewModel.filterCandies.bind { [weak self] (_) in
             self?.candyTableView.reloadData()
         }
 
@@ -48,7 +51,7 @@ class CandyListViewController: UIViewController, Storyboarded {
         
         //self.viewModel.viewDelegate = self
         self.viewModel.coordinatorDelegate = self
-        self.viewModel.fetchCandies()
+        
         
         self.title = "CandyShop"
         let nav = self.navigationController?.navigationBar
@@ -57,7 +60,7 @@ class CandyListViewController: UIViewController, Storyboarded {
     }
     
     func createSearchViewController() {
-        let searchController = SearchViewController(viewModel: viewModel)
+        let searchController = SearchViewController(viewModel: candyListViewModel)
         if #available(iOS 11.0, *) {
             self.navigationItem.searchController = searchController
             searchController.hidesNavigationBarDuringPresentation = false
@@ -98,7 +101,7 @@ extension CandyListViewController: CandyViewModelViewDelegate {
 
 extension CandyListViewController: CandyViewModelCoordinatorDelegate {
     func didSelectCandy(_ row: Int, candy: Candy, from controller: UIViewController) {
-        let candy = viewModel.itemFor(row: row)
+        let candy = candyListViewModel.itemFor(row: row)
         coordinator?.goToDetailView(candy: candy, from: self)
     }
 }
@@ -107,11 +110,11 @@ extension CandyListViewController: CandyViewModelCoordinatorDelegate {
 
 extension CandyListViewController:  UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.numberOfItems(searchFooter: searchFooter)
+        return candyListViewModel.numberOfItems(searchFooter: searchFooter)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = viewModel.cellForRowAt(tableView: tableView, row: indexPath.row, identifier: "CandyCell")
+        let cell = candyListViewModel.cellForRowAt(tableView: tableView, row: indexPath.row, identifier: "CandyCell")
         return cell
     }
 }
@@ -120,7 +123,7 @@ extension CandyListViewController:  UITableViewDataSource {
 
 extension CandyListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        viewModel.didSelectRow(indexPath.row, from: self)
+        candyListViewModel.didSelectRow(indexPath.row, from: self)
     }
 }
 

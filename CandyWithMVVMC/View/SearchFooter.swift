@@ -2,8 +2,8 @@
 //  SearchFooter.swift
 //  CandyWithMVVMC
 //
-//  Created by 雲端開發部-廖彥勛 on 2020/12/25.
-//  Copyright © 2020 雲端開發部-廖彥勛. All rights reserved.
+//  Created by William on 2020/12/25.
+//  Copyright © 2020 William. All rights reserved.
 //
 
 import UIKit

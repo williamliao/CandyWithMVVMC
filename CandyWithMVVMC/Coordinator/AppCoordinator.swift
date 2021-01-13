@@ -12,9 +12,14 @@ class AppCoordinator: Coordinator {
     // MARK: - Properties
     let window: UIWindow?
     
-    var navigationController: UINavigationController
-    lazy var rootViewController: UINavigationController = {
-        return UINavigationController()
+  //  var navigationController: UINavigationController
+//    lazy var rootViewController: UINavigationController = {
+//        return UINavigationController()
+//    }()
+    
+    var tabController: UITabBarController
+    lazy var rootViewController: UITabBarController = {
+        return UITabBarController()
     }()
  
     let apiClient: ApiClient = {
@@ -25,14 +30,14 @@ class AppCoordinator: Coordinator {
     }()
     
     // MARK: - Coordinator
-    init(navigationController: UINavigationController, window: UIWindow?) {
-        self.navigationController = navigationController
+    init(tabController: UITabBarController, window: UIWindow?) {
+        self.tabController = tabController
         self.window = window
     }
     
     override func start() {
        // guard let navigationController = navigationController else { return }
-        let coordinator = CandyListCoordinator(rootViewController: navigationController, apiClient: apiClient)
+        let coordinator = CandyListCoordinator(rootViewController: tabController, apiClient: apiClient)
         coordinator.start()
     }
     

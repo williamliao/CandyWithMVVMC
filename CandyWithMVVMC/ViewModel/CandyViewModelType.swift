@@ -10,42 +10,18 @@
 import UIKit
 
 protocol CandyViewModelType {
-   // var viewDelegate: CandyViewModelViewDelegate? { get set }
+    // var viewDelegate: CandyViewModelViewDelegate? { get set }
     var coordinatorDelegate: CandyViewModelCoordinatorDelegate? { get set }
-    
+
     // Data Source
-    
-    //func getAllCandies() -> [Candy]
-    
     func fetchCandies()
-    
+    func fetchCandyLocation()
+    //var candyListViewModelType: CandyListViewModelType { get  set }
     var candies: Observable<[Candy]> { get  set }
-    var filterCandies: Observable<[Candy]> { get  set }
-    
+    var candyLocations: Observable<[CandyLocation]> { get  set }
     var errorMessage: Observable<String?> { get set }
     var error: Observable<Error?> { get set }
-    
-    //var isSearching: Observable<Bool> { get set }
-    
-    func candiesTitle(row: Int) -> String
-    func candiesCategory(row: Int) -> String
-
-    func numberOfItems(searchFooter: SearchFooter) -> Int
-    
-    func cellForRowAt(tableView: UITableView, row:Int, identifier: String) -> UITableViewCell
-    
-    func itemFor(row: Int) -> CandyDetailViewDataType
-    
-    // Events
-    //func start()
-    
-    func searchFor(text: String,  category: Candy.Category)
-    
-    func didSelectRow(_ row: Int, from controller: UIViewController)
-    
-    func didSelectClose(from controller: UIViewController)
-    
-    func didCloseSearchFunction()
+ 
 }
 
 protocol CandyViewModelCoordinatorDelegate: class {

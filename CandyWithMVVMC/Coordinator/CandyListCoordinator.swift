@@ -11,15 +11,22 @@ import UIKit
 class CandyListCoordinator: Coordinator {
     // MARK: - Properties
     
-    let rootViewController: UINavigationController
+    let rootViewController: UITabBarController
     
     let storyboard = UIStoryboard(name: "Main", bundle: nil)
     
     let apiClient: ApiClient
     
-    lazy var candyListViewModel: CandyViewModel! = {
+    lazy var candyViewModel: CandyViewModel! = {
         let candyService = CandyApiService(apiClient: apiClient)
         let viewModel = CandyViewModel(service: candyService)
+        //viewModel.coordinatorDelegate = self
+        return viewModel
+    }()
+    
+    lazy var candyListViewModel: CandyListViewModel! = {
+        let candyService = CandyApiService(apiClient: apiClient)
+        let viewModel = CandyListViewModel(viewModel: candyViewModel)
         //viewModel.coordinatorDelegate = self
         return viewModel
     }()
@@ -31,20 +38,34 @@ class CandyListCoordinator: Coordinator {
     }()
 
     // MARK: - Coordinator
-    init(rootViewController: UINavigationController, apiClient: ApiClient) {
+    init(rootViewController: UITabBarController, apiClient: ApiClient) {
         self.rootViewController = rootViewController
         self.apiClient = apiClient
     }
     
     override func start() {
-        let candyListVC = CandyListViewController.instantiate()
-        candyListVC.viewModel = candyListViewModel
-        candyListVC.coordinator = self
-        self.rootViewController.setViewControllers([candyListVC], animated: false)
+        let list = createListView()
+        let map = createMapView()
+        self.rootViewController.setViewControllers([list, map], animated: false)
     }
     
     override func finish() {
         
+    }
+    
+    func createListView() -> CandyListViewController {
+        let candyListVC = CandyListViewController.instantiate()
+        candyListVC.viewModel = candyViewModel
+        candyListVC.candyListViewModel = candyListViewModel
+        candyListVC.coordinator = self
+        return candyListVC
+    }
+    
+    func createMapView() -> CandyMapViewController {
+        let candyMapVC = CandyMapViewController.instantiate()
+        candyMapVC.viewModel = candyViewModel
+        candyMapVC.title = "Map"
+        return candyMapVC
     }
 }
 
@@ -53,7 +74,8 @@ extension CandyListCoordinator {
         candyDetailViewModel.candyDataType = candy
         let candyDetailVC = CandyDetailViewController.instantiate()
         candyDetailVC.viewModel = candyDetailViewModel
-        self.rootViewController.pushViewController(candyDetailVC, animated: true)
+        let nav:UINavigationController = self.rootViewController.viewControllers![0] as! UINavigationController
+        nav.pushViewController(candyDetailVC, animated: true)
     }
 }
 

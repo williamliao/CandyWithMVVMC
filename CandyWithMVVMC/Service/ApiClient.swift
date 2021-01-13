@@ -25,6 +25,7 @@ enum ApiResult<T> {
 class ApiClient: NSObject {
 
     typealias JSONTaskCompletionHandler = (ApiResult<CandyViewData>) -> Void
+    typealias JSONLocationTaskCompletionHandler = (ApiResult<CandyLocationViewData>) -> Void
     
     var configuration: URLSessionConfiguration?
     
@@ -50,10 +51,29 @@ class ApiClient: NSObject {
         return dataTask
     }
     
+    func getLocations(endpoint: String, params: Dictionary<String, Any>, completion: @escaping JSONLocationTaskCompletionHandler) -> URLSessionDataTask {
+        
+        let baseURL = URL.init(string: "https://httpbin.org")!
     
+        let url = URL.init(string: endpoint, relativeTo: baseURL)
+        let session = URLSession.shared
+        let dataTask = session.dataTask(with: url!, completionHandler: { [weak self] (data, response, error) in
+            
+            let candyLocation = self?.getAllCandyLocation()
+ 
+            let candiesSource = CandyLocationViewData(candyLocation: candyLocation!)
+            completion(ApiResult.success(candiesSource))
+        })
+        
+        return dataTask
+    }
     
     func getAllCandies() -> [Candy] {
         return Candy.candies()
+    }
+    
+    func getAllCandyLocation() -> [CandyLocation] {
+        return CandyLocation.candyLocation()
     }
 }
 

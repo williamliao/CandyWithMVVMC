@@ -2,15 +2,16 @@
 //  SearchViewController.swift
 //  CandyWithMVVMC
 //
-//  Created by 雲端開發部-廖彥勛 on 2020/12/25.
-//  Copyright © 2020 雲端開發部-廖彥勛. All rights reserved.
+//  Created by William on 2020/12/25.
+//  Copyright © 2020 William. All rights reserved.
 //
 
 import UIKit
 
 class SearchViewController: UISearchController {
     
-    var viewModel: CandyViewModelType?
+    //var viewModel: CandyViewModelType?
+    var viewModel: CandyListViewModelType?
  
     var isSearchBarEmpty: Bool {
         return self.searchBar.text?.isEmpty ?? true
@@ -21,7 +22,7 @@ class SearchViewController: UISearchController {
         return self.isActive && (!isSearchBarEmpty || searchBarScopeIsFiltering)
     }
 
-    init(viewModel: CandyViewModelType) {
+    init(viewModel: CandyListViewModelType) {
         self.viewModel = viewModel
         super.init(searchResultsController: nil)
     }

@@ -11,7 +11,7 @@ import UIKit
 protocol CandyService {
    
     func getCandy(withText text: String, completion: @escaping (Result<CandyViewData>) -> Void)
-    
+    func getCandyLocation(withText text: String, completion: @escaping (Result<CandyLocationViewData>) -> Void)
 }
 
 class CandyApiService {
@@ -31,6 +31,22 @@ extension CandyApiService: CandyService {
             switch result {
             case .success(let candy):
                 completion(Result.value(candy))
+            case .failed(let error):
+                completion(Result.error(error))
+                break
+            }
+        }
+        task.resume()
+    }
+    
+    func getCandyLocation(withText text: String, completion: @escaping (Result<CandyLocationViewData>) -> Void) {
+        let endpoint = Endpoint.candy
+        let params = ["q": text]
+    
+        let task = apiClient.getLocations(endpoint: endpoint, params: params) { (result: ApiResult<CandyLocationViewData>) in
+            switch result {
+            case .success(let candyLocation):
+                completion(Result.value(candyLocation))
             case .failed(let error):
                 completion(Result.error(error))
                 break
