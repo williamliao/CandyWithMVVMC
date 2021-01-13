@@ -10,5 +10,6 @@ import Foundation
 import MapKit
 
 protocol CandyMapViewModelType {
+    func configMapView(mapView: MKMapView)
     func showMapAnnotation(locations: [CandyLocation]) -> [MKAnnotation]
 }

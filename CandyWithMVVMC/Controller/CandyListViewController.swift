@@ -29,8 +29,6 @@ class CandyListViewController: UIViewController, Storyboarded {
   
     func render() {
         
-        self.viewModel.fetchCandies()
-        
         viewModel.candies.bind { [weak self] (_) in
             self?.candyTableView.reloadData()
         }
@@ -51,6 +49,7 @@ class CandyListViewController: UIViewController, Storyboarded {
         
         //self.viewModel.viewDelegate = self
         self.viewModel.coordinatorDelegate = self
+        self.viewModel.fetchCandies()
         
         
         self.title = "CandyShop"
