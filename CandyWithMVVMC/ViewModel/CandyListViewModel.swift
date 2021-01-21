@@ -288,8 +288,23 @@ extension CandyListViewModel {
 // MARK: - CandyDetailViewControllerDelegate
 extension CandyListViewModel: CandyDetailViewControllerDelegate {
     func candyDetailViewController(_ candyDetailViewController: CandyDetailViewController, didBuy candy: Candy) {
+        
         buyCandies.value.insert(candy)
-        applyInitialSnapshots()
+        
+        var snapshot = dataSource.snapshot()
+        let sectionIdentifiers = dataSource.snapshot().sectionIdentifiers[Section.buyCandies.rawValue]
+        let items = snapshot.itemIdentifiers(inSection: sectionIdentifiers)
+        
+        let newItem = items.first { item in
+          item.candy == candy
+        }
+        
+        if let candyItem = newItem {
+            snapshot.appendItems([candyItem])
+            DispatchQueue.main.async {
+                self.dataSource.apply(snapshot, animatingDifferences: false)
+            }
+        }
         updateDataSource(for: candy)
     }
 }
