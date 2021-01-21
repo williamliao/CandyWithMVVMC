@@ -18,6 +18,8 @@ protocol CandyDetailViewModelType {
     // Events
     func start()
     
+    func setUpByButton(buyButton: UIButton, isBuy: Bool)
+    
 }
 
 protocol CandyDetailViewModelViewDelegate: class {

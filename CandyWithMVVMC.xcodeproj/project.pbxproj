@@ -45,6 +45,7 @@
 		C8B2FD26259583BD00862920 /* SearchFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B2FD25259583BD00862920 /* SearchFooter.swift */; };
 		C8B2FD2B259593AB00862920 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B2FD2A259593AB00862920 /* SearchViewController.swift */; };
 		C8B2FD30259599E600862920 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B2FD2F259599E600862920 /* Observable.swift */; };
+		C8BC62A625B7DB1400E68A74 /* CandyListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8BC62A525B7DB1400E68A74 /* CandyListTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -109,6 +110,7 @@
 		C8B2FD25259583BD00862920 /* SearchFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFooter.swift; sourceTree = "<group>"; };
 		C8B2FD2A259593AB00862920 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		C8B2FD2F259599E600862920 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
+		C8BC62A525B7DB1400E68A74 /* CandyListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandyListTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -270,6 +272,7 @@
 			children = (
 				C8B2FD25259583BD00862920 /* SearchFooter.swift */,
 				C8B2FD2A259593AB00862920 /* SearchViewController.swift */,
+				C8BC62A525B7DB1400E68A74 /* CandyListTableViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -412,6 +415,7 @@
 				C8B2FD30259599E600862920 /* Observable.swift in Sources */,
 				C867A18E25AEA1BC0004559B /* CandyLocation.swift in Sources */,
 				C867A19825AEA3250004559B /* CandyLocationDataType.swift in Sources */,
+				C8BC62A625B7DB1400E68A74 /* CandyListTableViewCell.swift in Sources */,
 				C851C8DA21D3645900BD718E /* CandyDetailViewData.swift in Sources */,
 				C851C8DC21D364F300BD718E /* CandyDetailViewDataType.swift in Sources */,
 				C851C8DE21D366DB00BD718E /* CandyListViewController.swift in Sources */,
@@ -614,6 +618,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = CandyWithMVVMC/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -631,6 +636,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = CandyWithMVVMC/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

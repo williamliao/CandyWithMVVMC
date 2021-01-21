@@ -24,7 +24,7 @@ extension CandyViewData : CandyViewDataType {
     }
 
     var shouldShowDisconunt: Bool {
-        return true
+        return false
     }
     
     var candyColor: UIColor {

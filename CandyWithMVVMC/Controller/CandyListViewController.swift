@@ -29,12 +29,21 @@ class CandyListViewController: UIViewController, Storyboarded {
   
     func render() {
         
-        viewModel.candies.bind { [weak self] (_) in
-            self?.candyTableView.reloadData()
+        self.candyListViewModel.makeDateSourceForTableView(tableView: candyTableView)
+        
+        viewModel.candies.bind {  (_) in
+           // self?.candyTableView.reloadData()
+            self.candyListViewModel.applyInitialSnapshots()
         }
         
-        candyListViewModel.filterCandies.bind { [weak self] (_) in
-            self?.candyTableView.reloadData()
+        candyListViewModel.filterCandies.bind {  (_) in
+           // self?.candyTableView.reloadData()
+            self.candyListViewModel.applyInitialSnapshots()
+        }
+        
+        candyListViewModel.buyCandies.bind {  (_) in
+            //self?.candyTableView.reloadData()
+            self.candyListViewModel.applyInitialSnapshots()
         }
 
         viewModel.error.bind { (error) in
@@ -50,7 +59,18 @@ class CandyListViewController: UIViewController, Storyboarded {
         //self.viewModel.viewDelegate = self
         self.viewModel.coordinatorDelegate = self
         self.viewModel.fetchCandies()
+        candyTableView.delegate = self
+        candyTableView.estimatedSectionHeaderHeight = 60
         
+        candyListViewModel.setSearchFooter(searchFooter: searchFooter)
+        
+        candyTableView.register(CandyListTableViewCell.self,
+            forCellReuseIdentifier: CandyListTableViewCell.reuseIdentifier
+        )
+        
+        candyTableView.register(CandyListTableViewCell.self,
+            forCellReuseIdentifier: CandyListTableViewCell.reuseIdentifier
+        )
         
         self.title = "CandyShop"
         let nav = self.navigationController?.navigationBar
@@ -106,7 +126,7 @@ extension CandyListViewController: CandyViewModelCoordinatorDelegate {
 }
 
 // MARK:- UITableViewDataSource methods
-
+/*
 extension CandyListViewController:  UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return candyListViewModel.numberOfItems(searchFooter: searchFooter)
@@ -116,13 +136,33 @@ extension CandyListViewController:  UITableViewDataSource {
         let cell = candyListViewModel.cellForRowAt(tableView: tableView, row: indexPath.row, identifier: "CandyCell")
         return cell
     }
-}
+}*/
 
 // MARK:- UITableViewDelegate methods
 
 extension CandyListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         candyListViewModel.didSelectRow(indexPath.row, from: self)
+    }
+  
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 60
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        
+        let label = UILabel()
+        label.text = candyListViewModel.titleForHeaderInSection(titleForHeaderInSection: section)
+        label.textColor = UIColor.white
+        return label
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 30
+    }
+
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return CGFloat.leastNormalMagnitude
     }
 }
 

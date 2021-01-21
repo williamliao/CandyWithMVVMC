@@ -76,6 +76,7 @@ extension CandyListCoordinator {
         candyDetailViewModel.candyDataType = candy
         let candyDetailVC = CandyDetailViewController.instantiate()
         candyDetailVC.viewModel = candyDetailViewModel
+        candyListViewModel.setDelegate(vc: candyDetailVC)
         
         if let currentNavController = self.rootViewController.selectedViewController as? UINavigationController {
             currentNavController.pushViewController(candyDetailVC, animated: true)

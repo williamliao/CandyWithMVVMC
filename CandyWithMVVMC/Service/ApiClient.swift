@@ -23,6 +23,8 @@ enum ApiResult<T> {
 }
 
 class ApiClient: NSObject {
+    
+    var urlSession = URLSession.shared
 
     typealias JSONTaskCompletionHandler = (ApiResult<CandyViewData>) -> Void
     typealias JSONLocationTaskCompletionHandler = (ApiResult<CandyLocationViewData>) -> Void
@@ -38,8 +40,7 @@ class ApiClient: NSObject {
         let baseURL = URL.init(string: "https://httpbin.org")!
     
         let url = URL.init(string: endpoint, relativeTo: baseURL)
-        let session = URLSession.shared
-        let dataTask = session.dataTask(with: url!, completionHandler: { [weak self] (data, response, error) in
+        let dataTask = urlSession.dataTask(with: url!, completionHandler: { [weak self] (data, response, error) in
             
             let candies = self?.getAllCandies()
  
@@ -56,8 +57,7 @@ class ApiClient: NSObject {
         let baseURL = URL.init(string: "https://httpbin.org")!
     
         let url = URL.init(string: endpoint, relativeTo: baseURL)
-        let session = URLSession.shared
-        let dataTask = session.dataTask(with: url!, completionHandler: { [weak self] (data, response, error) in
+        let dataTask = urlSession.dataTask(with: url!, completionHandler: { [weak self] (data, response, error) in
             
             let candyLocation = self?.getAllCandyLocation()
  
@@ -76,5 +76,3 @@ class ApiClient: NSObject {
         return CandyLocation.candyLocation()
     }
 }
-
-

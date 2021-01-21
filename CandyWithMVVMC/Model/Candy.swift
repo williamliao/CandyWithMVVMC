@@ -22,9 +22,21 @@
 
 import Foundation
 
-struct Candy: Decodable {
+struct Item: Hashable {
+  let title: String
+  let candy: Candy?
+  private let id = UUID()
+
+  init(candy: Candy? = nil, title: String) {
+    self.candy = candy
+    self.title = title
+  }
+}
+
+struct Candy: Decodable, Hashable {
   let name: String
   let category: Category
+  let shouldShowDiscount: Bool
   
   enum Category: Decodable {
     case all

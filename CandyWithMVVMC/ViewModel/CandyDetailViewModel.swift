@@ -25,5 +25,9 @@ extension CandyDetailViewModel: CandyDetailViewModelType {
     func selectCandy() -> Candy? {
         return self.candyDataType?.getCandy()
     }
+    
+    func setUpByButton(buyButton: UIButton, isBuy: Bool) {
+        buyButton.setTitle("Buy", for: .normal)
+        buyButton.isHidden = isBuy
+    }
 }
-

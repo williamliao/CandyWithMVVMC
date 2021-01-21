@@ -12,13 +12,16 @@ protocol CandyListViewModelType {
     
     //var candies: Observable<[Candy]> { get  set }
     var filterCandies: Observable<[Candy]> { get  set }
-  
-    func candiesTitle(row: Int) -> String
-    func candiesCategory(row: Int) -> String
-
-    func numberOfItems(searchFooter: SearchFooter) -> Int
+    var buyCandies: Observable<Set<Candy>> { get  set }
     
-    func cellForRowAt(tableView: UITableView, row:Int, identifier: String) -> UITableViewCell
+    func setSearchFooter(searchFooter: SearchFooter)
+  
+    //func candiesTitle(row: Int) -> String
+    //func candiesCategory(row: Int) -> String
+
+    //func numberOfItems(searchFooter: SearchFooter) -> Int
+    
+    //func cellForRowAt(tableView: UITableView, row:Int, identifier: String) -> UITableViewCell
     
     func itemFor(row: Int) -> CandyDetailViewDataType
    
@@ -29,4 +32,12 @@ protocol CandyListViewModelType {
     func didSelectClose(from controller: UIViewController)
     
     func didCloseSearchFunction()
+    
+    func setDelegate(vc: CandyDetailViewController)
+    
+    func makeDateSourceForTableView(tableView: UITableView)
+    
+    func titleForHeaderInSection(titleForHeaderInSection section: Int) -> String?
+    
+    func applyInitialSnapshots()
 }

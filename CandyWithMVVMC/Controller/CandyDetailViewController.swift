@@ -8,11 +8,20 @@
 
 import UIKit
 
+protocol CandyDetailViewControllerDelegate: class {
+  func candyDetailViewController(_ candyDetailViewController: CandyDetailViewController, didBuy candy: Candy)
+}
+
 class CandyDetailViewController: UIViewController, Storyboarded {
     
-    @IBOutlet var candyImage: UIImageView!
-    @IBOutlet var candyNameLbl: UILabel!
-    @IBOutlet var categoryLbl: UILabel!
+    @IBOutlet weak var candyImage: UIImageView!
+    @IBOutlet weak var candyNameLbl: UILabel!
+    @IBOutlet weak var categoryLbl: UILabel!
+    @IBOutlet weak var adoptButton: UIButton!
+    
+    weak var delegate: CandyDetailViewControllerDelegate?
+    
+    var isBuy = false
     
     var viewModel: CandyDetailViewModelType! {
         didSet {
@@ -23,6 +32,8 @@ class CandyDetailViewController: UIViewController, Storyboarded {
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.start()
+        
+        adoptButton.addTarget(self, action: #selector(didTapAdoptButton), for: .touchUpInside)
         
         self.view.backgroundColor = UIColor(red: 41.0/255.0, green: 42.0/255.0, blue: 48.0/255.0, alpha: 1.0)
     }
@@ -39,6 +50,22 @@ extension CandyDetailViewController : CandyDetailViewModelViewDelegate {
             detailDescriptionLabel.text = candy.category.rawValue
             candyImageView.image = UIImage(named: candy.name)
             title = candy.category.rawValue
+            
+            viewModel.setUpByButton(buyButton: adoptButton, isBuy: isBuy)
+            
         }
     }
+}
+
+// MARK: - IBActions
+extension CandyDetailViewController {
+  @IBAction func didTapAdoptButton(_ sender: UIButton) {
+    
+    guard let candy = viewModel.selectCandy() else {
+        return
+    }
+    
+    delegate?.candyDetailViewController(self, didBuy: candy)
+    navigationController?.popViewController(animated: true)
+  }
 }
