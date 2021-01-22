@@ -103,14 +103,14 @@ extension CandyListViewModel: CandyListViewModelType {
         let datasource = UITableViewDiffableDataSource<Section, Item>(tableView: tableView) { [self] (tableView, indexPath, items) -> CandyListTableViewCell? in
             
             let cell = tableView.dequeueReusableCell(withIdentifier: CandyListTableViewCell.reuseIdentifier, for: indexPath) as? CandyListTableViewCell
-            self.configureCell(cell: cell ?? CandyListTableViewCell(), items: items, indexPath: indexPath)
+            self.configureCell(cell: cell ?? CandyListTableViewCell(), items: items)
             return cell
         }
         
         return datasource
     }
     
-    func configureCell(cell:CandyListTableViewCell, items: Item, indexPath: IndexPath) {
+    func configureCell(cell:CandyListTableViewCell, items: Item) {
         
         cell.contentView.backgroundColor = UIColor(red: 41.0/255.0, green: 42.0/255.0, blue: 48.0/255.0, alpha: 1.0)
         
@@ -294,7 +294,6 @@ extension CandyListViewModel {
         filterBuyCandies.value = buyCandies.value.filter { (candy: Candy) -> Bool in
             filterNameKeyword(candy: candy, searchText: searchText, category: category)
         }
-        applyInitialSnapshots()
         numberOfItems()
     }
     
