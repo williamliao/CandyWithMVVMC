@@ -57,15 +57,7 @@ extension CandyListViewModel {
             return cell
         }
     }
-    
-    @available(iOS 13.0, *)
-    func makeDataSourceForOldVision(tableView: UITableView) -> UITableViewDiffableDataSourceReference {
-        return UITableViewDiffableDataSourceReference(tableView: tableView) { (tableView, indexPath, items) -> CandyListTableViewCell? in
-            let cell = self.configureCell(tableView: tableView, items: items as! Item, indexPath: indexPath)
-            return cell
-        }
-    }
-    
+
     @available(iOS 13.0, *)
     func applyInitialSnapshots() {
         let dataSource = getDatasource()
