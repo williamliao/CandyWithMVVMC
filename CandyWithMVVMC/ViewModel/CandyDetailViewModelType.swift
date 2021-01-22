@@ -10,6 +10,8 @@ import UIKit
 
 protocol CandyDetailViewModelType {
     
+    //var coordinatorDelegate: CandyDetailViewModelCoordinatorDelegate? { get set }
+    
     var viewDelegate: CandyDetailViewModelViewDelegate? { get set }
     
     // Data Source
@@ -20,6 +22,9 @@ protocol CandyDetailViewModelType {
     
     func setUpByButton(buyButton: UIButton, isBuy: Bool)
     
+    func createAmoutView(Add to: UIView)
+    
+    func didTapBuyButton()
 }
 
 protocol CandyDetailViewModelViewDelegate: class {

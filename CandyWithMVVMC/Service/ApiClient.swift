@@ -69,7 +69,15 @@ class ApiClient: NSObject {
     }
     
     func getAllCandies() -> [Candy] {
-        return Candy.candies()
+        
+        var defaultCandy:[Candy] = [Candy]()
+        
+        for var candy in Candy.candies() {
+            candy.amount = 0.0
+            defaultCandy.append(candy)
+        }
+        
+        return defaultCandy
     }
     
     func getAllCandyLocation() -> [CandyLocation] {

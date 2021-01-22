@@ -17,6 +17,7 @@ class CandyListViewModel: NSObject {
     fileprivate var isSearching: Bool = false
     var filterCandies: Observable<[Candy]> = Observable([])
     var buyCandies: Observable<Set<Candy>> = Observable(Set<Candy>())
+    var filterBuyCandies: Observable<Set<Candy>> = Observable(Set<Candy>())
     var dataSource: UITableViewDiffableDataSource<Section, Item>!
 
     // MARK: - Types
@@ -33,6 +34,7 @@ class CandyListViewModel: NSObject {
 
 // MARK: - Cell
 extension CandyListViewModel: CandyListViewModelType {
+    
     
    /* func candiesTitle(row: Int) -> String {
         return isSearching ? filterCandies.value[row].name : viewModel.candies.value[row].name
@@ -101,22 +103,24 @@ extension CandyListViewModel: CandyListViewModelType {
         let datasource = UITableViewDiffableDataSource<Section, Item>(tableView: tableView) { [self] (tableView, indexPath, items) -> CandyListTableViewCell? in
             
             let cell = tableView.dequeueReusableCell(withIdentifier: CandyListTableViewCell.reuseIdentifier, for: indexPath) as? CandyListTableViewCell
-            self.configureCell(cell: cell ?? CandyListTableViewCell(), items: items)
+            self.configureCell(cell: cell ?? CandyListTableViewCell(), items: items, indexPath: indexPath)
             return cell
         }
         
         return datasource
     }
     
-    func configureCell(cell:CandyListTableViewCell, items: Item) {
+    func configureCell(cell:CandyListTableViewCell, items: Item, indexPath: IndexPath) {
         
         cell.contentView.backgroundColor = UIColor(red: 41.0/255.0, green: 42.0/255.0, blue: 48.0/255.0, alpha: 1.0)
         
         cell.titleLabel.textColor = UIColor.white
         cell.subTitleLabel.textColor = UIColor.lightGray
+        cell.amountLabel.textColor = UIColor.white
         
         cell.titleLabel.backgroundColor = UIColor.clear
         cell.subTitleLabel.backgroundColor = UIColor.clear
+        cell.amountLabel.backgroundColor = UIColor.clear
         
         let candyName = items.candy?.name
         cell.titleLabel.text = candyName
@@ -124,8 +128,18 @@ extension CandyListViewModel: CandyListViewModelType {
         cell.subTitleLabel.text = items.candy?.category.rawValue
         cell.iconImageView.image = UIImage(named: candyName ?? "")
         
-        let shouldShowDiscount = items.candy?.shouldShowDiscount
-        cell.showShowDiscount(show: shouldShowDiscount ?? false)
+        if (items.candy?.amount == 0.0) {
+            let shouldShowDiscount = items.candy?.shouldShowDiscount
+            cell.showShowDiscount(show: shouldShowDiscount ?? false)
+        } else {
+            cell.showShowDiscount(show: false)
+            
+            guard let amount = items.candy?.amount  else {
+                return
+            }
+            
+            cell.showAmount(show: amount > 0.0 ? true : false, amount: amount)
+        }
     }
     
     func makeDateSourceForTableView(tableView: UITableView) {
@@ -151,8 +165,14 @@ extension CandyListViewModel: CandyListViewModelType {
             }
         }
         
-        buyCandies.value.forEach { (candy) in
-            snapshot.appendItems([Item(candy: candy, title: candy.name)], toSection: .buyCandies)
+        if isSearching {
+            filterBuyCandies.value.forEach { (candy) in
+                snapshot.appendItems([Item(candy: candy, title: candy.name)], toSection: .buyCandies)
+            }
+        } else {
+            buyCandies.value.forEach { (candy) in
+                snapshot.appendItems([Item(candy: candy, title: candy.name)], toSection: .buyCandies)
+            }
         }
         
         //Force the update on the main thread to silence a warning about tableview not being in the hierarchy!
@@ -223,7 +243,7 @@ extension CandyListViewModel {
 
         if isSearching {
           searchFooter.setIsFilteringToShow(filteredItemCount:
-                 filterCandies.value.count, of: viewModel.candies.value.count)
+                                                filterCandies.value.count + filterBuyCandies.value.count, of: viewModel.candies.value.count + buyCandies.value.count)
             return
         }
         searchFooter.setNotFiltering()
@@ -233,7 +253,7 @@ extension CandyListViewModel {
 
         filterContentForSearchText(text, category: category)
 
-        if filterCandies.value.count > 0 {
+        if filterCandies.value.count > 0 || filterBuyCandies.value.count > 0 {
             isSearching = true
         } else {
             // 可加入一個查找不到的資料的label來告知使用者查不到資料...
@@ -245,8 +265,8 @@ extension CandyListViewModel {
         viewModel.coordinatorDelegate?.didSelectCandy(row, candy: candy, from: controller)
     }
     
-    func setDelegate(vc: CandyDetailViewController) {
-        vc.delegate = self
+    func setDelegate(viewModel: CandyDetailViewModel) {
+        viewModel.delegate = self
     }
     
     func didSelectClose(from controller: UIViewController) {
@@ -256,6 +276,7 @@ extension CandyListViewModel {
     func didCloseSearchFunction() {
         isSearching = false
         filterCandies.value = [Candy]()
+        filterBuyCandies.value = Set<Candy>()
     }
     
     func didChangeSelectedScopeButtonIndex(scopeButtonTitle: String, searchText:String) {
@@ -267,28 +288,36 @@ extension CandyListViewModel {
                                     category: Candy.Category? = nil) {
         
         filterCandies.value = viewModel.candies.value.filter { (candy: Candy) -> Bool in
-            let doesCategoryMatch = category == .all || candy.category == category
-            
-            let isSearchBarEmpty: Bool = searchText.isEmpty
-            
-           
-            
-            if isSearchBarEmpty {
-              return doesCategoryMatch
-            } else {
-              return doesCategoryMatch && candy.name.lowercased()
-                .contains(searchText.lowercased())
-            }
+            filterNameKeyword(candy: candy, searchText: searchText, category: category)
+        }
+        
+        filterBuyCandies.value = buyCandies.value.filter { (candy: Candy) -> Bool in
+            filterNameKeyword(candy: candy, searchText: searchText, category: category)
         }
         applyInitialSnapshots()
         numberOfItems()
+    }
+    
+    func filterNameKeyword(candy: Candy, searchText: String, category: Candy.Category? = nil) -> Bool {
+        let doesCategoryMatch = category == .all || candy.category == category
+        
+        let isSearchBarEmpty: Bool = searchText.isEmpty
+        
+        if isSearchBarEmpty {
+          return doesCategoryMatch
+        } else {
+          return doesCategoryMatch && candy.name.lowercased()
+            .contains(searchText.lowercased())
+        }
     }
 }
 
 // MARK: - CandyDetailViewControllerDelegate
 extension CandyListViewModel: CandyDetailViewControllerDelegate {
-    func candyDetailViewController(_ candyDetailViewController: CandyDetailViewController, didBuy candy: Candy) {
+    
+    func candyDetailViewController(didBuy candy: inout Candy, amount: Double) {
         
+        candy.amount = amount
         buyCandies.value.insert(candy)
         
         var snapshot = dataSource.snapshot()

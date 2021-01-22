@@ -8,18 +8,15 @@
 
 import UIKit
 
-protocol CandyDetailViewControllerDelegate: class {
-  func candyDetailViewController(_ candyDetailViewController: CandyDetailViewController, didBuy candy: Candy)
-}
 
 class CandyDetailViewController: UIViewController, Storyboarded {
     
     @IBOutlet weak var candyImage: UIImageView!
     @IBOutlet weak var candyNameLbl: UILabel!
     @IBOutlet weak var categoryLbl: UILabel!
-    @IBOutlet weak var adoptButton: UIButton!
+    @IBOutlet weak var buyButton: UIButton!
     
-    weak var delegate: CandyDetailViewControllerDelegate?
+    var coordinator :CandyListCoordinator?
     
     var isBuy = false
     
@@ -32,8 +29,9 @@ class CandyDetailViewController: UIViewController, Storyboarded {
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.start()
+        viewModel.createAmoutView(Add: self.view)
         
-        adoptButton.addTarget(self, action: #selector(didTapAdoptButton), for: .touchUpInside)
+        buyButton.addTarget(self, action: #selector(didTapBuyButton), for: .touchUpInside)
         
         self.view.backgroundColor = UIColor(red: 41.0/255.0, green: 42.0/255.0, blue: 48.0/255.0, alpha: 1.0)
     }
@@ -51,7 +49,7 @@ extension CandyDetailViewController : CandyDetailViewModelViewDelegate {
             candyImageView.image = UIImage(named: candy.name)
             title = candy.category.rawValue
             
-            viewModel.setUpByButton(buyButton: adoptButton, isBuy: isBuy)
+            viewModel.setUpByButton(buyButton: buyButton, isBuy: isBuy)
             
         }
     }
@@ -59,13 +57,8 @@ extension CandyDetailViewController : CandyDetailViewModelViewDelegate {
 
 // MARK: - IBActions
 extension CandyDetailViewController {
-  @IBAction func didTapAdoptButton(_ sender: UIButton) {
-    
-    guard let candy = viewModel.selectCandy() else {
-        return
-    }
-    
-    delegate?.candyDetailViewController(self, didBuy: candy)
-    navigationController?.popViewController(animated: true)
+  @IBAction func didTapBuyButton(_ sender: UIButton) {
+    viewModel.didTapBuyButton()
+    coordinator?.gobackToListView()
   }
 }

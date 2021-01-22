@@ -18,6 +18,7 @@ class CandyListTableViewCell: UITableViewCell {
     var subTitleLabel: UILabel!
     var iconImageView: UIImageView!
     var discountImageView: UIImageView!
+    var amountLabel: UILabel!
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -38,6 +39,10 @@ class CandyListTableViewCell: UITableViewCell {
         subTitleLabel = UILabel()
         subTitleLabel.font = UIFont.systemFont(ofSize: 14)
         
+        amountLabel = UILabel()
+        amountLabel.font = UIFont.systemFont(ofSize: 14)
+        amountLabel.isHidden = true
+        
         iconImageView = UIImageView()
         
         discountImageView = UIImageView()
@@ -48,6 +53,7 @@ class CandyListTableViewCell: UITableViewCell {
         contentView.addSubview(subTitleLabel)
         contentView.addSubview(iconImageView)
         contentView.addSubview(discountImageView)
+        contentView.addSubview(amountLabel)
     }
     
     func configureConstraints() {
@@ -55,6 +61,7 @@ class CandyListTableViewCell: UITableViewCell {
         subTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         iconImageView.translatesAutoresizingMaskIntoConstraints = false
         discountImageView.translatesAutoresizingMaskIntoConstraints = false
+        amountLabel.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             
@@ -77,11 +84,21 @@ class CandyListTableViewCell: UITableViewCell {
             discountImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
             discountImageView.widthAnchor.constraint(equalToConstant: 44),
             discountImageView.heightAnchor.constraint(equalToConstant: 44),
+            
+            amountLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
+            amountLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
+            amountLabel.widthAnchor.constraint(equalToConstant: 44),
+            amountLabel.heightAnchor.constraint(equalToConstant: 16),
         ])
     }
     
     func showShowDiscount(show: Bool) {
         discountImageView.isHidden = !show
+    }
+    
+    func showAmount(show: Bool, amount: Double) {
+        amountLabel.isHidden = !show
+        amountLabel.text = "\(Int(amount))"
     }
 
 }

@@ -37,6 +37,14 @@ struct Candy: Decodable, Hashable {
   let name: String
   let category: Category
   let shouldShowDiscount: Bool
+    var amount: Double? = 0.0
+    
+    init(name: String, category: Category, shouldShowDiscount: Bool, amount: Double? = 0.0) {
+        self.name = name
+        self.category = category
+        self.shouldShowDiscount = shouldShowDiscount
+        self.amount = amount
+    }
   
   enum Category: Decodable {
     case all

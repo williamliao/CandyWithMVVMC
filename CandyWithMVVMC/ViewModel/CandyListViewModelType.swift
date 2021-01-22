@@ -33,7 +33,7 @@ protocol CandyListViewModelType {
     
     func didCloseSearchFunction()
     
-    func setDelegate(vc: CandyDetailViewController)
+    func setDelegate(viewModel: CandyDetailViewModel)
     
     func makeDateSourceForTableView(tableView: UITableView)
     

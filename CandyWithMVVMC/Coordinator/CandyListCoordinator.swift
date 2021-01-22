@@ -76,10 +76,18 @@ extension CandyListCoordinator {
         candyDetailViewModel.candyDataType = candy
         let candyDetailVC = CandyDetailViewController.instantiate()
         candyDetailVC.viewModel = candyDetailViewModel
-        candyListViewModel.setDelegate(vc: candyDetailVC)
+        candyDetailVC.coordinator = self
+        candyListViewModel.setDelegate(viewModel: candyDetailViewModel)
+        //candyDetailViewModel.delegate = self
         
         if let currentNavController = self.rootViewController.selectedViewController as? UINavigationController {
             currentNavController.pushViewController(candyDetailVC, animated: true)
+        }
+    }
+    
+    func gobackToListView() {
+        if let currentNavController = self.rootViewController.selectedViewController as? UINavigationController {
+            currentNavController.popToRootViewController(animated: true)
         }
     }
 }

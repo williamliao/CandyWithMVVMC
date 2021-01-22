@@ -28,6 +28,7 @@ protocol CandyViewModelCoordinatorDelegate: class {
     func didSelectCandy(_ row: Int, candy: Candy, from controller: UIViewController)
 }
 
+
 protocol CandyViewModelViewDelegate: class {
     func updateScreen()
 }

@@ -128,43 +128,42 @@
                                     <constraint firstAttribute="width" constant="240" id="DDG-lZ-jRz"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Candy name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RUl-Sb-oTp">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Candy name" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RUl-Sb-oTp">
                                 <rect key="frame" x="139.5" y="478.5" width="96" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="category" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JWe-dd-jvM">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="category" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JWe-dd-jvM">
                                 <rect key="frame" x="153.5" y="507.5" width="68" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5J6-Ey-UXi">
-                                <rect key="frame" x="166" y="540" width="42" height="30"/>
+                                <rect key="frame" x="68" y="520" width="240" height="30"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="42" id="HpP-IQ-qaH"/>
                                     <constraint firstAttribute="height" constant="30" id="TBd-Wc-7rV"/>
                                 </constraints>
-                                <state key="normal" title="Adopt"/>
+                                <state key="normal" title="Buy"/>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="F5Z-J0-uYl"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="F5Z-J0-uYl" firstAttribute="bottom" secondItem="5J6-Ey-UXi" secondAttribute="bottom" constant="97" id="PDd-bq-Gn1"/>
-                            <constraint firstItem="5J6-Ey-UXi" firstAttribute="leading" secondItem="F5Z-J0-uYl" secondAttribute="leading" constant="166" id="SNh-ka-FnG"/>
+                            <constraint firstItem="F5Z-J0-uYl" firstAttribute="bottom" secondItem="5J6-Ey-UXi" secondAttribute="bottom" constant="117" id="HAd-sC-daY"/>
                             <constraint firstItem="RUl-Sb-oTp" firstAttribute="centerX" secondItem="4bV-3f-d2d" secondAttribute="centerX" id="T8B-a5-NWx"/>
                             <constraint firstItem="4bV-3f-d2d" firstAttribute="centerX" secondItem="F5Z-J0-uYl" secondAttribute="centerX" id="aFq-zi-Zls"/>
-                            <constraint firstItem="F5Z-J0-uYl" firstAttribute="trailing" secondItem="5J6-Ey-UXi" secondAttribute="trailing" constant="167" id="cl6-GG-nzq"/>
                             <constraint firstItem="JWe-dd-jvM" firstAttribute="centerX" secondItem="RUl-Sb-oTp" secondAttribute="centerX" id="fG6-he-LSv"/>
                             <constraint firstItem="4bV-3f-d2d" firstAttribute="centerY" secondItem="F5Z-J0-uYl" secondAttribute="centerY" id="fcd-7y-LwR"/>
                             <constraint firstItem="JWe-dd-jvM" firstAttribute="top" secondItem="RUl-Sb-oTp" secondAttribute="bottom" constant="8" id="kGw-YO-2kQ"/>
+                            <constraint firstItem="F5Z-J0-uYl" firstAttribute="trailing" secondItem="5J6-Ey-UXi" secondAttribute="trailing" constant="67" id="rJO-KP-dca"/>
                             <constraint firstItem="RUl-Sb-oTp" firstAttribute="top" secondItem="4bV-3f-d2d" secondAttribute="bottom" constant="37" id="z0I-bL-mtH"/>
+                            <constraint firstItem="5J6-Ey-UXi" firstAttribute="leading" secondItem="F5Z-J0-uYl" secondAttribute="leading" constant="68" id="zoT-lR-e2l"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="adoptButton" destination="5J6-Ey-UXi" id="cKZ-xQ-W5S"/>
+                        <outlet property="buyButton" destination="5J6-Ey-UXi" id="odS-FA-n8A"/>
                         <outlet property="candyImage" destination="4bV-3f-d2d" id="WVi-bn-KOn"/>
                         <outlet property="candyNameLbl" destination="RUl-Sb-oTp" id="dqY-lq-Y6c"/>
                         <outlet property="categoryLbl" destination="JWe-dd-jvM" id="Cza-Xo-AUo"/>
