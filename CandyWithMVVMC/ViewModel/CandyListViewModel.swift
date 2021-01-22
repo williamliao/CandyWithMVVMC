@@ -20,13 +20,13 @@ typealias UserDataSource = UITableViewDiffableDataSource<Section, Item>
 class CandyListViewModel: NSObject {
     
     var viewModel: CandyViewModel!
-    private var searchFooter: SearchFooter!
+   // private var searchFooter: SearchFooter!
     
     // MARK: - Properties
-    fileprivate var isSearching: Bool = false
-    var filterCandies: Observable<[Candy]> = Observable([])
-    var buyCandies: Observable<Set<Candy>> = Observable(Set<Candy>())
-    var filterBuyCandies: Observable<Set<Candy>> = Observable(Set<Candy>())
+  //  fileprivate var isSearching: Bool = false
+//    var filterCandies: Observable<[Candy]> = Observable([])
+//    var filterBuyCandies: Observable<Set<Candy>> = Observable(Set<Candy>())
+   // var buyCandies: Observable<Set<Candy>> = Observable(Set<Candy>())
     
     @available(iOS 13.0, *)
     lazy var dataSource = UserDataSource()
@@ -68,8 +68,8 @@ extension CandyListViewModel {
         dataSource.apply(snapshot, animatingDifferences: false)
       
         //Append annotations to their corresponding sections
-        if isSearching {
-            filterCandies.value.forEach { (candy) in
+        if viewModel.isSearching.value {
+            viewModel.filterCandies.value.forEach { (candy) in
                 snapshot.appendItems([Item(candy: candy, title: candy.name)], toSection: .availableCandies)
             }
         } else {
@@ -78,12 +78,12 @@ extension CandyListViewModel {
             }
         }
         
-        if isSearching {
-            filterBuyCandies.value.forEach { (candy) in
+        if viewModel.isSearching.value {
+            viewModel.filterBuyCandies.value.forEach { (candy) in
                 snapshot.appendItems([Item(candy: candy, title: candy.name)], toSection: .buyCandies)
             }
         } else {
-            buyCandies.value.forEach { (candy) in
+            viewModel.buyCandies.value.forEach { (candy) in
                 snapshot.appendItems([Item(candy: candy, title: candy.name)], toSection: .buyCandies)
             }
         }
@@ -136,7 +136,7 @@ extension CandyListViewModel:  UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return numberOfItems(searchFooter: searchFooter, numberOfRowsInSection: section)
+        return numberOfItems(numberOfRowsInSection: section)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -146,31 +146,31 @@ extension CandyListViewModel:  UITableViewDataSource {
     }
     
     func candiesTitle(row: Int) -> String {
-         return isSearching ? filterCandies.value[row].name : viewModel.candies.value[row].name
+        return viewModel.isSearching.value ? viewModel.filterCandies.value[row].name : viewModel.candies.value[row].name
      }
      
      func candiesCategory(row: Int) -> String {
-         return isSearching ? filterCandies.value[row].category.rawValue : viewModel.candies.value[row].category.rawValue
+        return viewModel.isSearching.value ? viewModel.filterCandies.value[row].category.rawValue : viewModel.candies.value[row].category.rawValue
      }
      
-     func numberOfItems(searchFooter: SearchFooter, numberOfRowsInSection section: Int) -> Int {
+     func numberOfItems(numberOfRowsInSection section: Int) -> Int {
          
          if (viewModel.candies.value.count == 0) {
              return 0
          }
 
-         if isSearching {
+      /*  if viewModel.isSearching.value {
            searchFooter.setIsFilteringToShow(filteredItemCount:
-                  filterCandies.value.count, of: viewModel.candies.value.count)
-           return filterCandies.value.count
+                                                viewModel.filterCandies.value.count, of: viewModel.candies.value.count)
+            return viewModel.filterCandies.value.count
          }
-         searchFooter.setNotFiltering()
+         searchFooter.setNotFiltering() */
         
         switch section {
             case 0:
-                return isSearching ? filterCandies.value.count : viewModel.candies.value.count
+                return viewModel.isSearching.value ? viewModel.filterCandies.value.count : viewModel.candies.value.count
             case 1:
-                return isSearching ? filterBuyCandies.value.count : buyCandies.value.count
+                return viewModel.isSearching.value ? viewModel.filterBuyCandies.value.count : viewModel.buyCandies.value.count
             default:
                 return 0
         }
@@ -180,7 +180,7 @@ extension CandyListViewModel:  UITableViewDataSource {
          
         switch indexPath.section {
             case 0:
-                let candy = isSearching ? filterCandies.value[indexPath.row] : viewModel.candies.value[indexPath.row]
+                let candy = viewModel.isSearching.value ? viewModel.filterCandies.value[indexPath.row] : viewModel.candies.value[indexPath.row]
                 
                 let items = Item(candy: candy, title: candy.name)
                 
@@ -189,7 +189,7 @@ extension CandyListViewModel:  UITableViewDataSource {
                 return cell ?? CandyListTableViewCell()
                 
             case 1:
-                let candy = isSearching ? Array(filterCandies.value)[indexPath.row] : Array(buyCandies.value)[indexPath.row]
+                let candy = viewModel.isSearching.value ? Array(viewModel.filterCandies.value)[indexPath.row] : Array(viewModel.buyCandies.value)[indexPath.row]
                 
                 let items = Item(candy: candy, title: candy.name)
                 
@@ -205,12 +205,21 @@ extension CandyListViewModel:  UITableViewDataSource {
 // MARK:- Common methods
 extension CandyListViewModel {
     
+    func setDelegate(viewModel: CandyDetailViewModel) {
+        viewModel.delegate = self
+    }
+    
+    func didSelectRow(_ row: Int, from controller: UIViewController) {
+        let candy = viewModel.isSearching.value ? viewModel.filterCandies.value[row] : viewModel.candies.value[row]
+        viewModel.coordinatorDelegate?.didSelectCandy(row, candy: candy, from: controller)
+    }
+    
     func shouldShowDiscount(row: Int) -> Bool {
-        return isSearching ? filterCandies.value[row].shouldShowDiscount : viewModel.candies.value[row].shouldShowDiscount
+        return viewModel.isSearching.value ? viewModel.filterCandies.value[row].shouldShowDiscount : viewModel.candies.value[row].shouldShowDiscount
     }
     
     func itemFor(row: Int) -> CandyDetailViewDataType  {
-        let candy = isSearching ? filterCandies.value[row] : viewModel.candies.value[row]
+        let candy = viewModel.isSearching.value ? viewModel.filterCandies.value[row] : viewModel.candies.value[row]
         let dataType: CandyDetailViewDataType = CandyDetailViewData(candy: candy)
         return dataType
     }
@@ -278,89 +287,6 @@ extension CandyListViewModel {
     }
 }
 
-// MARK: - Search
-extension CandyListViewModel {
-    
-    func setSearchFooter(searchFooter: SearchFooter) {
-        self.searchFooter = searchFooter
-    }
-    
-    func refreshFooterForDiffableDataSource() {
-        
-        if (viewModel.candies.value.count == 0) {
-            return
-        }
-
-        if isSearching {
-          searchFooter.setIsFilteringToShow(filteredItemCount:
-                                                filterCandies.value.count + filterBuyCandies.value.count, of: viewModel.candies.value.count + buyCandies.value.count)
-            return
-        }
-        searchFooter.setNotFiltering()
-    }
-    
-    func searchFor(text: String,  category: Candy.Category) {
-
-        filterContentForSearchText(text, category: category)
-
-        if filterCandies.value.count > 0 || filterBuyCandies.value.count > 0 {
-            isSearching = true
-        } else {
-            // 可加入一個查找不到的資料的label來告知使用者查不到資料...
-        }
-    }
-    
-    func didSelectRow(_ row: Int, from controller: UIViewController) {
-       let candy = isSearching ? filterCandies.value[row] : viewModel.candies.value[row]
-        viewModel.coordinatorDelegate?.didSelectCandy(row, candy: candy, from: controller)
-    }
-    
-    func setDelegate(viewModel: CandyDetailViewModel) {
-        viewModel.delegate = self
-    }
-    
-    func didSelectClose(from controller: UIViewController) {
-        
-    }
-    
-    func didCloseSearchFunction() {
-        isSearching = false
-        filterCandies.value = [Candy]()
-        filterBuyCandies.value = Set<Candy>()
-    }
-    
-    func didChangeSelectedScopeButtonIndex(scopeButtonTitle: String, searchText:String) {
-        let category = Candy.Category(rawValue:scopeButtonTitle)
-        filterContentForSearchText(searchText, category: category)
-    }
-    
-    func filterContentForSearchText(_ searchText: String,
-                                    category: Candy.Category? = nil) {
-        
-        filterCandies.value = viewModel.candies.value.filter { (candy: Candy) -> Bool in
-            filterNameKeyword(candy: candy, searchText: searchText, category: category)
-        }
-        
-        filterBuyCandies.value = buyCandies.value.filter { (candy: Candy) -> Bool in
-            filterNameKeyword(candy: candy, searchText: searchText, category: category)
-        }
-        refreshFooterForDiffableDataSource()
-    }
-    
-    func filterNameKeyword(candy: Candy, searchText: String, category: Candy.Category? = nil) -> Bool {
-        let doesCategoryMatch = category == .all || candy.category == category
-        
-        let isSearchBarEmpty: Bool = searchText.isEmpty
-        
-        if isSearchBarEmpty {
-          return doesCategoryMatch
-        } else {
-          return doesCategoryMatch && candy.name.lowercased()
-            .contains(searchText.lowercased())
-        }
-    }
-}
-
 // MARK: - CandyDetailViewControllerDelegate
 extension CandyListViewModel: CandyDetailViewControllerDelegate {
     
@@ -368,7 +294,7 @@ extension CandyListViewModel: CandyDetailViewControllerDelegate {
         
         if #available(iOS 13.0, *) {
             candy.amount = amount
-            buyCandies.value.insert(candy)
+            viewModel.buyCandies.value.insert(candy)
             let dataSource = getDatasource()
             var snapshot = dataSource.snapshot()
             let sectionIdentifiers = dataSource.snapshot().sectionIdentifiers[Section.buyCandies.rawValue]
@@ -387,7 +313,7 @@ extension CandyListViewModel: CandyDetailViewControllerDelegate {
             updateDataSource(for: candy)
         } else {
             candy.amount = amount
-            buyCandies.value.insert(candy)
+            viewModel.buyCandies.value.insert(candy)
         }
     }
 }

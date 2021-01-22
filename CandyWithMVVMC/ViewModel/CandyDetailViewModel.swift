@@ -33,10 +33,6 @@ class CandyDetailViewModel {
     var candyNameLbl: UILabel!
     var categoryLbl: UILabel!
     var buyButton: UIButton!
-    
-    func start() {
-        viewDelegate?.updateScreen()
-    }
 }
 
 extension CandyDetailViewModel: CandyDetailViewModelType {

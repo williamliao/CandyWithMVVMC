@@ -13,6 +13,7 @@ class CandyListViewController: UIViewController, Storyboarded {
     @IBOutlet var searchFooter: SearchFooter!
     @IBOutlet var searchFooterBottomConstraint: NSLayoutConstraint!
     
+    
     var coordinator :CandyListCoordinator?
     
     var viewModel: CandyViewModelType!
@@ -22,6 +23,7 @@ class CandyListViewController: UIViewController, Storyboarded {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor(red: 41.0/255.0, green: 42.0/255.0, blue: 48.0/255.0, alpha: 1.0)
         candyTableView.backgroundColor = UIColor(red: 41.0/255.0, green: 42.0/255.0, blue: 48.0/255.0, alpha: 1.0)
+        
         render()
         createSearchViewController()
         addKeyBoardObserver()
@@ -30,7 +32,8 @@ class CandyListViewController: UIViewController, Storyboarded {
     func render() {
         
         self.candyListViewModel.makeDateSourceForTableView(tableView: candyTableView)
-        candyListViewModel.setSearchFooter(searchFooter: searchFooter)
+        
+        //
         
         viewModel.candies.bind { [weak self] (_) in
             if #available(iOS 13.0, *) {
@@ -40,7 +43,7 @@ class CandyListViewController: UIViewController, Storyboarded {
             }
         }
         
-        candyListViewModel.filterCandies.bind { [weak self] (_) in
+        viewModel.filterCandies.bind { [weak self] (_) in
             if #available(iOS 13.0, *) {
                 self?.candyListViewModel.applyInitialSnapshots()
             } else {
@@ -48,7 +51,7 @@ class CandyListViewController: UIViewController, Storyboarded {
             }
         }
         
-        candyListViewModel.buyCandies.bind { [weak self] (_) in
+        viewModel.buyCandies.bind { [weak self] (_) in
             if #available(iOS 13.0, *) {
                 self?.candyListViewModel.applyInitialSnapshots()
             } else {
@@ -89,15 +92,19 @@ class CandyListViewController: UIViewController, Storyboarded {
     }
     
     func createSearchViewController() {
-        let searchController = SearchViewController(viewModel: candyListViewModel)
+        let searchController = SearchViewController(viewModel: viewModel)
+        
+        //let searchController = UISearchController(searchResultsController: nil)
+        searchController.setSearchFooter(searchFooter: searchFooter)
         if #available(iOS 11.0, *) {
+            
             self.navigationItem.searchController = searchController
             searchController.hidesNavigationBarDuringPresentation = false
         } else {
             candyTableView.tableHeaderView = searchController.searchBar
         }
         
-        candyTableView.sectionHeaderHeight = UITableView.automaticDimension
+        //candyTableView.sectionHeaderHeight = UITableView.automaticDimension
     }
     
     func addKeyBoardObserver() {

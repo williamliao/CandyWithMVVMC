@@ -9,30 +9,11 @@
 import UIKit
 
 protocol CandyListViewModelType {
-    
-    //var candies: Observable<[Candy]> { get  set }
-    var filterCandies: Observable<[Candy]> { get  set }
-    var buyCandies: Observable<Set<Candy>> { get  set }
-    
-    func setSearchFooter(searchFooter: SearchFooter)
-  
-   // func candiesTitle(row: Int) -> String
-   // func candiesCategory(row: Int) -> String
 
-   // func numberOfItems(searchFooter: SearchFooter) -> Int
-    
-   // func cellForRowAt(tableView: UITableView, row:Int, identifier: String) -> UITableViewCell
-    
     func itemFor(row: Int) -> CandyDetailViewDataType
-   
-    func searchFor(text: String,  category: Candy.Category)
-    
+ 
     func didSelectRow(_ row: Int, from controller: UIViewController)
-    
-    func didSelectClose(from controller: UIViewController)
-    
-    func didCloseSearchFunction()
-    
+
     func setDelegate(viewModel: CandyDetailViewModel)
     
     func makeDateSourceForTableView(tableView: UITableView)

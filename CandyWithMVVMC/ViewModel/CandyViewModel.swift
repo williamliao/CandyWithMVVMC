@@ -15,15 +15,20 @@ class CandyViewModel:NSObject {
     // MARK: - Properties
     
     var candies: Observable<[Candy]> = Observable([])
+    var buyCandies: Observable<Set<Candy>> = Observable(Set<Candy>())
+
     var candyLocations: Observable<[CandyLocation]> = Observable([])
     var errorMessage: Observable<String?> = Observable(nil)
     var error: Observable<Error?> = Observable(nil)
+    
+    var filterCandies: Observable<[Candy]> = Observable([])
+    var filterBuyCandies: Observable<Set<Candy>> = Observable(Set<Candy>())
     
     fileprivate let service: CandyService
  
     var candyListViewModel: CandyListViewModelType!
 
-    fileprivate var isSearching: Bool = false
+    var isSearching: Observable<Bool> = Observable(false)
     
 //    var isFiltering: Bool {
 //      return searchController.isActive && !isSearchBarEmpty

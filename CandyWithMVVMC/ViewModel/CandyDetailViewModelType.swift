@@ -18,8 +18,6 @@ protocol CandyDetailViewModelType {
     func selectCandy() -> Candy?
 
     // Events
-    func start()
-    
     func setUpByButton(isBuy: Bool)
     
     func createAmoutView(Add to: UIView)

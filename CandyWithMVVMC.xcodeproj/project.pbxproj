@@ -31,6 +31,7 @@
 		C851C8E621D37CF300BD718E /* CandyDetailViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C851C8E521D37CF300BD718E /* CandyDetailViewModelType.swift */; };
 		C851C8E921D3870C00BD718E /* ApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C851C8E821D3870C00BD718E /* ApiClient.swift */; };
 		C851C8EB21D3872700BD718E /* CandyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C851C8EA21D3872700BD718E /* CandyService.swift */; };
+		C858E51D25BAD3BF0096167E /* CandySearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C858E51C25BAD3BF0096167E /* CandySearchViewModel.swift */; };
 		C867A14C25AE7E950004559B /* CandyListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C867A14B25AE7E950004559B /* CandyListViewModel.swift */; };
 		C867A15125AE7F600004559B /* CandyListViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C867A15025AE7F600004559B /* CandyListViewModelType.swift */; };
 		C867A16F25AE8FF20004559B /* CandyMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C867A16E25AE8FF20004559B /* CandyMapViewController.swift */; };
@@ -96,6 +97,7 @@
 		C851C8E521D37CF300BD718E /* CandyDetailViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandyDetailViewModelType.swift; sourceTree = "<group>"; };
 		C851C8E821D3870C00BD718E /* ApiClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiClient.swift; sourceTree = "<group>"; };
 		C851C8EA21D3872700BD718E /* CandyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandyService.swift; sourceTree = "<group>"; };
+		C858E51C25BAD3BF0096167E /* CandySearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandySearchViewModel.swift; sourceTree = "<group>"; };
 		C867A14B25AE7E950004559B /* CandyListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandyListViewModel.swift; sourceTree = "<group>"; };
 		C867A15025AE7F600004559B /* CandyListViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandyListViewModelType.swift; sourceTree = "<group>"; };
 		C867A16E25AE8FF20004559B /* CandyMapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandyMapViewController.swift; sourceTree = "<group>"; };
@@ -233,6 +235,7 @@
 				C851C8E521D37CF300BD718E /* CandyDetailViewModelType.swift */,
 				C867A17E25AE93650004559B /* CandyMapViewModel.swift */,
 				C867A19C25AEC1470004559B /* CandyMapViewModelType.swift */,
+				C858E51C25BAD3BF0096167E /* CandySearchViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -410,6 +413,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C858E51D25BAD3BF0096167E /* CandySearchViewModel.swift in Sources */,
 				C867A19325AEA2C90004559B /* CandyLocationViewData.swift in Sources */,
 				C867A15125AE7F600004559B /* CandyListViewModelType.swift in Sources */,
 				C8B2FD30259599E600862920 /* Observable.swift in Sources */,
