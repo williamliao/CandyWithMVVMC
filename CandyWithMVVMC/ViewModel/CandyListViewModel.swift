@@ -8,6 +8,15 @@
 
 import UIKit
 
+enum Section: Int, CaseIterable, Hashable {
+  case availableCandies
+  case buyCandies
+}
+
+
+@available(iOS 13.0, tvOS 13.0, *)
+typealias UserDataSource = UITableViewDiffableDataSource<Section, Item>
+
 class CandyListViewModel: NSObject {
     
     var viewModel: CandyViewModel!
@@ -18,136 +27,48 @@ class CandyListViewModel: NSObject {
     var filterCandies: Observable<[Candy]> = Observable([])
     var buyCandies: Observable<Set<Candy>> = Observable(Set<Candy>())
     var filterBuyCandies: Observable<Set<Candy>> = Observable(Set<Candy>())
-    var dataSource: UITableViewDiffableDataSource<Section, Item>!
-
+    
+    @available(iOS 13.0, *)
+    lazy var dataSource = UserDataSource()
+    
     // MARK: - Types
-    enum Section: Int, CaseIterable, Hashable {
-      case availableCandies
-      case buyCandies
-    }
-  
+   
     init(viewModel: CandyViewModel) {
         self.viewModel = viewModel
         super.init()
     }
 }
 
-// MARK: - Cell
-extension CandyListViewModel: CandyListViewModelType {
-    
-    
-   /* func candiesTitle(row: Int) -> String {
-        return isSearching ? filterCandies.value[row].name : viewModel.candies.value[row].name
-    }
-    
-    func candiesCategory(row: Int) -> String {
-        return isSearching ? filterCandies.value[row].category.rawValue : viewModel.candies.value[row].category.rawValue
-    }
-    
-    func numberOfItems(searchFooter: SearchFooter) -> Int {
-        
-        if (viewModel.candies.value.count == 0) {
-            return 0
-        }
+extension CandyListViewModel: CandyListViewModelType { }
 
-        if isSearching {
-          searchFooter.setIsFilteringToShow(filteredItemCount:
-                 filterCandies.value.count, of: viewModel.candies.value.count)
-          return filterCandies.value.count
-        }
-        searchFooter.setNotFiltering()
-        
-        return viewModel.candies.value.count
-    } */
+// MARK:- UITableViewDiffableDataSource methods
+extension CandyListViewModel {
     
-    /*func cellForRowAt(tableView: UITableView, row:Int, identifier: String) -> UITableViewCell   {
-        
-        let cell: CandyListTableViewCell = {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: identifier) else {
-                return CandyListTableViewCell(style: UITableViewCell.CellStyle.subtitle, reuseIdentifier: identifier)
-            }
-            return cell as? CandyListTableViewCell ?? CandyListTableViewCell()
-        }()
-        
-        cell.contentView.backgroundColor = UIColor(red: 41.0/255.0, green: 42.0/255.0, blue: 48.0/255.0, alpha: 1.0)
-        
-        cell.titleLabel.textColor = UIColor.white
-        cell.subTitleLabel.textColor = UIColor.lightGray
-        
-        cell.titleLabel.backgroundColor = UIColor.clear
-        cell.subTitleLabel.backgroundColor = UIColor.clear
-        
-        let candyName = self.candiesTitle(row: row)
-        cell.titleLabel.text = candyName
-        
-        cell.subTitleLabel.text = self.candiesCategory(row: row)
-        cell.iconImageView.image = UIImage(named: candyName)
-        
-        let shouldShowDiscount = self.shouldShowDiscount(row: row)
-        cell.showShowDiscount(show: shouldShowDiscount)
-        return cell
-    }*/
-    
-    func shouldShowDiscount(row: Int) -> Bool {
-        return isSearching ? filterCandies.value[row].shouldShowDiscount : viewModel.candies.value[row].shouldShowDiscount
+    @available(iOS 13.0, *)
+    func getDatasource() -> UserDataSource {
+        return dataSource
     }
-    
-    func itemFor(row: Int) -> CandyDetailViewDataType  {
-        let candy = isSearching ? filterCandies.value[row] : viewModel.candies.value[row]
-        let dataType: CandyDetailViewDataType = CandyDetailViewData(candy: candy)
-        return dataType
-    }
-    
+   
+    @available(iOS 13.0, *)
     func makeDataSource(tableView: UITableView) -> UITableViewDiffableDataSource<Section, Item> {
-        
-        let datasource = UITableViewDiffableDataSource<Section, Item>(tableView: tableView) { [self] (tableView, indexPath, items) -> CandyListTableViewCell? in
-            
-            let cell = tableView.dequeueReusableCell(withIdentifier: CandyListTableViewCell.reuseIdentifier, for: indexPath) as? CandyListTableViewCell
-            self.configureCell(cell: cell ?? CandyListTableViewCell(), items: items)
+
+        return UITableViewDiffableDataSource<Section, Item>(tableView: tableView) { [self] (tableView, indexPath, items) -> CandyListTableViewCell? in
+            let cell = self.configureCell(tableView: tableView, items: items, indexPath: indexPath)
             return cell
         }
-        
-        return datasource
     }
     
-    func configureCell(cell:CandyListTableViewCell, items: Item) {
-        
-        cell.contentView.backgroundColor = UIColor(red: 41.0/255.0, green: 42.0/255.0, blue: 48.0/255.0, alpha: 1.0)
-        
-        cell.titleLabel.textColor = UIColor.white
-        cell.subTitleLabel.textColor = UIColor.lightGray
-        cell.amountLabel.textColor = UIColor.white
-        
-        cell.titleLabel.backgroundColor = UIColor.clear
-        cell.subTitleLabel.backgroundColor = UIColor.clear
-        cell.amountLabel.backgroundColor = UIColor.clear
-        
-        let candyName = items.candy?.name
-        cell.titleLabel.text = candyName
-        
-        cell.subTitleLabel.text = items.candy?.category.rawValue
-        cell.iconImageView.image = UIImage(named: candyName ?? "")
-        
-        if (items.candy?.amount == 0.0) {
-            let shouldShowDiscount = items.candy?.shouldShowDiscount
-            cell.showShowDiscount(show: shouldShowDiscount ?? false)
-        } else {
-            cell.showShowDiscount(show: false)
-            
-            guard let amount = items.candy?.amount  else {
-                return
-            }
-            
-            cell.showAmount(show: amount > 0.0 ? true : false, amount: amount)
+    @available(iOS 13.0, *)
+    func makeDataSourceForOldVision(tableView: UITableView) -> UITableViewDiffableDataSourceReference {
+        return UITableViewDiffableDataSourceReference(tableView: tableView) { (tableView, indexPath, items) -> CandyListTableViewCell? in
+            let cell = self.configureCell(tableView: tableView, items: items as! Item, indexPath: indexPath)
+            return cell
         }
     }
     
-    func makeDateSourceForTableView(tableView: UITableView) {
-        dataSource = self.makeDataSource(tableView: tableView)
-        tableView.dataSource = dataSource
-    }
-    
+    @available(iOS 13.0, *)
     func applyInitialSnapshots() {
+        let dataSource = getDatasource()
         var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
         
         //Append available sections
@@ -177,11 +98,13 @@ extension CandyListViewModel: CandyListViewModelType {
         
         //Force the update on the main thread to silence a warning about tableview not being in the hierarchy!
         DispatchQueue.main.async {
-            self.dataSource.apply(snapshot, animatingDifferences: false)
+            dataSource.apply(snapshot, animatingDifferences: false)
         }
     }
     
+    @available(iOS 13.0, *)
     func updateDataSource(for candy: Candy) {
+        let dataSource = getDatasource()
         var snapshot = dataSource.snapshot()
         let items = snapshot.itemIdentifiers
         let candyItem = items.first { item in
@@ -196,7 +119,9 @@ extension CandyListViewModel: CandyListViewModelType {
         }
     }
     
+    @available(iOS 13.0, *)
     func remove(_ candy: Candy, animate: Bool = true) {
+        let dataSource = getDatasource()
         var snapshot = dataSource.snapshot()
         
         let items = snapshot.itemIdentifiers
@@ -207,6 +132,141 @@ extension CandyListViewModel: CandyListViewModelType {
         if let candyItem = candyItem {
           snapshot.deleteItems([candyItem])
           dataSource.apply(snapshot, animatingDifferences: true, completion: nil)
+        }
+    }
+}
+
+// MARK:- UITableViewDataSource methods
+extension CandyListViewModel:  UITableViewDataSource {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return Section.allCases.count
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return numberOfItems(searchFooter: searchFooter, numberOfRowsInSection: section)
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = cellForRowAt(tableView: tableView, indexPath: indexPath, identifier: CandyListTableViewCell.reuseIdentifier)
+        cell.selectionStyle = .none
+        return cell
+    }
+    
+    func candiesTitle(row: Int) -> String {
+         return isSearching ? filterCandies.value[row].name : viewModel.candies.value[row].name
+     }
+     
+     func candiesCategory(row: Int) -> String {
+         return isSearching ? filterCandies.value[row].category.rawValue : viewModel.candies.value[row].category.rawValue
+     }
+     
+     func numberOfItems(searchFooter: SearchFooter, numberOfRowsInSection section: Int) -> Int {
+         
+         if (viewModel.candies.value.count == 0) {
+             return 0
+         }
+
+         if isSearching {
+           searchFooter.setIsFilteringToShow(filteredItemCount:
+                  filterCandies.value.count, of: viewModel.candies.value.count)
+           return filterCandies.value.count
+         }
+         searchFooter.setNotFiltering()
+        
+        switch section {
+            case 0:
+                return isSearching ? filterCandies.value.count : viewModel.candies.value.count
+            case 1:
+                return isSearching ? filterBuyCandies.value.count : buyCandies.value.count
+            default:
+                return 0
+        }
+     }
+     
+     func cellForRowAt(tableView: UITableView, indexPath:IndexPath, identifier: String) -> UITableViewCell   {
+         
+        switch indexPath.section {
+            case 0:
+                let candy = isSearching ? filterCandies.value[indexPath.row] : viewModel.candies.value[indexPath.row]
+                
+                let items = Item(candy: candy, title: candy.name)
+                
+                let cell = self.configureCell(tableView: tableView, items: items, indexPath: indexPath)
+               
+                return cell ?? CandyListTableViewCell()
+                
+            case 1:
+                let candy = isSearching ? Array(filterCandies.value)[indexPath.row] : Array(buyCandies.value)[indexPath.row]
+                
+                let items = Item(candy: candy, title: candy.name)
+                
+                let cell = self.configureCell(tableView: tableView, items: items, indexPath: indexPath)
+                
+                return cell ?? CandyListTableViewCell()
+        default:
+            return CandyListTableViewCell()
+        }
+     }
+}
+
+// MARK:- Common methods
+extension CandyListViewModel {
+    
+    func shouldShowDiscount(row: Int) -> Bool {
+        return isSearching ? filterCandies.value[row].shouldShowDiscount : viewModel.candies.value[row].shouldShowDiscount
+    }
+    
+    func itemFor(row: Int) -> CandyDetailViewDataType  {
+        let candy = isSearching ? filterCandies.value[row] : viewModel.candies.value[row]
+        let dataType: CandyDetailViewDataType = CandyDetailViewData(candy: candy)
+        return dataType
+    }
+    
+    func configureCell(tableView: UITableView, items: Item, indexPath: IndexPath) -> CandyListTableViewCell? {
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: CandyListTableViewCell.reuseIdentifier, for: indexPath) as? CandyListTableViewCell
+        
+        cell?.contentView.backgroundColor = UIColor(red: 41.0/255.0, green: 42.0/255.0, blue: 48.0/255.0, alpha: 1.0)
+        
+        cell?.titleLabel.textColor = UIColor.white
+        cell?.subTitleLabel.textColor = UIColor.lightGray
+        cell?.amountLabel.textColor = UIColor.white
+        
+        cell?.titleLabel.backgroundColor = UIColor.clear
+        cell?.subTitleLabel.backgroundColor = UIColor.clear
+        cell?.amountLabel.backgroundColor = UIColor.clear
+        
+        let candyName = items.candy?.name
+        cell?.titleLabel.text = candyName
+        
+        cell?.subTitleLabel.text = items.candy?.category.rawValue
+        cell?.iconImageView.image = UIImage(named: candyName ?? "")
+        
+        if (items.candy?.amount == 0.0) {
+            let shouldShowDiscount = items.candy?.shouldShowDiscount
+            cell?.showShowDiscount(show: shouldShowDiscount ?? false)
+        } else {
+            cell?.showShowDiscount(show: false)
+            
+            guard let amount = items.candy?.amount  else {
+                return cell
+            }
+            
+            cell?.showAmount(show: amount > 0.0 ? true : false, amount: amount)
+        }
+        
+        return cell
+    }
+    
+    func makeDateSourceForTableView(tableView: UITableView) {
+        if #available(iOS 13.0, *) {
+            dataSource = self.makeDataSource(tableView: tableView)
+            tableView.dataSource = dataSource
+            
+        } else {
+            tableView.dataSource = self
+            //tableView.delegate = self
         }
     }
     
@@ -224,8 +284,6 @@ extension CandyListViewModel: CandyListViewModelType {
             return "buyCandies"
          }
     }
-    
-    
 }
 
 // MARK: - Search
@@ -235,7 +293,7 @@ extension CandyListViewModel {
         self.searchFooter = searchFooter
     }
     
-    func numberOfItems() {
+    func refreshFooterForDiffableDataSource() {
         
         if (viewModel.candies.value.count == 0) {
             return
@@ -294,7 +352,7 @@ extension CandyListViewModel {
         filterBuyCandies.value = buyCandies.value.filter { (candy: Candy) -> Bool in
             filterNameKeyword(candy: candy, searchText: searchText, category: category)
         }
-        numberOfItems()
+        refreshFooterForDiffableDataSource()
     }
     
     func filterNameKeyword(candy: Candy, searchText: String, category: Candy.Category? = nil) -> Bool {
@@ -316,23 +374,28 @@ extension CandyListViewModel: CandyDetailViewControllerDelegate {
     
     func candyDetailViewController(didBuy candy: inout Candy, amount: Double) {
         
-        candy.amount = amount
-        buyCandies.value.insert(candy)
-        
-        var snapshot = dataSource.snapshot()
-        let sectionIdentifiers = dataSource.snapshot().sectionIdentifiers[Section.buyCandies.rawValue]
-        let items = snapshot.itemIdentifiers(inSection: sectionIdentifiers)
-        
-        let newItem = items.first { item in
-          item.candy == candy
-        }
-        
-        if let candyItem = newItem {
-            snapshot.appendItems([candyItem])
-            DispatchQueue.main.async {
-                self.dataSource.apply(snapshot, animatingDifferences: false)
+        if #available(iOS 13.0, *) {
+            candy.amount = amount
+            buyCandies.value.insert(candy)
+            let dataSource = getDatasource()
+            var snapshot = dataSource.snapshot()
+            let sectionIdentifiers = dataSource.snapshot().sectionIdentifiers[Section.buyCandies.rawValue]
+            let items = snapshot.itemIdentifiers(inSection: sectionIdentifiers)
+            
+            let newItem = items.first { item in
+              item.candy == candy
             }
+            
+            if let candyItem = newItem {
+                snapshot.appendItems([candyItem])
+                DispatchQueue.main.async {
+                    dataSource.apply(snapshot, animatingDifferences: false)
+                }
+            }
+            updateDataSource(for: candy)
+        } else {
+            candy.amount = amount
+            buyCandies.value.insert(candy)
         }
-        updateDataSource(for: candy)
     }
 }

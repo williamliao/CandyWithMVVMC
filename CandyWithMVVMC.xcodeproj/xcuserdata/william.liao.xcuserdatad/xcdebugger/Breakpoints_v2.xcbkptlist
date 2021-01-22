@@ -7,65 +7,17 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "6B6B88BA-49AD-4C86-BFF7-EEF2BCCD008E"
+            uuid = "E076F732-57FB-4516-A7E3-A907160C0F1A"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "CandyWithMVVMC/ViewModel/CandyListViewModel.swift"
+            filePath = "CandyWithMVVMC/Controller/CandyListViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "178"
-            endingLineNumber = "178"
-            landmarkName = "applyInitialSnapshots()"
+            startingLineNumber = "55"
+            endingLineNumber = "55"
+            landmarkName = "render()"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "6B6B88BA-49AD-4C86-BFF7-EEF2BCCD008E - e1605601cef7674d"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "CandyWithMVVMC.CandyListViewModel.applyInitialSnapshots() -&gt; ()"
-                  moduleName = "CandyWithMVVMC"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Volumes/Macintosh%20HD%20-%20%E8%B3%87%E6%96%99/iOS_Practice/CandyWithMVVMC/CandyWithMVVMC/ViewModel/CandyListViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "187"
-                  endingLineNumber = "187"
-                  offsetFromSymbolStart = "970">
-               </Location>
-               <Location
-                  uuid = "6B6B88BA-49AD-4C86-BFF7-EEF2BCCD008E - d8512e36e215eda0"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #2 (CandyWithMVVMC.Candy) -&gt; () in CandyWithMVVMC.CandyListViewModel.applyInitialSnapshots() -&gt; ()"
-                  moduleName = "CandyWithMVVMC"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Volumes/Macintosh%20HD%20-%20%E8%B3%87%E6%96%99/iOS_Practice/CandyWithMVVMC/CandyWithMVVMC/ViewModel/CandyListViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "188"
-                  endingLineNumber = "188"
-                  offsetFromSymbolStart = "116">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "A5F66DC7-D923-4EDE-A55E-54057C6F485E"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "CandyWithMVVMC/ViewModel/CandyListViewModel.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "183"
-            endingLineNumber = "183"
-            landmarkName = "CandyListViewModel"
-            landmarkType = "21">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

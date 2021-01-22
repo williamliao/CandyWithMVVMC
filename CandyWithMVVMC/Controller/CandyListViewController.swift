@@ -30,20 +30,30 @@ class CandyListViewController: UIViewController, Storyboarded {
     func render() {
         
         self.candyListViewModel.makeDateSourceForTableView(tableView: candyTableView)
+        candyListViewModel.setSearchFooter(searchFooter: searchFooter)
         
-        viewModel.candies.bind {  (_) in
-           // self?.candyTableView.reloadData()
-            self.candyListViewModel.applyInitialSnapshots()
+        viewModel.candies.bind { [weak self] (_) in
+            if #available(iOS 13.0, *) {
+                self?.candyListViewModel.applyInitialSnapshots()
+            } else {
+                self?.candyTableView.reloadData()
+            }
         }
         
-        candyListViewModel.filterCandies.bind {  (_) in
-           // self?.candyTableView.reloadData()
-            self.candyListViewModel.applyInitialSnapshots()
+        candyListViewModel.filterCandies.bind { [weak self] (_) in
+            if #available(iOS 13.0, *) {
+                self?.candyListViewModel.applyInitialSnapshots()
+            } else {
+                self?.candyTableView.reloadData()
+            }
         }
         
-        candyListViewModel.buyCandies.bind {  (_) in
-            //self?.candyTableView.reloadData()
-            self.candyListViewModel.applyInitialSnapshots()
+        candyListViewModel.buyCandies.bind { [weak self] (_) in
+            if #available(iOS 13.0, *) {
+                self?.candyListViewModel.applyInitialSnapshots()
+            } else {
+                self?.candyTableView.reloadData()
+            }
         }
 
         viewModel.error.bind { (error) in
@@ -61,8 +71,8 @@ class CandyListViewController: UIViewController, Storyboarded {
         self.viewModel.fetchCandies()
         candyTableView.delegate = self
         candyTableView.estimatedSectionHeaderHeight = 60
-        
-        candyListViewModel.setSearchFooter(searchFooter: searchFooter)
+        candyTableView.separatorStyle = .none
+        candyTableView.separatorColor = UIColor.clear
         
         candyTableView.register(CandyListTableViewCell.self,
             forCellReuseIdentifier: CandyListTableViewCell.reuseIdentifier
@@ -124,19 +134,6 @@ extension CandyListViewController: CandyViewModelCoordinatorDelegate {
         coordinator?.goToDetailView(candy: candy, from: self)
     }
 }
-
-// MARK:- UITableViewDataSource methods
-/*
-extension CandyListViewController:  UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return candyListViewModel.numberOfItems(searchFooter: searchFooter)
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = candyListViewModel.cellForRowAt(tableView: tableView, row: indexPath.row, identifier: "CandyCell")
-        return cell
-    }
-}*/
 
 // MARK:- UITableViewDelegate methods
 

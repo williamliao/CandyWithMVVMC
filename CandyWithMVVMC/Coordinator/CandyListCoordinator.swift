@@ -76,7 +76,7 @@ extension CandyListCoordinator {
         candyDetailViewModel.candyDataType = candy
         let candyDetailVC = CandyDetailViewController.instantiate()
         candyDetailVC.viewModel = candyDetailViewModel
-        candyDetailVC.coordinator = self
+        candyDetailViewModel.coordinator = self
         candyListViewModel.setDelegate(viewModel: candyDetailViewModel)
         //candyDetailViewModel.delegate = self
         

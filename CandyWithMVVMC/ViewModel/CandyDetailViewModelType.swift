@@ -20,9 +20,13 @@ protocol CandyDetailViewModelType {
     // Events
     func start()
     
-    func setUpByButton(buyButton: UIButton, isBuy: Bool)
+    func setUpByButton(isBuy: Bool)
     
     func createAmoutView(Add to: UIView)
+    
+    func createView(Add to: UIView)
+    
+    func configureView()
     
     func didTapBuyButton()
 }

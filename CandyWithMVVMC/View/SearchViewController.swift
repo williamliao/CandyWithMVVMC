@@ -10,7 +10,6 @@ import UIKit
 
 class SearchViewController: UISearchController {
     
-    //var viewModel: CandyViewModelType?
     var viewModel: CandyListViewModelType?
  
     var isSearchBarEmpty: Bool {
@@ -25,6 +24,14 @@ class SearchViewController: UISearchController {
     init(viewModel: CandyListViewModelType) {
         self.viewModel = viewModel
         super.init(searchResultsController: nil)
+        if #available(iOS 12.0, *) {
+            self.setViewModel(viewModel: viewModel)
+        }
+    }
+    
+    //For Below iOS 13 with UISearchController SubClass
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
     required init?(coder: NSCoder) {
@@ -45,6 +52,10 @@ class SearchViewController: UISearchController {
         definesPresentationContext = false
         self.searchBar.scopeButtonTitles = Candy.Category.allCases.map { $0.rawValue }
     }
+    
+    func setViewModel(viewModel: CandyListViewModelType) {
+        self.viewModel = viewModel
+    }
 }
 
 extension SearchViewController: UISearchResultsUpdating {
@@ -61,8 +72,8 @@ extension SearchViewController: UISearchResultsUpdating {
         let searchBar = searchController.searchBar
         let category = Candy.Category(rawValue:
           searchBar.scopeButtonTitles![searchBar.selectedScopeButtonIndex])
-
-        viewModel?.searchFor(text: searchText, category: category!)
+        
+        self.viewModel?.searchFor(text: searchText, category: category!)
     }
 }
 

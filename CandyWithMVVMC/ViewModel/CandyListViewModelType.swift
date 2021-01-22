@@ -16,12 +16,12 @@ protocol CandyListViewModelType {
     
     func setSearchFooter(searchFooter: SearchFooter)
   
-    //func candiesTitle(row: Int) -> String
-    //func candiesCategory(row: Int) -> String
+   // func candiesTitle(row: Int) -> String
+   // func candiesCategory(row: Int) -> String
 
-    //func numberOfItems(searchFooter: SearchFooter) -> Int
+   // func numberOfItems(searchFooter: SearchFooter) -> Int
     
-    //func cellForRowAt(tableView: UITableView, row:Int, identifier: String) -> UITableViewCell
+   // func cellForRowAt(tableView: UITableView, row:Int, identifier: String) -> UITableViewCell
     
     func itemFor(row: Int) -> CandyDetailViewDataType
    
@@ -39,5 +39,6 @@ protocol CandyListViewModelType {
     
     func titleForHeaderInSection(titleForHeaderInSection section: Int) -> String?
     
+    @available(iOS 13.0, *)
     func applyInitialSnapshots()
 }
