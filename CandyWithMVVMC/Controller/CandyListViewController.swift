@@ -13,7 +13,6 @@ class CandyListViewController: UIViewController, Storyboarded {
     @IBOutlet var searchFooter: SearchFooter!
     @IBOutlet var searchFooterBottomConstraint: NSLayoutConstraint!
     
-    
     var coordinator :CandyListCoordinator?
     
     var viewModel: CandyViewModelType!
@@ -69,10 +68,7 @@ class CandyListViewController: UIViewController, Storyboarded {
             //show Error View
         }
         
-        //self.viewModel.viewDelegate = self
-        self.viewModel.coordinatorDelegate = self
         self.viewModel.fetchCandies()
-        candyTableView.delegate = self
         candyTableView.estimatedSectionHeaderHeight = 60
         candyTableView.separatorStyle = .none
         candyTableView.separatorColor = UIColor.clear
@@ -119,54 +115,6 @@ class CandyListViewController: UIViewController, Storyboarded {
     
     deinit {
         NotificationCenter.default.removeObserver(self)
-    }
-}
-
-// MARK:- CandyViewModelViewDelegate methods
-
-extension CandyListViewController: CandyViewModelViewDelegate {
-    func updateScreen() {
-        weak var weakSelf = self
-        DispatchQueue.main.async {
-            weakSelf?.candyTableView.reloadData()
-        }
-    }
-}
-
-// MARK:- CandyViewModelCoordinatorDelegate methods
-
-extension CandyListViewController: CandyViewModelCoordinatorDelegate {
-    func didSelectCandy(_ row: Int, candy: Candy, from controller: UIViewController) {
-        let candy = candyListViewModel.itemFor(row: row)
-        coordinator?.goToDetailView(candy: candy, from: self)
-    }
-}
-
-// MARK:- UITableViewDelegate methods
-
-extension CandyListViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        candyListViewModel.didSelectRow(indexPath.row, from: self)
-    }
-  
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60
-    }
-    
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        
-        let label = UILabel()
-        label.text = candyListViewModel.titleForHeaderInSection(titleForHeaderInSection: section)
-        label.textColor = UIColor.white
-        return label
-    }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 30
-    }
-
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return CGFloat.leastNormalMagnitude
     }
 }
 

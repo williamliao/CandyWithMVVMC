@@ -20,6 +20,7 @@ typealias UserDataSource = UITableViewDiffableDataSource<Section, Item>
 class CandyListViewModel: NSObject {
     
     var viewModel: CandyViewModel!
+    var coordinator :CandyListCoordinator?
    // private var searchFooter: SearchFooter!
     
     // MARK: - Properties
@@ -208,12 +209,7 @@ extension CandyListViewModel {
     func setDelegate(viewModel: CandyDetailViewModel) {
         viewModel.delegate = self
     }
-    
-    func didSelectRow(_ row: Int, from controller: UIViewController) {
-        let candy = viewModel.isSearching.value ? viewModel.filterCandies.value[row] : viewModel.candies.value[row]
-        viewModel.coordinatorDelegate?.didSelectCandy(row, candy: candy, from: controller)
-    }
-    
+
     func shouldShowDiscount(row: Int) -> Bool {
         return viewModel.isSearching.value ? viewModel.filterCandies.value[row].shouldShowDiscount : viewModel.candies.value[row].shouldShowDiscount
     }
@@ -267,8 +263,8 @@ extension CandyListViewModel {
             
         } else {
             tableView.dataSource = self
-            //tableView.delegate = self
         }
+        tableView.delegate = self
     }
     
     func titleForHeaderInSection(titleForHeaderInSection section: Int) -> String? {
@@ -284,6 +280,42 @@ extension CandyListViewModel {
          case .buyCandies:
             return "buyCandies"
          }
+    }
+}
+
+// MARK:- UITableViewDelegate methods
+
+extension CandyListViewModel: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        didSelectRow(indexPath.row)
+    }
+  
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 60
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        
+        let label = UILabel()
+        label.text = self.titleForHeaderInSection(titleForHeaderInSection: section)
+        label.textColor = UIColor.white
+        return label
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 30
+    }
+
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return CGFloat.leastNormalMagnitude
+    }
+}
+
+// MARK:- CandyViewModelCoordinatorDelegate methods
+extension CandyListViewModel {
+    func didSelectRow(_ row: Int) {
+        let candy = itemFor(row: row)
+        coordinator?.goToDetailView(candy: candy)
     }
 }
 

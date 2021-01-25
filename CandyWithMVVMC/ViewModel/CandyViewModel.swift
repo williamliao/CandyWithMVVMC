@@ -9,9 +9,6 @@
 import UIKit
 
 class CandyViewModel:NSObject {
-    weak var coordinatorDelegate: CandyViewModelCoordinatorDelegate?
-    //weak var viewDelegate: CandyViewModelViewDelegate?
-
     // MARK: - Properties
     
     var candies: Observable<[Candy]> = Observable([])

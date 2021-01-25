@@ -12,7 +12,7 @@ protocol CandyListViewModelType {
 
     func itemFor(row: Int) -> CandyDetailViewDataType
  
-    func didSelectRow(_ row: Int, from controller: UIViewController)
+    func didSelectRow(_ row: Int)
 
     func setDelegate(viewModel: CandyDetailViewModel)
     

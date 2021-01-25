@@ -10,9 +10,7 @@
 import UIKit
 
 protocol CandyViewModelType {
-    // var viewDelegate: CandyViewModelViewDelegate? { get set }
-    var coordinatorDelegate: CandyViewModelCoordinatorDelegate? { get set }
-    
+
     var isSearching: Observable<Bool> { get set }
 
     // Data Source
@@ -28,13 +26,4 @@ protocol CandyViewModelType {
     var filterCandies: Observable<[Candy]> { get  set }
     var filterBuyCandies: Observable<Set<Candy>> { get  set }
  
-}
-
-protocol CandyViewModelCoordinatorDelegate: class {
-    func didSelectCandy(_ row: Int, candy: Candy, from controller: UIViewController)
-}
-
-
-protocol CandyViewModelViewDelegate: class {
-    func updateScreen()
 }

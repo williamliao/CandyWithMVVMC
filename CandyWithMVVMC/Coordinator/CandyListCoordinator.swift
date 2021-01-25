@@ -57,7 +57,8 @@ class CandyListCoordinator: Coordinator {
         let candyListVC = CandyListViewController.instantiate()
         candyListVC.viewModel = candyViewModel
         candyListVC.candyListViewModel = candyListViewModel
-        candyListVC.coordinator = self
+        //candyListVC.coordinator = self
+        candyListViewModel.coordinator = self
         let nav = UINavigationController(rootViewController: candyListVC)
         return nav
     }
@@ -72,7 +73,7 @@ class CandyListCoordinator: Coordinator {
 }
 
 extension CandyListCoordinator {
-    func goToDetailView(candy: CandyDetailViewDataType, from controller: UIViewController) {
+    func goToDetailView(candy: CandyDetailViewDataType) {
         candyDetailViewModel.candyDataType = candy
         let candyDetailVC = CandyDetailViewController.instantiate()
         candyDetailVC.viewModel = candyDetailViewModel
