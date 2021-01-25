@@ -16,8 +16,6 @@ protocol CandyListViewModelType {
 
     func makeDateSourceForTableView(tableView: UITableView)
     
-    func titleForHeaderInSection(titleForHeaderInSection section: Int) -> String?
-    
     @available(iOS 13.0, *)
     func applyInitialSnapshots()
     

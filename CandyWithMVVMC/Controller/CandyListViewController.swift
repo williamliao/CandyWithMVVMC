@@ -32,8 +32,6 @@ class CandyListViewController: UIViewController, Storyboarded {
         
         self.candyListViewModel.makeDateSourceForTableView(tableView: candyTableView)
         
-        //
-        
         viewModel.candies.bind { [weak self] (_) in
             if #available(iOS 13.0, *) {
                 self?.candyListViewModel.applyInitialSnapshots()

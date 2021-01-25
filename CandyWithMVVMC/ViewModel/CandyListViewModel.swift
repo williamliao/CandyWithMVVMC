@@ -13,10 +13,6 @@ enum Section: Int, CaseIterable, Hashable {
   case buyCandies
 }
 
-
-@available(iOS 13.0, tvOS 13.0, *)
-typealias UserDataSource = UITableViewDiffableDataSource<Section, Item>
-
 class CandyListViewModel: NSObject {
     
     var viewModel: CandyViewModel!
@@ -30,7 +26,7 @@ class CandyListViewModel: NSObject {
    // var buyCandies: Observable<Set<Candy>> = Observable(Set<Candy>())
     
     @available(iOS 13.0, *)
-    lazy var dataSource = UserDataSource()
+    lazy var dataSource  = makeDataSource(tableView: UITableView())
     
     // MARK: - Types
    
@@ -46,17 +42,23 @@ extension CandyListViewModel: CandyListViewModelType { }
 extension CandyListViewModel {
     
     @available(iOS 13.0, *)
-    func getDatasource() -> UserDataSource {
+    func getDatasource() -> CandyDiffableDataSource<Section, Item> {
         return dataSource
     }
    
     @available(iOS 13.0, *)
-    func makeDataSource(tableView: UITableView) -> UITableViewDiffableDataSource<Section, Item> {
-
-        return UITableViewDiffableDataSource<Section, Item>(tableView: tableView) { [self] (tableView, indexPath, items) -> CandyListTableViewCell? in
+    func makeDataSource(tableView: UITableView) -> CandyDiffableDataSource<Section, Item> {
+        
+        return CandyDiffableDataSource<Section, Item>(tableView: tableView) {  [self] (tableView, indexPath, items) -> CandyListTableViewCell? in
             let cell = self.configureCell(tableView: tableView, items: items, indexPath: indexPath)
             return cell
         }
+        
+        /*
+        return UITableViewDiffableDataSource<Section, Item>(tableView: tableView) { [self] (tableView, indexPath, items) -> CandyListTableViewCell? in
+            let cell = self.configureCell(tableView: tableView, items: items, indexPath: indexPath)
+            return cell
+        }*/
     }
 
     @available(iOS 13.0, *)
@@ -129,6 +131,31 @@ extension CandyListViewModel {
     }
 }
 
+@available(iOS 13.0, tvOS 13.0, *)
+open class CandyDiffableDataSource<SectionIdentifierType, ItemIdentifierType>: UITableViewDiffableDataSource<SectionIdentifierType, ItemIdentifierType>
+    where SectionIdentifierType : Hashable, ItemIdentifierType : Hashable {
+    
+    public typealias SectionTitleProvider = (UITableView, SectionIdentifierType) -> String?
+    
+    open var sectionTitleProvider: SectionTitleProvider?
+    open var useSectionIndex: Bool = false
+    
+    open override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+        guard useSectionIndex, let sectionTitleProvider = sectionTitleProvider else { return nil }
+        return snapshot().sectionIdentifiers.compactMap { sectionTitleProvider(tableView, $0) }
+    }
+    
+    open override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        let title = "\(self.snapshot().sectionIdentifiers[section])"
+        return title
+    }
+
+    open override func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
+        guard useSectionIndex else { return 0 }
+        return snapshot().sectionIdentifiers.firstIndex(where: { sectionTitleProvider?(tableView, $0) == title }) ?? 0
+    }
+}
+
 // MARK:- UITableViewDataSource methods
 extension CandyListViewModel:  UITableViewDataSource {
     
@@ -146,39 +173,8 @@ extension CandyListViewModel:  UITableViewDataSource {
         return cell
     }
     
-    func candiesTitle(row: Int) -> String {
-        return viewModel.isSearching.value ? viewModel.filterCandies.value[row].name : viewModel.candies.value[row].name
-     }
-     
-     func candiesCategory(row: Int) -> String {
-        return viewModel.isSearching.value ? viewModel.filterCandies.value[row].category.rawValue : viewModel.candies.value[row].category.rawValue
-     }
-     
-     func numberOfItems(numberOfRowsInSection section: Int) -> Int {
-         
-         if (viewModel.candies.value.count == 0) {
-             return 0
-         }
-
-      /*  if viewModel.isSearching.value {
-           searchFooter.setIsFilteringToShow(filteredItemCount:
-                                                viewModel.filterCandies.value.count, of: viewModel.candies.value.count)
-            return viewModel.filterCandies.value.count
-         }
-         searchFooter.setNotFiltering() */
-        
-        switch section {
-            case 0:
-                return viewModel.isSearching.value ? viewModel.filterCandies.value.count : viewModel.candies.value.count
-            case 1:
-                return viewModel.isSearching.value ? viewModel.filterBuyCandies.value.count : viewModel.buyCandies.value.count
-            default:
-                return 0
-        }
-     }
-     
      func cellForRowAt(tableView: UITableView, indexPath:IndexPath, identifier: String) -> UITableViewCell   {
-         
+        
         switch indexPath.section {
             case 0:
                 let candy = viewModel.isSearching.value ? viewModel.filterCandies.value[indexPath.row] : viewModel.candies.value[indexPath.row]
@@ -201,7 +197,73 @@ extension CandyListViewModel:  UITableViewDataSource {
             return CandyListTableViewCell()
         }
      }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        let title = titleForHeaderInSection(titleForHeaderInSection: section)
+        return title
+    }
+    
+    
+    private func titleForHeaderInSection(titleForHeaderInSection section: Int) -> String? {
+        guard let sectionTitle = Section(rawValue: section) else {
+          return nil
+        }
+        
+        switch sectionTitle {
+         // 2
+         case .availableCandies:
+            return "availableCandies"
+         // 3
+         case .buyCandies:
+            return "buyCandies"
+         }
+    }
+    
+    
+    private func candiesTitle(row: Int) -> String {
+        return viewModel.isSearching.value ? viewModel.filterCandies.value[row].name : viewModel.candies.value[row].name
+     }
+     
+    private func candiesCategory(row: Int) -> String {
+        return viewModel.isSearching.value ? viewModel.filterCandies.value[row].category.rawValue : viewModel.candies.value[row].category.rawValue
+     }
+    
+    private func numberOfItems(numberOfRowsInSection section: Int) -> Int {
+         
+         if (viewModel.candies.value.count == 0) {
+             return 0
+         }
+
+      /*  if viewModel.isSearching.value {
+           searchFooter.setIsFilteringToShow(filteredItemCount:
+                                                viewModel.filterCandies.value.count, of: viewModel.candies.value.count)
+            return viewModel.filterCandies.value.count
+         }
+         searchFooter.setNotFiltering() */
+        
+        switch section {
+            case 0:
+                return viewModel.isSearching.value ? viewModel.filterCandies.value.count : viewModel.candies.value.count
+            case 1:
+                return viewModel.isSearching.value ? viewModel.filterBuyCandies.value.count : viewModel.buyCandies.value.count
+            default:
+                return 0
+        }
+     }
 }
+
+// MARK:- UITableViewDelegate methods
+
+extension CandyListViewModel: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        didSelectRow(indexPath.row)
+    }
+  
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 60
+    }
+}
+
 
 // MARK:- Common methods
 extension CandyListViewModel {
@@ -259,55 +321,13 @@ extension CandyListViewModel {
     func makeDateSourceForTableView(tableView: UITableView) {
         if #available(iOS 13.0, *) {
             dataSource = self.makeDataSource(tableView: tableView)
+            
             tableView.dataSource = dataSource
             
         } else {
             tableView.dataSource = self
         }
         tableView.delegate = self
-    }
-    
-    func titleForHeaderInSection(titleForHeaderInSection section: Int) -> String? {
-        guard let sectionTitle = Section(rawValue: section) else {
-          return nil
-        }
-        
-        switch sectionTitle {
-         // 2
-         case .availableCandies:
-            return "availableCandies"
-         // 3
-         case .buyCandies:
-            return "buyCandies"
-         }
-    }
-}
-
-// MARK:- UITableViewDelegate methods
-
-extension CandyListViewModel: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        didSelectRow(indexPath.row)
-    }
-  
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60
-    }
-    
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        
-        let label = UILabel()
-        label.text = self.titleForHeaderInSection(titleForHeaderInSection: section)
-        label.textColor = UIColor.white
-        return label
-    }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 30
-    }
-
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return CGFloat.leastNormalMagnitude
     }
 }
 
