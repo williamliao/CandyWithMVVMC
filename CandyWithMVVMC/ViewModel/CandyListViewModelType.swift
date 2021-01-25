@@ -14,12 +14,12 @@ protocol CandyListViewModelType {
  
     func didSelectRow(_ row: Int)
 
-    func setDelegate(viewModel: CandyDetailViewModel)
-    
     func makeDateSourceForTableView(tableView: UITableView)
     
     func titleForHeaderInSection(titleForHeaderInSection section: Int) -> String?
     
     @available(iOS 13.0, *)
     func applyInitialSnapshots()
+    
+    func candyDidBuy(didBuy candy: inout Candy, amount: Double)
 }

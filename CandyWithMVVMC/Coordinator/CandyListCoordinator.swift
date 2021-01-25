@@ -9,8 +9,8 @@
 import UIKit
 
 class CandyListCoordinator: Coordinator {
-    // MARK: - Properties
     
+    // MARK: - Properties
     let rootViewController: UITabBarController
     
     let storyboard = UIStoryboard(name: "Main", bundle: nil)
@@ -20,20 +20,17 @@ class CandyListCoordinator: Coordinator {
     lazy var candyViewModel: CandyViewModel! = {
         let candyService = CandyApiService(apiClient: apiClient)
         let viewModel = CandyViewModel(service: candyService)
-        //viewModel.coordinatorDelegate = self
         return viewModel
     }()
     
     lazy var candyListViewModel: CandyListViewModel! = {
         let candyService = CandyApiService(apiClient: apiClient)
         let viewModel = CandyListViewModel(viewModel: candyViewModel)
-        //viewModel.coordinatorDelegate = self
         return viewModel
     }()
     
     lazy var candyDetailViewModel: CandyDetailViewModel! = {
         let viewdModel = CandyDetailViewModel()
-        //viewModel.coordinatorDelegate = self
         return viewdModel
     }()
 
@@ -57,7 +54,6 @@ class CandyListCoordinator: Coordinator {
         let candyListVC = CandyListViewController.instantiate()
         candyListVC.viewModel = candyViewModel
         candyListVC.candyListViewModel = candyListViewModel
-        //candyListVC.coordinator = self
         candyListViewModel.coordinator = self
         let nav = UINavigationController(rootViewController: candyListVC)
         return nav
@@ -78,9 +74,7 @@ extension CandyListCoordinator {
         let candyDetailVC = CandyDetailViewController.instantiate()
         candyDetailVC.viewModel = candyDetailViewModel
         candyDetailViewModel.coordinator = self
-        candyListViewModel.setDelegate(viewModel: candyDetailViewModel)
-        //candyDetailViewModel.delegate = self
-        
+
         if let currentNavController = self.rootViewController.selectedViewController as? UINavigationController {
             currentNavController.pushViewController(candyDetailVC, animated: true)
         }
@@ -90,6 +84,10 @@ extension CandyListCoordinator {
         if let currentNavController = self.rootViewController.selectedViewController as? UINavigationController {
             currentNavController.popToRootViewController(animated: true)
         }
+    }
+    
+    func candyDetailViewController(didBuy candy: inout Candy, amount: Double) {
+        candyListViewModel.candyDidBuy(didBuy: &candy, amount: amount)
     }
 }
 

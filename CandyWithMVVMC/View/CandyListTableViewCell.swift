@@ -100,5 +100,12 @@ class CandyListTableViewCell: UITableViewCell {
         amountLabel.isHidden = !show
         amountLabel.text = "\(Int(amount))"
     }
+}
 
+extension CandyListTableViewCell {
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        amountLabel.isHidden = true
+        discountImageView.isHidden = true
+    }
 }

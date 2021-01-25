@@ -8,18 +8,8 @@
 
 import UIKit
 
-protocol CandyDetailViewControllerDelegate: class {
-  //func candyDetailViewController(_ candyDetailViewController: CandyDetailViewController, didBuy candy: Candy)
-    
-    func candyDetailViewController(didBuy candy: inout Candy, amount: Double)
-}
-
 class CandyDetailViewModel {
-    
-    weak var delegate: CandyDetailViewControllerDelegate?
-    
-    weak var viewDelegate: CandyDetailViewModelViewDelegate?
-    
+
     var coordinator :CandyListCoordinator?
     
     var candy: Candy?
@@ -36,6 +26,7 @@ class CandyDetailViewModel {
 }
 
 extension CandyDetailViewModel: CandyDetailViewModelType {
+    
     func selectCandy() -> Candy? {
         return self.candyDataType?.getCandy()
     }
@@ -56,13 +47,10 @@ extension CandyDetailViewModel {
         guard var candy = selectCandy() else {
             return
         }
-        
-        delegate?.candyDetailViewController(didBuy: &candy, amount: amoutSetpper.value)
-        //navigationController?.popViewController(animated: true)
+
         coordinator?.gobackToListView()
+        coordinator?.candyDetailViewController(didBuy: &candy, amount: amoutSetpper.value)
     }
-    
-    
     
     @IBAction func didTapAmountStepperValueChanged(_ sender: UIStepper) {
         amountLabel.text = "數量 \(Int(sender.value).description)"

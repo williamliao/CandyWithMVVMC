@@ -206,9 +206,9 @@ extension CandyListViewModel:  UITableViewDataSource {
 // MARK:- Common methods
 extension CandyListViewModel {
     
-    func setDelegate(viewModel: CandyDetailViewModel) {
-        viewModel.delegate = self
-    }
+//    func setDelegate(viewModel: CandyDetailViewModel) {
+//        viewModel.delegate = self
+//    }
 
     func shouldShowDiscount(row: Int) -> Bool {
         return viewModel.isSearching.value ? viewModel.filterCandies.value[row].shouldShowDiscount : viewModel.candies.value[row].shouldShowDiscount
@@ -319,11 +319,10 @@ extension CandyListViewModel {
     }
 }
 
-// MARK: - CandyDetailViewControllerDelegate
-extension CandyListViewModel: CandyDetailViewControllerDelegate {
-    
-    func candyDetailViewController(didBuy candy: inout Candy, amount: Double) {
-        
+// MARK:- Candy Did Buy methods
+extension CandyListViewModel {
+    func candyDidBuy(didBuy candy: inout Candy, amount: Double) {
+       
         if #available(iOS 13.0, *) {
             candy.amount = amount
             viewModel.buyCandies.value.insert(candy)
