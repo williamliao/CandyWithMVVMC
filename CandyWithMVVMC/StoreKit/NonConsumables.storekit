@@ -1,0 +1,239 @@
+{
+  "products" : [
+    {
+      "displayPrice" : "8.95",
+      "familyShareable" : false,
+      "internalID" : "8986C98B",
+      "localizations" : [
+        {
+          "description" : "The most popular candy every kid loves!",
+          "displayName" : "Candy Cane",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "william.candy.candycane",
+      "referenceName" : "CandyCane",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "0.99",
+      "familyShareable" : false,
+      "internalID" : "3E702F6B",
+      "localizations" : [
+        {
+          "description" : "A tasty meal that makes you happy!",
+          "displayName" : "Candy Floss",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "william.candy.candyfloss",
+      "referenceName" : "CandyFloss",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "0.99",
+      "familyShareable" : false,
+      "internalID" : "81386FD1",
+      "localizations" : [
+        {
+          "description" : "A tasty meal that makes you happy!",
+          "displayName" : "Caramel",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "william.candy.caramel",
+      "referenceName" : "Caramel",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "0.99",
+      "familyShareable" : false,
+      "internalID" : "E842F9DC",
+      "localizations" : [
+        {
+          "description" : "A tasty meal that makes you happy!",
+          "displayName" : "Chocolate Bar",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "william.candy.chocolatebar",
+      "referenceName" : "ChocolateBar",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "0.99",
+      "familyShareable" : false,
+      "internalID" : "0D48593C",
+      "localizations" : [
+        {
+          "description" : "A tasty meal that makes you happy!",
+          "displayName" : "Chocolate Chip",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "william.candy.chocolatechip",
+      "referenceName" : "ChocolateChip",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "0.99",
+      "familyShareable" : false,
+      "internalID" : "91BDD301",
+      "localizations" : [
+        {
+          "description" : "A tasty meal that makes you happy!",
+          "displayName" : "Chocolate Coin",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "william.candy.chocolatecoin",
+      "referenceName" : "ChocolateCoin",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "0.99",
+      "familyShareable" : false,
+      "internalID" : "A7766908",
+      "localizations" : [
+        {
+          "description" : "A tasty meal that makes you happy!",
+          "displayName" : "Chocolate Egg",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "william.candy.chocolateegg",
+      "referenceName" : "ChocolateEgg",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "0.99",
+      "familyShareable" : false,
+      "internalID" : "0D474CC3",
+      "localizations" : [
+        {
+          "description" : "A tasty meal that makes you happy!",
+          "displayName" : "Dark Chocolate",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "william.candy.darkchocolate",
+      "referenceName" : "DarkChocolate",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "0.99",
+      "familyShareable" : false,
+      "internalID" : "067EC1E7",
+      "localizations" : [
+        {
+          "description" : "A tasty meal that makes you happy!",
+          "displayName" : "Gummi Bear",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "william.candy.gummibear",
+      "referenceName" : "GummiBear",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "0.99",
+      "familyShareable" : false,
+      "internalID" : "50817517",
+      "localizations" : [
+        {
+          "description" : "A tasty meal that makes you happy!",
+          "displayName" : "Jaw Breaker",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "william.candy.jawbreaker",
+      "referenceName" : "JawBreaker",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "0.99",
+      "familyShareable" : false,
+      "internalID" : "5417F7D1",
+      "localizations" : [
+        {
+          "description" : "A tasty meal that makes you happy!",
+          "displayName" : "Jelly Beans",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "william.candy.jellybeans",
+      "referenceName" : "JellyBeans",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "0.99",
+      "familyShareable" : false,
+      "internalID" : "27207BE9",
+      "localizations" : [
+        {
+          "description" : "A tasty meal that makes you happy!",
+          "displayName" : "Liquorice",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "william.candy.liquorice",
+      "referenceName" : "Liquorice",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "0.99",
+      "familyShareable" : false,
+      "internalID" : "E15C43BD",
+      "localizations" : [
+        {
+          "description" : "A tasty meal that makes you happy!",
+          "displayName" : "Lollipop",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "william.candy.lollipop",
+      "referenceName" : "Lollipop",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "0.99",
+      "familyShareable" : false,
+      "internalID" : "45C632B7",
+      "localizations" : [
+        {
+          "description" : "A tasty meal that makes you happy!",
+          "displayName" : "Sour Chew",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "william.candy.sourchew",
+      "referenceName" : "SourChew",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "0.99",
+      "familyShareable" : false,
+      "internalID" : "19B81D2C",
+      "localizations" : [
+        {
+          "description" : "A tasty meal that makes you happy!",
+          "displayName" : "Toffee Apple",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "william.candy.toffeeapple",
+      "referenceName" : "ToffeeApple",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+
+  },
+  "subscriptionGroups" : [
+
+  ],
+  "version" : {
+    "major" : 1,
+    "minor" : 0
+  }
+}

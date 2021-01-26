@@ -42,14 +42,14 @@ extension CandyListViewModel: CandyListViewModelType { }
 extension CandyListViewModel {
     
     @available(iOS 13.0, *)
-    func getDatasource() -> CandyDiffableDataSource<Section, Item> {
+    func getDatasource() -> GenericDiffableDataSource<Section, Item> {
         return dataSource
     }
    
     @available(iOS 13.0, *)
-    func makeDataSource(tableView: UITableView) -> CandyDiffableDataSource<Section, Item> {
+    func makeDataSource(tableView: UITableView) -> GenericDiffableDataSource<Section, Item> {
         
-        return CandyDiffableDataSource<Section, Item>(tableView: tableView) {  [self] (tableView, indexPath, items) -> CandyListTableViewCell? in
+        return GenericDiffableDataSource<Section, Item>(tableView: tableView) {  [self] (tableView, indexPath, items) -> CandyListTableViewCell? in
             let cell = self.configureCell(tableView: tableView, items: items, indexPath: indexPath)
             return cell
         }
@@ -128,31 +128,6 @@ extension CandyListViewModel {
           snapshot.deleteItems([candyItem])
           dataSource.apply(snapshot, animatingDifferences: true, completion: nil)
         }
-    }
-}
-
-@available(iOS 13.0, tvOS 13.0, *)
-open class CandyDiffableDataSource<SectionIdentifierType, ItemIdentifierType>: UITableViewDiffableDataSource<SectionIdentifierType, ItemIdentifierType>
-    where SectionIdentifierType : Hashable, ItemIdentifierType : Hashable {
-    
-    public typealias SectionTitleProvider = (UITableView, SectionIdentifierType) -> String?
-    
-    open var sectionTitleProvider: SectionTitleProvider?
-    open var useSectionIndex: Bool = false
-    
-    open override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-        guard useSectionIndex, let sectionTitleProvider = sectionTitleProvider else { return nil }
-        return snapshot().sectionIdentifiers.compactMap { sectionTitleProvider(tableView, $0) }
-    }
-    
-    open override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        let title = "\(self.snapshot().sectionIdentifiers[section])"
-        return title
-    }
-
-    open override func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
-        guard useSectionIndex else { return 0 }
-        return snapshot().sectionIdentifiers.firstIndex(where: { sectionTitleProvider?(tableView, $0) == title }) ?? 0
     }
 }
 
@@ -256,7 +231,18 @@ extension CandyListViewModel:  UITableViewDataSource {
 
 extension CandyListViewModel: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        didSelectRow(indexPath.row)
+        
+        if #available(iOS 13.0, *) {
+            
+            guard let item = dataSource.itemIdentifier(for: indexPath) else {
+              return
+            }
+            let dataType: CandyDetailViewDataType = CandyDetailViewData(candy: item.candy!)
+            coordinator?.goToDetailView(candy: dataType)
+        } else {
+            didSelectRow(indexPath.row)
+        }
+        
     }
   
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

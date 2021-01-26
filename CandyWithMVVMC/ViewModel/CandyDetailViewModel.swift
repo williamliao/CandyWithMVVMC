@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import StoreKit
 
 class CandyDetailViewModel {
 
@@ -23,6 +24,8 @@ class CandyDetailViewModel {
     var candyNameLbl: UILabel!
     var categoryLbl: UILabel!
     var buyButton: UIButton!
+    
+    private var product: SKProduct?
 }
 
 extension CandyDetailViewModel: CandyDetailViewModelType {

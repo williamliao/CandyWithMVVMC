@@ -94,8 +94,8 @@
             filePath = "CandyWithMVVMC/ViewModel/CandyListViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "305"
-            endingLineNumber = "305"
+            startingLineNumber = "291"
+            endingLineNumber = "291"
             landmarkName = "configureCell(tableView:items:indexPath:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -110,8 +110,8 @@
             filePath = "CandyWithMVVMC/ViewModel/CandyListViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "309"
-            endingLineNumber = "309"
+            startingLineNumber = "295"
+            endingLineNumber = "295"
             landmarkName = "configureCell(tableView:items:indexPath:)"
             landmarkType = "7">
          </BreakpointContent>

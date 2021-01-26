@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<string>william.candy.chocolatebar</string>
+	<string>william.candy.chocolatechip</string>
+	<string>william.candy.darkchocolate</string>
+	<string>william.candy.chocolatecoin</string>
+	<string>william.candy.chocolateegg</string>
+	<string>william.candy.lollipop</string>
+	<string>william.candy.jawbreaker</string>
+	<string>william.candy.toffeeapple</string>
+	<string>william.candy.caramel</string>
+	<string>william.candy.sourchew</string>
+	<string>william.candy.gummibear</string>
+	<string>william.candy.candyfloss</string>
+	<string>william.candy.jellybeans</string>
+	<string>william.candy.liquorice</string>
+</array>
+</plist>

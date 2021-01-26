@@ -33,7 +33,7 @@ struct Item: Hashable {
   }
 }
 
-struct Candy: Decodable, Hashable {
+struct Candy: Codable, Hashable {
   let name: String
   let category: Category
   let shouldShowDiscount: Bool
@@ -46,7 +46,7 @@ struct Candy: Decodable, Hashable {
         self.amount = amount
     }
   
-  enum Category: Decodable {
+  enum Category: Codable {
     case all
     case chocolate
     case hard

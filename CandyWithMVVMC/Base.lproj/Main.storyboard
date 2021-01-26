@@ -112,6 +112,21 @@
             </objects>
             <point key="canvasLocation" x="1884" y="1535.9820089955024"/>
         </scene>
+        <!--Candy Shopping Cart View Controller-->
+        <scene sceneID="tle-ra-EJd">
+            <objects>
+                <viewController storyboardIdentifier="CandyShoppingCartViewController" id="4T7-kK-nYC" customClass="CandyShoppingCartViewController" customModule="CandyWithMVVMC" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Kvp-mR-iIH">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="g3H-Jy-vYg"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="248-hc-kEV" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2716" y="1513"/>
+        </scene>
         <!--Candy Detail View Controller-->
         <scene sceneID="K2g-VR-aaT">
             <objects>

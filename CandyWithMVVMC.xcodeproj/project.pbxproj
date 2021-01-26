@@ -42,6 +42,13 @@
 		C867A19325AEA2C90004559B /* CandyLocationViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C867A19225AEA2C90004559B /* CandyLocationViewData.swift */; };
 		C867A19825AEA3250004559B /* CandyLocationDataType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C867A19725AEA3250004559B /* CandyLocationDataType.swift */; };
 		C867A19D25AEC1470004559B /* CandyMapViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C867A19C25AEC1470004559B /* CandyMapViewModelType.swift */; };
+		C89F28CB25BFA41400D6494D /* IAPManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C89F28CA25BFA41400D6494D /* IAPManager.swift */; };
+		C89F28DB25BFA63400D6494D /* IAP_ProductIDs.plist in Resources */ = {isa = PBXBuildFile; fileRef = C89F28DA25BFA63400D6494D /* IAP_ProductIDs.plist */; };
+		C89F28E025BFA8DA00D6494D /* CandyInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C89F28DF25BFA8DA00D6494D /* CandyInfo.swift */; };
+		C89F28E525BFAA5C00D6494D /* CandyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C89F28E425BFAA5C00D6494D /* CandyModel.swift */; };
+		C89F28EA25BFAD4200D6494D /* candiesInfo.json in Resources */ = {isa = PBXBuildFile; fileRef = C89F28E925BFAD4200D6494D /* candiesInfo.json */; };
+		C8A3F23E25BEA2BC008E7E2C /* CandyShoppingCartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8A3F23D25BEA2BC008E7E2C /* CandyShoppingCartViewController.swift */; };
+		C8A3F24325BEA2FC008E7E2C /* CandyShoppingCartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8A3F24225BEA2FC008E7E2C /* CandyShoppingCartViewModel.swift */; };
 		C8B2FD2125957E4D00862920 /* candies.json in Resources */ = {isa = PBXBuildFile; fileRef = C8B2FD2025957E4D00862920 /* candies.json */; };
 		C8B2FD26259583BD00862920 /* SearchFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B2FD25259583BD00862920 /* SearchFooter.swift */; };
 		C8B2FD2B259593AB00862920 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B2FD2A259593AB00862920 /* SearchViewController.swift */; };
@@ -108,6 +115,14 @@
 		C867A19225AEA2C90004559B /* CandyLocationViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandyLocationViewData.swift; sourceTree = "<group>"; };
 		C867A19725AEA3250004559B /* CandyLocationDataType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandyLocationDataType.swift; sourceTree = "<group>"; };
 		C867A19C25AEC1470004559B /* CandyMapViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandyMapViewModelType.swift; sourceTree = "<group>"; };
+		C89F28C225BFA07A00D6494D /* NonConsumables.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = NonConsumables.storekit; sourceTree = "<group>"; };
+		C89F28CA25BFA41400D6494D /* IAPManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAPManager.swift; sourceTree = "<group>"; };
+		C89F28DA25BFA63400D6494D /* IAP_ProductIDs.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = IAP_ProductIDs.plist; sourceTree = "<group>"; };
+		C89F28DF25BFA8DA00D6494D /* CandyInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandyInfo.swift; sourceTree = "<group>"; };
+		C89F28E425BFAA5C00D6494D /* CandyModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandyModel.swift; sourceTree = "<group>"; };
+		C89F28E925BFAD4200D6494D /* candiesInfo.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = candiesInfo.json; sourceTree = "<group>"; };
+		C8A3F23D25BEA2BC008E7E2C /* CandyShoppingCartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandyShoppingCartViewController.swift; sourceTree = "<group>"; };
+		C8A3F24225BEA2FC008E7E2C /* CandyShoppingCartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandyShoppingCartViewModel.swift; sourceTree = "<group>"; };
 		C8B2FD2025957E4D00862920 /* candies.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = candies.json; sourceTree = "<group>"; };
 		C8B2FD25259583BD00862920 /* SearchFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFooter.swift; sourceTree = "<group>"; };
 		C8B2FD2A259593AB00862920 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
@@ -163,6 +178,8 @@
 		C851C89721D35C9000BD718E /* CandyWithMVVMC */ = {
 			isa = PBXGroup;
 			children = (
+				C89F28C925BFA3FF00D6494D /* IAP Manager */,
+				C89F28C125BFA03F00D6494D /* StoreKit */,
 				C8B2FD1E25957AD500862920 /* View */,
 				C8B2FD1D259578AF00862920 /* Controller */,
 				C8B2FD1C259578A300862920 /* Coordinator */,
@@ -174,6 +191,7 @@
 				C851C8DF21D366F600BD718E /* Helper.swift */,
 				C8B2FD2F259599E600862920 /* Observable.swift */,
 				C8B2FD2025957E4D00862920 /* candies.json */,
+				C89F28E925BFAD4200D6494D /* candiesInfo.json */,
 				C867A18825AEA1840004559B /* candyShop.json */,
 				C851C89C21D35C9000BD718E /* Main.storyboard */,
 				C851C89F21D35C9200BD718E /* Assets.xcassets */,
@@ -207,6 +225,8 @@
 				C851C8CA21D35D3300BD718E /* Candy.swift */,
 				C867A18325AE939C0004559B /* CandyShop.swift */,
 				C867A18D25AEA1BC0004559B /* CandyLocation.swift */,
+				C89F28DF25BFA8DA00D6494D /* CandyInfo.swift */,
+				C89F28E425BFAA5C00D6494D /* CandyModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -236,6 +256,7 @@
 				C867A17E25AE93650004559B /* CandyMapViewModel.swift */,
 				C867A19C25AEC1470004559B /* CandyMapViewModelType.swift */,
 				C858E51C25BAD3BF0096167E /* CandySearchViewModel.swift */,
+				C8A3F24225BEA2FC008E7E2C /* CandyShoppingCartViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -248,6 +269,23 @@
 				C82CD9B721D48148001A5772 /* CandyDataProvider.swift */,
 			);
 			path = Service;
+			sourceTree = "<group>";
+		};
+		C89F28C125BFA03F00D6494D /* StoreKit */ = {
+			isa = PBXGroup;
+			children = (
+				C89F28C225BFA07A00D6494D /* NonConsumables.storekit */,
+			);
+			path = StoreKit;
+			sourceTree = "<group>";
+		};
+		C89F28C925BFA3FF00D6494D /* IAP Manager */ = {
+			isa = PBXGroup;
+			children = (
+				C89F28CA25BFA41400D6494D /* IAPManager.swift */,
+				C89F28DA25BFA63400D6494D /* IAP_ProductIDs.plist */,
+			);
+			path = "IAP Manager";
 			sourceTree = "<group>";
 		};
 		C8B2FD1C259578A300862920 /* Coordinator */ = {
@@ -266,6 +304,7 @@
 				C851C8DD21D366DB00BD718E /* CandyListViewController.swift */,
 				C851C8E121D36E3A00BD718E /* CandyDetailViewController.swift */,
 				C867A16E25AE8FF20004559B /* CandyMapViewController.swift */,
+				C8A3F23D25BEA2BC008E7E2C /* CandyShoppingCartViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -384,9 +423,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C89F28DB25BFA63400D6494D /* IAP_ProductIDs.plist in Resources */,
 				C851C8A321D35C9200BD718E /* LaunchScreen.storyboard in Resources */,
 				C867A18925AEA1840004559B /* candyShop.json in Resources */,
 				C851C8A021D35C9200BD718E /* Assets.xcassets in Resources */,
+				C89F28EA25BFAD4200D6494D /* candiesInfo.json in Resources */,
 				C851C89E21D35C9000BD718E /* Main.storyboard in Resources */,
 				C8B2FD2125957E4D00862920 /* candies.json in Resources */,
 			);
@@ -413,14 +454,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C89F28CB25BFA41400D6494D /* IAPManager.swift in Sources */,
 				C858E51D25BAD3BF0096167E /* CandySearchViewModel.swift in Sources */,
 				C867A19325AEA2C90004559B /* CandyLocationViewData.swift in Sources */,
 				C867A15125AE7F600004559B /* CandyListViewModelType.swift in Sources */,
+				C89F28E025BFA8DA00D6494D /* CandyInfo.swift in Sources */,
 				C8B2FD30259599E600862920 /* Observable.swift in Sources */,
+				C8A3F24325BEA2FC008E7E2C /* CandyShoppingCartViewModel.swift in Sources */,
 				C867A18E25AEA1BC0004559B /* CandyLocation.swift in Sources */,
 				C867A19825AEA3250004559B /* CandyLocationDataType.swift in Sources */,
 				C8BC62A625B7DB1400E68A74 /* CandyListTableViewCell.swift in Sources */,
 				C851C8DA21D3645900BD718E /* CandyDetailViewData.swift in Sources */,
+				C89F28E525BFAA5C00D6494D /* CandyModel.swift in Sources */,
 				C851C8DC21D364F300BD718E /* CandyDetailViewDataType.swift in Sources */,
 				C851C8DE21D366DB00BD718E /* CandyListViewController.swift in Sources */,
 				C851C8D821D360FF00BD718E /* CandyViewModelType.swift in Sources */,
@@ -441,6 +486,7 @@
 				C8B2FD2B259593AB00862920 /* SearchViewController.swift in Sources */,
 				C851C8D421D35F2B00BD718E /* CandyListCoordinator.swift in Sources */,
 				C851C89921D35C9000BD718E /* AppDelegate.swift in Sources */,
+				C8A3F23E25BEA2BC008E7E2C /* CandyShoppingCartViewController.swift in Sources */,
 				C867A16F25AE8FF20004559B /* CandyMapViewController.swift in Sources */,
 				C851C8E021D366F600BD718E /* Helper.swift in Sources */,
 				C851C8C821D35CA200BD718E /* Coordinator.swift in Sources */,

@@ -43,7 +43,22 @@ class CandyListCoordinator: Coordinator {
     override func start() {
         let list = createListView()
         let map = createMapView()
-        self.rootViewController.setViewControllers([list, map], animated: false)
+        let cart = createCartView()
+        self.rootViewController.setViewControllers([list, map, cart], animated: false)
+        
+        if #available(iOS 13.0, *) {
+            self.rootViewController.tabBar.items?[0].image = UIImage(systemName: "bag")?.withRenderingMode(.alwaysOriginal)
+            self.rootViewController.tabBar.items?[0].selectedImage = UIImage(systemName: "bag.fill")?.withRenderingMode(.alwaysOriginal)
+            
+            self.rootViewController.tabBar.items?[1].image = UIImage(systemName: "map")?.withRenderingMode(.alwaysOriginal)
+            self.rootViewController.tabBar.items?[1].selectedImage = UIImage(systemName: "map.fill")?.withRenderingMode(.alwaysOriginal)
+            
+            self.rootViewController.tabBar.items?[2].image = UIImage(systemName: "cart")?.withRenderingMode(.alwaysOriginal)
+            self.rootViewController.tabBar.items?[2].selectedImage = UIImage(systemName: "cart.fill")?.withRenderingMode(.alwaysOriginal)
+        } else {
+            // Fallback on earlier versions
+        }
+        
     }
     
     override func finish() {
@@ -64,6 +79,14 @@ class CandyListCoordinator: Coordinator {
         candyMapVC.viewModel = candyViewModel
         candyMapVC.title = "Map"
         let nav = UINavigationController(rootViewController: candyMapVC)
+        return nav
+    }
+    
+    func createCartView() -> UINavigationController {
+        let candyCartVC = CandyShoppingCartViewController.instantiate()
+        candyCartVC.viewModel = candyViewModel
+        candyCartVC.title = "Cart"
+        let nav = UINavigationController(rootViewController: candyCartVC)
         return nav
     }
 }

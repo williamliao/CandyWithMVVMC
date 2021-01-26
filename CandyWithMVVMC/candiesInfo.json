@@ -1,0 +1,16 @@
+[
+  { "id": 1, "candy": { "name": "Chocolate Bar", "category": "Chocolate", "shouldShowDiscount": true }, "productID": "william.candy.chocolatebar" },
+  { "id": 2, "candy": { "name": "Chocolate Chip", "category": "Chocolate", "shouldShowDiscount": true }, "productID": "william.candy.chocolatechip" },
+  { "id": 3, "candy": { "name": "Dark Chocolate", "category": "Chocolate", "shouldShowDiscount": true }, "productID": "william.candy.darkchocolate" },
+  { "id": 4, "candy": { "name": "Chocolate Coin", "category": "Chocolate", "shouldShowDiscount": true }, "productID": "william.candy.chocolatecoin" },
+  { "id": 5, "candy": { "name": "Chocolate Egg", "category": "Chocolate", "shouldShowDiscount": true }, "productID": "william.candy.chocolateegg" },
+  { "id": 6, "candy": { "name": "Lollipop", "category": "Hard", "shouldShowDiscount": false }, "productID": "william.candy.lollipop" },
+  { "id": 7, "candy": { "name": "Jaw Breaker", "category": "Hard", "shouldShowDiscount": false }, "productID": "william.candy.jawbreaker" },
+  { "id": 8, "candy": { "name": "Toffee Apple", "category": "Hard", "shouldShowDiscount": false }, "productID": "william.candy.toffeeapple" },
+  { "id": 9, "candy": { "name": "Caramel", "category": "Other", "shouldShowDiscount": false }, "productID": "william.candy.caramel" },
+  { "id": 10, "candy": { "name": "Sour Chew", "category": "Other", "shouldShowDiscount": false }, "productID": "william.candy.sourchew" },
+  { "id": 11, "candy": { "name": "Gummi Bear", "category": "Other", "shouldShowDiscount": false }, "productID": "william.candy.gummibear" },
+  { "id": 12, "candy": { "name": "Candy Floss", "category": "Other", "shouldShowDiscount": false }, "productID": "william.candy.candyfloss" },
+  { "id": 13, "candy": { "name": "Jelly Beans", "category": "Other", "shouldShowDiscount": false }, "productID": "william.candy.jellybeans" },
+  { "id": 14, "candy": { "name": "Liquorice", "category": "Other", "shouldShowDiscount": false }, "productID": "william.candy.liquorice" },
+]

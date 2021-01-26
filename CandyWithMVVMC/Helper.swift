@@ -78,3 +78,28 @@ extension Optional where Wrapped == String {
         return (this.trimmingCharacters(in: .whitespacesAndNewlines) == "")
     }
 }
+
+@available(iOS 13.0, tvOS 13.0, *)
+open class GenericDiffableDataSource<SectionIdentifierType, ItemIdentifierType>: UITableViewDiffableDataSource<SectionIdentifierType, ItemIdentifierType>
+    where SectionIdentifierType : Hashable, ItemIdentifierType : Hashable {
+    
+    public typealias SectionTitleProvider = (UITableView, SectionIdentifierType) -> String?
+    
+    open var sectionTitleProvider: SectionTitleProvider?
+    open var useSectionIndex: Bool = false
+    
+    open override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+        guard useSectionIndex, let sectionTitleProvider = sectionTitleProvider else { return nil }
+        return snapshot().sectionIdentifiers.compactMap { sectionTitleProvider(tableView, $0) }
+    }
+    
+    open override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        let title = "\(self.snapshot().sectionIdentifiers[section])"
+        return title
+    }
+
+    open override func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
+        guard useSectionIndex else { return 0 }
+        return snapshot().sectionIdentifiers.firstIndex(where: { sectionTitleProvider?(tableView, $0) == title }) ?? 0
+    }
+}
