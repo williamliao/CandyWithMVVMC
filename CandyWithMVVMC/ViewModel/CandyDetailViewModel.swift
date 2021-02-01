@@ -30,8 +30,8 @@ class CandyDetailViewModel {
 
 extension CandyDetailViewModel: CandyDetailViewModelType {
     
-    func selectCandy() -> Candy? {
-        return self.candyDataType?.getCandy()
+    func selectItem() -> Item? {
+        return self.candyDataType?.getItem()
     }
     
     func setUpByButton(isBuy: Bool) {
@@ -46,13 +46,15 @@ extension CandyDetailViewModel: CandyDetailViewModelType {
 extension CandyDetailViewModel {
     
     @objc func didTapBuyButton() {
-      
-        guard var candy = selectCandy() else {
+        
+        guard var item = selectItem() else {
             return
         }
-
-        coordinator?.gobackToListView()
-        coordinator?.candyDetailViewController(didBuy: &candy, amount: amoutSetpper.value)
+        
+        coordinator?.checkWantBuyAlert(item: item,amount:amoutSetpper.value , completionClosure: { [weak self] (_) in
+            self?.coordinator?.gobackToListView()
+            self?.coordinator?.candyDetailViewController(didBuy: &item, amount: (self?.amoutSetpper.value)!)
+        })
     }
     
     @IBAction func didTapAmountStepperValueChanged(_ sender: UIStepper) {
@@ -145,12 +147,12 @@ extension CandyDetailViewModel {
     }
     
     func configureView() {
-        guard let candy = selectCandy() else {
+        guard let item = selectItem() else {
             return
         }
-        candyNameLbl.text = candy.name
-        categoryLbl.text = candy.category.rawValue
-        candyImage.image = UIImage(named: candy.name)
+        candyNameLbl.text = item.candy?.name
+        categoryLbl.text = item.candy?.category.rawValue
+        candyImage.image = UIImage(named: item.candy!.name)
         
         guard let width = candyImage.image?.size.width, let height = candyImage.image?.size.height else {
             return

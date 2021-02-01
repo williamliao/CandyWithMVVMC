@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Combine
 
 enum Result<T> {
     case value(T)
@@ -25,8 +26,12 @@ enum ApiResult<T> {
 class ApiClient: NSObject {
     
     var urlSession = URLSession.shared
-
+    
+    private let candyModel = CandyModel()
+    private var cancellable: AnyCancellable?
+  
     typealias JSONTaskCompletionHandler = (ApiResult<CandyViewData>) -> Void
+    
     typealias JSONLocationTaskCompletionHandler = (ApiResult<CandyLocationViewData>) -> Void
     
     var configuration: URLSessionConfiguration?
@@ -70,14 +75,7 @@ class ApiClient: NSObject {
     
     func getAllCandies() -> [Candy] {
         
-        var defaultCandy:[Candy] = [Candy]()
-        
-        for var candy in Candy.candies() {
-            candy.amount = 0.0
-            defaultCandy.append(candy)
-        }
-        
-        return defaultCandy
+        return Candy.candies()
     }
     
     func getAllCandyLocation() -> [CandyLocation] {

@@ -12,7 +12,8 @@ import Combine
 @available(iOS 13.0, *)
 class CandyInfo: Codable, Identifiable, ObservableObject {
     var id: Int?
-    let candy: Candy?
+    var candy: Candy?
+    var buyCandies: Candy?
     var productID: String?
     @Published var isPurchased = false
    
@@ -44,5 +45,18 @@ class CandyInfo: Codable, Identifiable, ObservableObject {
     
     enum CodingKeys: CodingKey {
         case id, candy, productID
+    }
+}
+
+extension CandyInfo: Equatable, Hashable {
+    static func == (lhs: CandyInfo, rhs: CandyInfo) -> Bool {
+        return lhs.id == rhs.id && lhs.candy == rhs.candy && lhs.productID == rhs.productID && lhs.isPurchased == rhs.isPurchased
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+        hasher.combine(candy)
+        hasher.combine(productID)
+        hasher.combine(isPurchased)
     }
 }

@@ -10,10 +10,10 @@ import UIKit
 
 struct CandyDetailViewData {
     
-    private let candy: Candy
+    private let item: Item
 
-    init(candy: Candy) {
-        self.candy = candy
+    init(item: Item) {
+        self.item = item
     }
 }
 
@@ -26,8 +26,8 @@ extension CandyDetailViewData: CandyDetailViewDataType {
         return UIColor.white
     }
     
-    func getCandy() -> Candy {
-        return self.candy
+    func getItem() -> Item {
+        return self.item
     }
     
     

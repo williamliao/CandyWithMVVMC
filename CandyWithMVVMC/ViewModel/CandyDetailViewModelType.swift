@@ -11,7 +11,7 @@ import UIKit
 protocol CandyDetailViewModelType {
 
     // Data Source
-    func selectCandy() -> Candy?
+    func selectItem() -> Item?
 
     // Events
     func setUpByButton(isBuy: Bool)

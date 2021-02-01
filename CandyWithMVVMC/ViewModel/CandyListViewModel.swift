@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import StoreKit
 
 enum Section: Int, CaseIterable, Hashable {
   case availableCandies
@@ -69,25 +70,26 @@ extension CandyListViewModel {
         //Append available sections
         Section.allCases.forEach { snapshot.appendSections([$0]) }
         dataSource.apply(snapshot, animatingDifferences: false)
-      
+        
         //Append annotations to their corresponding sections
         if viewModel.isSearching.value {
             viewModel.filterCandies.value.forEach { (candy) in
-                snapshot.appendItems([Item(candy: candy, title: candy.name)], toSection: .availableCandies)
+                snapshot.appendItems([Item(candy: candy, candyProducts: viewModel.recipeProducts.value)], toSection: .availableCandies)
             }
         } else {
+            
             viewModel.candies.value.forEach { (candy) in
-                snapshot.appendItems([Item(candy: candy, title: candy.name)], toSection: .availableCandies)
+                snapshot.appendItems([Item(candy: candy, candyProducts: viewModel.recipeProducts.value)], toSection: .availableCandies)
             }
         }
         
         if viewModel.isSearching.value {
             viewModel.filterBuyCandies.value.forEach { (candy) in
-                snapshot.appendItems([Item(candy: candy, title: candy.name)], toSection: .buyCandies)
+                snapshot.appendItems([Item(candy: candy, candyProducts: viewModel.recipeProducts.value)], toSection: .buyCandies)
             }
         } else {
             viewModel.buyCandies.value.forEach { (candy) in
-                snapshot.appendItems([Item(candy: candy, title: candy.name)], toSection: .buyCandies)
+                snapshot.appendItems([Item(candy: candy, candyProducts: viewModel.recipeProducts.value)], toSection: .buyCandies)
             }
         }
         
@@ -99,7 +101,7 @@ extension CandyListViewModel {
     
     @available(iOS 13.0, *)
     func updateDataSource(for candy: Candy) {
-        let dataSource = getDatasource()
+       let dataSource = getDatasource()
         var snapshot = dataSource.snapshot()
         let items = snapshot.itemIdentifiers
         let candyItem = items.first { item in
@@ -154,7 +156,7 @@ extension CandyListViewModel:  UITableViewDataSource {
             case 0:
                 let candy = viewModel.isSearching.value ? viewModel.filterCandies.value[indexPath.row] : viewModel.candies.value[indexPath.row]
                 
-                let items = Item(candy: candy, title: candy.name)
+                let items = Item(candy: candy, candyProducts: [SKProduct]())
                 
                 let cell = self.configureCell(tableView: tableView, items: items, indexPath: indexPath)
                
@@ -163,7 +165,7 @@ extension CandyListViewModel:  UITableViewDataSource {
             case 1:
                 let candy = viewModel.isSearching.value ? Array(viewModel.filterCandies.value)[indexPath.row] : Array(viewModel.buyCandies.value)[indexPath.row]
                 
-                let items = Item(candy: candy, title: candy.name)
+                let items = Item(candy: candy, candyProducts: [SKProduct]())
                 
                 let cell = self.configureCell(tableView: tableView, items: items, indexPath: indexPath)
                 
@@ -237,7 +239,7 @@ extension CandyListViewModel: UITableViewDelegate {
             guard let item = dataSource.itemIdentifier(for: indexPath) else {
               return
             }
-            let dataType: CandyDetailViewDataType = CandyDetailViewData(candy: item.candy!)
+            let dataType: CandyDetailViewDataType = CandyDetailViewData(item: item)
             coordinator?.goToDetailView(candy: dataType)
         } else {
             didSelectRow(indexPath.row)
@@ -264,7 +266,7 @@ extension CandyListViewModel {
     
     func itemFor(row: Int) -> CandyDetailViewDataType  {
         let candy = viewModel.isSearching.value ? viewModel.filterCandies.value[row] : viewModel.candies.value[row]
-        let dataType: CandyDetailViewDataType = CandyDetailViewData(candy: candy)
+        let dataType: CandyDetailViewDataType = CandyDetailViewData(item: Item(candy: candy, candyProducts: self.viewModel.recipeProducts.value))
         return dataType
     }
     
@@ -288,18 +290,23 @@ extension CandyListViewModel {
         cell?.subTitleLabel.text = items.candy?.category.rawValue
         cell?.iconImageView.image = UIImage(named: candyName ?? "")
         
-        if (items.candy?.amount == 0.0) {
-            let shouldShowDiscount = items.candy?.shouldShowDiscount
-            cell?.showShowDiscount(show: shouldShowDiscount ?? false)
-        } else {
-            cell?.showShowDiscount(show: false)
-            
-            guard let amount = items.candy?.amount  else {
-                return cell
-            }
-            
-            cell?.showAmount(show: amount > 0.0 ? true : false, amount: amount)
+        let shouldShowDiscount = items.candy?.shouldShowDiscount
+        
+        guard let amount = items.candy?.amount, let isPurchased = items.candy?.isPurchased   else {
+            return cell
         }
+        
+        if isPurchased {
+            if (indexPath.section == 1) {
+                cell?.showShowDiscount(show: false)
+            } else {
+                cell?.showShowDiscount(show: true)
+            }
+        } else {
+            cell?.showShowDiscount(show: shouldShowDiscount ?? false)
+        }
+        
+        cell?.showAmount(show: indexPath.section == 1 ? true : false, amount: amount)
         
         return cell
     }
@@ -327,30 +334,72 @@ extension CandyListViewModel {
 
 // MARK:- Candy Did Buy methods
 extension CandyListViewModel {
-    func candyDidBuy(didBuy candy: inout Candy, amount: Double) {
+    func candyDidBuy(didBuy item: inout Item, amount: Double) {
        
         if #available(iOS 13.0, *) {
-            candy.amount = amount
-            viewModel.buyCandies.value.insert(candy)
-            let dataSource = getDatasource()
-            var snapshot = dataSource.snapshot()
-            let sectionIdentifiers = dataSource.snapshot().sectionIdentifiers[Section.buyCandies.rawValue]
-            let items = snapshot.itemIdentifiers(inSection: sectionIdentifiers)
-            
-            let newItem = items.first { item in
-              item.candy == candy
+           
+            guard let candy = item.candy else {
+                return
             }
+
+            if candy.isPurchased {
+                return
+            }
+
+            //viewModel.candies.value.filter ({ $0.productID == candy.productID }).forEach { $0.isPurchased = true }
             
-            if let candyItem = newItem {
-                snapshot.appendItems([candyItem])
-                DispatchQueue.main.async {
-                    dataSource.apply(snapshot, animatingDifferences: false)
+            self.viewModel.buyCandies.value.insert(candy)
+            
+            if let recipeProduct = viewModel.getProduct(with: candy.productID) {
+               
+                buyCandies(using: recipeProduct, amount: amount) { (success) in
+                    print("success \(success)")
+                    
+                    if (success) {
+                        
+                    } else {
+                        self.viewModel.buyCandies.value.remove(candy)
+                        self.coordinator?.showError(title: "", message: "The transaction could not be completed.")
+                    }
+                    
                 }
+                
             }
-            updateDataSource(for: candy)
+         
+            
         } else {
+            
+            guard var candy = item.candy else {
+                return
+            }
+            
             candy.amount = amount
             viewModel.buyCandies.value.insert(candy)
+        }
+    }
+    
+    func buyCandies(using product: SKProduct?,amount: Double, completion: @escaping (_ success: Bool) -> Void) {
+        guard let product = product else { return }
+       
+        IAPManager.shared.buyWithMulitAmount(product: product, amount: Int(amount)) { (iapResult) in
+            switch iapResult {
+                case .success(let success):
+                    if success {
+                        let candy = self.viewModel.buyCandies.value.filter({ $0.productID == product.productIdentifier }).first
+                        
+                        guard let buyCandy = candy else {
+                            return
+                        }
+                        
+                        self.viewModel.markAsPurchased(true, candy: buyCandy, amount:amount)
+                        
+                        self.updateDataSource(for: buyCandy)
+                    }
+                    completion(true)
+                case .failure(let error):
+                    print(error)
+                    completion(false)
+            }
         }
     }
 }

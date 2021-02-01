@@ -10,7 +10,7 @@ import UIKit
 
 protocol CandyDetailViewDataType {
     
-    func getCandy() -> Candy
+    func getItem() -> Item
    
     func shouldShowDisconunt() -> Bool
     

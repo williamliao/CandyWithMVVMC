@@ -15,19 +15,10 @@ class CandyModel: ObservableObject {
     @Published var candyProducts = [SKProduct]()
     
     init() {
-        loadCandies()
         loadProducts()
     }
     
-    private func loadCandies() {
-        guard let url = Bundle.main.url(forResource: "candiesInfo", withExtension: "json"), let data = try? Data(contentsOf: url) else {
-            return
-        }
-        
-        let decoder = JSONDecoder()
-        guard let loadedCandies = try? decoder.decode([CandyInfo].self, from: data) else { return }
-        candies = loadedCandies
-    }
+    
     
     fileprivate func loadProducts() {
         IAPManager.shared.getProducts { (productResults) in
@@ -61,5 +52,16 @@ class CandyModel: ObservableObject {
     
     func resetPurchasedState() {
         candies.forEach { $0.markAsPurchased(false) }
+    }
+}
+
+extension CandyModel: Equatable, Hashable {
+    static func == (lhs: CandyModel, rhs: CandyModel) -> Bool {
+        return lhs.candies == rhs.candies && lhs.candyProducts == rhs.candyProducts
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(candies)
+        hasher.combine(candyProducts)
     }
 }

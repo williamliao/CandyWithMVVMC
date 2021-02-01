@@ -8,13 +8,17 @@
 //
 
 import UIKit
+import StoreKit
 
 protocol CandyViewModelType {
 
     var isSearching: Observable<Bool> { get set }
+    
+    
 
     // Data Source
     func fetchCandies()
+    func getProducts()
     func fetchCandyLocation()
     //var candyListViewModelType: CandyListViewModelType { get  set }
     var candies: Observable<[Candy]> { get  set }
@@ -25,5 +29,8 @@ protocol CandyViewModelType {
     
     var filterCandies: Observable<[Candy]> { get  set }
     var filterBuyCandies: Observable<Set<Candy>> { get  set }
- 
+    
+    var recipeProducts:Observable<[SKProduct]> { get  set }
+    func getProduct(with identifier: String?) -> SKProduct?
+    //func markAsPurchased(_ state: Bool , candy: Candy, amount: Double)
 }

@@ -30,10 +30,10 @@ class CandyDetailViewController: UIViewController, Storyboarded {
     }
     
     func setNavTitle() {
-        guard let candy = viewModel.selectCandy() else {
+        guard let item = viewModel.selectItem() else {
             return
         }
-        title = candy.category.rawValue
+        title = item.candy?.category.rawValue
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.systemBlue]
     }
 }

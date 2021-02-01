@@ -103,14 +103,38 @@ extension CandyListCoordinator {
         }
     }
     
+    func checkWantBuyAlert(item: Item, amount: Double, completionClosure: ((UIAlertAction) -> Void)? ) {
+        let cancelAction:UIAlertAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel) { (UIAlertAction) -> Void in
+                    
+        }
+        
+        let okAction:UIAlertAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: completionClosure)
+        
+        let productId = item.candy?.productID
+        
+        let productPrice = IAPManager.shared.getPriceFormatted(for: item.getProduct(with: productId!)!, amount: amount)
+        
+        let alertView:UIAlertController = UIAlertController(title: nil, message: "Get \(item.candy?.name ?? "") for \(productPrice ?? "")", preferredStyle: UIAlertController.Style.alert)
+        alertView.addAction(cancelAction)
+        alertView.addAction(okAction)
+        
+        self.rootViewController.present(alertView, animated: true, completion: { () -> Void in
+            
+        })
+    }
+    
     func gobackToListView() {
         if let currentNavController = self.rootViewController.selectedViewController as? UINavigationController {
             currentNavController.popToRootViewController(animated: true)
         }
     }
     
-    func candyDetailViewController(didBuy candy: inout Candy, amount: Double) {
-        candyListViewModel.candyDidBuy(didBuy: &candy, amount: amount)
+    func candyDetailViewController(didBuy item: inout Item, amount: Double) {
+        candyListViewModel.candyDidBuy(didBuy: &item, amount: amount)
+    }
+    
+    func showError(title:String, message:String) {
+        self.rootViewController.showError(title, message: message)
     }
 }
 

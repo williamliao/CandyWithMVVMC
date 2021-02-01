@@ -67,6 +67,7 @@ class CandyListViewController: UIViewController, Storyboarded {
         }
         
         self.viewModel.fetchCandies()
+        self.viewModel.getProducts()
         candyTableView.estimatedSectionHeaderHeight = 60
         candyTableView.separatorStyle = .none
         candyTableView.separatorColor = UIColor.clear

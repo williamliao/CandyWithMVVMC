@@ -51,11 +51,11 @@ class IAPManager: NSObject {
     }
     
     
-    func getPriceFormatted(for product: SKProduct) -> String? {
+    func getPriceFormatted(for product: SKProduct, amount:Double) -> String? {
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency
         formatter.locale = product.priceLocale
-        return formatter.string(from: product.price)
+        return formatter.string(from: product.price.multiplying(by: NSDecimalNumber(value: amount)))
     }
     
     
@@ -109,6 +109,22 @@ class IAPManager: NSObject {
         onBuyProductHandler = handler
     }
     
+    func buyWithMulitAmount(product: SKProduct, amount: Int , withHandler handler: @escaping ((_ result: Swift.Result<Bool, Error>) -> Void)) {
+        let payment = SKMutablePayment(product: product)
+        
+        guard let dictionary = Bundle.main.infoDictionary else { return }
+        if let name: String = dictionary["CFBundleDisplayName"] as? String {
+            payment.applicationUsername = name
+        }
+        payment.quantity = amount
+        payment.simulatesAskToBuyInSandbox = true
+        //payment.paymentDiscount = SKPaymentDiscount(identifier: "", keyIdentifier: "", nonce: UUID(), signature: "", timestamp: NSNumber(value: Int64(Date().timeIntervalSince1970 * 1000)))
+        SKPaymentQueue.default().add(payment)
+
+        // Keep the completion handler.
+        onBuyProductHandler = handler
+    }
+    
     
     func restorePurchases(withHandler handler: @escaping ((_ result: Swift.Result<Bool, Error>) -> Void)) {
         onBuyProductHandler = handler
@@ -123,6 +139,7 @@ extension IAPManager: SKPaymentTransactionObserver {
         transactions.forEach { (transaction) in
             switch transaction.transactionState {
             case .purchased:
+                
                 onBuyProductHandler?(.success(true))
                 SKPaymentQueue.default().finishTransaction(transaction)
                 

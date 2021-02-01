@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import StoreKit
 
 enum CandyShoppingCartSection: Int, CaseIterable, Hashable {
   case main
@@ -69,7 +70,7 @@ extension CandyShoppingCartViewModel {
       
         //Append annotations to their corresponding sections
         viewModel.buyCandies.value.forEach { (candy) in
-            snapshot.appendItems([Item(candy: candy, title: candy.name)], toSection: .main)
+            snapshot.appendItems([Item(candy: candy, candyProducts: viewModel.recipeProducts.value)], toSection: .main)
         }
         
         //Force the update on the main thread to silence a warning about tableview not being in the hierarchy!
@@ -115,18 +116,19 @@ extension CandyShoppingCartViewModel {
         cell?.subTitleLabel.text = items.candy?.category.rawValue
         cell?.iconImageView.image = UIImage(named: candyName ?? "")
         
-        if (items.candy?.amount == 0.0) {
-            let shouldShowDiscount = items.candy?.shouldShowDiscount
-            cell?.showShowDiscount(show: shouldShowDiscount ?? false)
-        } else {
-            cell?.showShowDiscount(show: false)
-            
-            guard let amount = items.candy?.amount  else {
-                return cell
-            }
-            
-            cell?.showAmount(show: amount > 0.0 ? true : false, amount: amount)
+        let shouldShowDiscount = items.candy?.shouldShowDiscount
+        
+        guard let amount = items.candy?.amount, let isPurchased = items.candy?.isPurchased   else {
+            return cell
         }
+        
+        if isPurchased {
+            cell?.showShowDiscount(show: false)
+        } else {
+            cell?.showShowDiscount(show: shouldShowDiscount ?? false)
+        }
+        
+        cell?.showAmount(show: isPurchased ? true : false, amount: amount)
         
         return cell
     }

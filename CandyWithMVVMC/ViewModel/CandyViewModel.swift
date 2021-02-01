@@ -7,9 +7,14 @@
 //
 
 import UIKit
+import Combine
+import StoreKit
 
 class CandyViewModel:NSObject {
     // MARK: - Properties
+    private var cancellable: AnyCancellable?
+    
+    var recipeProducts:Observable<[SKProduct]> = Observable([])
     
     var candies: Observable<[Candy]> = Observable([])
     var buyCandies: Observable<Set<Candy>> = Observable(Set<Candy>())
@@ -66,6 +71,39 @@ class CandyViewModel:NSObject {
         }
     }
     
+    func getProducts() {
+        IAPManager.shared.getProducts { (productResults) in
+            DispatchQueue.main.async {
+                switch productResults {
+                    case .success(let fetchedProducts):
+                        self.recipeProducts.value = fetchedProducts
+                    case .failure(let error): print(error.localizedDescription)
+                }
+            }
+        }
+    }
+    
+    func getProduct(with identifier: String?) -> SKProduct? {
+        guard let id = identifier else { return nil }
+        return recipeProducts.value.filter({ $0.productIdentifier == id }).first
+    }
+    
+    func resetPurchasedState() {
+        candies.value.forEach { markAsPurchased(false, candy: $0, amount: 0) }
+    }
+    
+    func getPurchasedState(candy: inout Candy) {
+        guard let id = candy.id else { return }
+        candy.isPurchased = UserDefaults.standard.bool(forKey: "\(id)")
+    }
+    
+    func markAsPurchased(_ state: Bool = true, candy: Candy, amount: Double) {
+        guard let id = candy.id else { return }
+        candy.isPurchased = state
+        candy.amount = amount
+        UserDefaults.standard.set(state, forKey: "\(id)")
+    }
+    
     func setError(_ error: Error) {
         self.errorMessage = Observable(error.localizedDescription)
         self.error = Observable(error)
@@ -73,6 +111,7 @@ class CandyViewModel:NSObject {
 }
 
 extension CandyViewModel: CandyViewModelType {
+  
    
 
 }
