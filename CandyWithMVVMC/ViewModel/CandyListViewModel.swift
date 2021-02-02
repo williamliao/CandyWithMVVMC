@@ -74,22 +74,22 @@ extension CandyListViewModel {
         //Append annotations to their corresponding sections
         if viewModel.isSearching.value {
             viewModel.filterCandies.value.forEach { (candy) in
-                snapshot.appendItems([Item(candy: candy, candyProducts: viewModel.recipeProducts.value)], toSection: .availableCandies)
+                snapshot.appendItems([Item(candy: candy, candyProducts: viewModel.recipeProducts.value, subscriptions: nil)], toSection: .availableCandies)
             }
         } else {
             
             viewModel.candies.value.forEach { (candy) in
-                snapshot.appendItems([Item(candy: candy, candyProducts: viewModel.recipeProducts.value)], toSection: .availableCandies)
+                snapshot.appendItems([Item(candy: candy, candyProducts: viewModel.recipeProducts.value, subscriptions: nil)], toSection: .availableCandies)
             }
         }
         
         if viewModel.isSearching.value {
             viewModel.filterBuyCandies.value.forEach { (candy) in
-                snapshot.appendItems([Item(candy: candy, candyProducts: viewModel.recipeProducts.value)], toSection: .buyCandies)
+                snapshot.appendItems([Item(candy: candy, candyProducts: viewModel.recipeProducts.value, subscriptions: nil)], toSection: .buyCandies)
             }
         } else {
             viewModel.buyCandies.value.forEach { (candy) in
-                snapshot.appendItems([Item(candy: candy, candyProducts: viewModel.recipeProducts.value)], toSection: .buyCandies)
+                snapshot.appendItems([Item(candy: candy, candyProducts: viewModel.recipeProducts.value, subscriptions: nil)], toSection: .buyCandies)
             }
         }
         
@@ -156,7 +156,7 @@ extension CandyListViewModel:  UITableViewDataSource {
             case 0:
                 let candy = viewModel.isSearching.value ? viewModel.filterCandies.value[indexPath.row] : viewModel.candies.value[indexPath.row]
                 
-                let items = Item(candy: candy, candyProducts: [SKProduct]())
+                let items = Item(candy: candy, candyProducts: [SKProduct](), subscriptions: nil)
                 
                 let cell = self.configureCell(tableView: tableView, items: items, indexPath: indexPath)
                
@@ -165,7 +165,7 @@ extension CandyListViewModel:  UITableViewDataSource {
             case 1:
                 let candy = viewModel.isSearching.value ? Array(viewModel.filterCandies.value)[indexPath.row] : Array(viewModel.buyCandies.value)[indexPath.row]
                 
-                let items = Item(candy: candy, candyProducts: [SKProduct]())
+                let items = Item(candy: candy, candyProducts: [SKProduct](), subscriptions: nil)
                 
                 let cell = self.configureCell(tableView: tableView, items: items, indexPath: indexPath)
                 
@@ -266,7 +266,7 @@ extension CandyListViewModel {
     
     func itemFor(row: Int) -> CandyDetailViewDataType  {
         let candy = viewModel.isSearching.value ? viewModel.filterCandies.value[row] : viewModel.candies.value[row]
-        let dataType: CandyDetailViewDataType = CandyDetailViewData(item: Item(candy: candy, candyProducts: self.viewModel.recipeProducts.value))
+        let dataType: CandyDetailViewDataType = CandyDetailViewData(item: Item(candy: candy, candyProducts: self.viewModel.recipeProducts.value, subscriptions: nil))
         return dataType
     }
     

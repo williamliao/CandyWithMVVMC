@@ -26,11 +26,13 @@ import StoreKit
 class Item {
     let candy: Candy?
     private let id = UUID()
-    var candyProducts = [SKProduct]()
+    var candyProducts: [SKProduct]? = [SKProduct]()
+    var subscriptions: VerifyReceiptResponse?
 
-    init(candy: Candy? = nil, candyProducts: [SKProduct]) {
+    init(candy: Candy? = nil, candyProducts: [SKProduct]? , subscriptions: VerifyReceiptResponse?) {
         self.candy = candy
         self.candyProducts = candyProducts
+        self.subscriptions = subscriptions
     }
     
     func loadProducts() {
@@ -47,7 +49,7 @@ class Item {
     
     func getProduct(with identifier: String?) -> SKProduct? {
         guard let id = identifier else { return nil }
-        return candyProducts.filter({ $0.productIdentifier == id }).first
+        return candyProducts?.filter({ $0.productIdentifier == id }).first
     }
     
     func buyCandies(using product: SKProduct?, completion: @escaping (_ success: Bool) -> Void) {

@@ -71,7 +71,7 @@
          </BuildableReference>
       </BuildableProductRunnable>
       <StoreKitConfigurationFileReference
-         identifier = "../../CandyWithMVVMC/StoreKit/NonConsumables.storekit">
+         identifier = "../../CandyWithMVVMC/StoreKit/Subscriptions.storekit">
       </StoreKitConfigurationFileReference>
    </LaunchAction>
    <ProfileAction

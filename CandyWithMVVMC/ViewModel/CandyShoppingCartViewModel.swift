@@ -11,6 +11,7 @@ import StoreKit
 
 enum CandyShoppingCartSection: Int, CaseIterable, Hashable {
   case main
+  case subscriptions
 }
 
 class CandyShoppingCartViewModel: NSObject {
@@ -70,7 +71,11 @@ extension CandyShoppingCartViewModel {
       
         //Append annotations to their corresponding sections
         viewModel.buyCandies.value.forEach { (candy) in
-            snapshot.appendItems([Item(candy: candy, candyProducts: viewModel.recipeProducts.value)], toSection: .main)
+            snapshot.appendItems([Item(candy: candy, candyProducts: viewModel.recipeProducts.value, subscriptions: nil)], toSection: .main)
+        }
+        
+        if let verifyReceipt = viewModel.verifyReceipt.value {
+            snapshot.appendItems([Item(candy: nil, candyProducts: nil, subscriptions: verifyReceipt)], toSection: .subscriptions)
         }
         
         //Force the update on the main thread to silence a warning about tableview not being in the hierarchy!
@@ -110,25 +115,43 @@ extension CandyShoppingCartViewModel {
         cell?.subTitleLabel.backgroundColor = UIColor.clear
         cell?.amountLabel.backgroundColor = UIColor.clear
         
-        let candyName = items.candy?.name
-        cell?.titleLabel.text = candyName
-        
-        cell?.subTitleLabel.text = items.candy?.category.rawValue
-        cell?.iconImageView.image = UIImage(named: candyName ?? "")
-        
-        let shouldShowDiscount = items.candy?.shouldShowDiscount
-        
-        guard let amount = items.candy?.amount, let isPurchased = items.candy?.isPurchased   else {
-            return cell
-        }
-        
-        if isPurchased {
-            cell?.showShowDiscount(show: false)
+        if (indexPath.section == 0) {
+            let candyName = items.candy?.name
+            cell?.titleLabel.text = candyName
+            
+            cell?.subTitleLabel.text = items.candy?.category.rawValue
+            cell?.iconImageView.image = UIImage(named: candyName ?? "")
+            
+            let shouldShowDiscount = items.candy?.shouldShowDiscount
+            
+            guard let amount = items.candy?.amount, let isPurchased = items.candy?.isPurchased   else {
+                return cell
+            }
+            
+            if isPurchased {
+                cell?.showShowDiscount(show: false)
+            } else {
+                cell?.showShowDiscount(show: shouldShowDiscount ?? false)
+            }
+            
+            cell?.showAmount(show: isPurchased ? true : false, amount: amount)
         } else {
-            cell?.showShowDiscount(show: shouldShowDiscount ?? false)
+            
+            cell?.titleLabel.text = items.subscriptions?.receipt.in_app[indexPath.row].product_id
+            
+            let active: Bool = items.subscriptions?.receipt.in_app.count ?? 0 > 0 ? true : false
+            
+            cell?.subTitleLabel.text = active ? "Subscription Active" : "Subscription Un Active"
+            
+            cell?.iconImageView.image = active ? UIImage(systemName: "creditcard.fill") : UIImage(systemName: "creditcard")
+            cell?.showShowDiscount(show: false)
+            
+            guard let quantity = items.subscriptions?.receipt.in_app[indexPath.row].quantity, let amount = Double(quantity)   else {
+                return cell
+            }
+            
+            cell?.showAmount(show: true, amount: amount)
         }
-        
-        cell?.showAmount(show: isPurchased ? true : false, amount: amount)
         
         return cell
     }
@@ -142,7 +165,64 @@ extension CandyShoppingCartViewModel {
         } else {
             //tableView.dataSource = self
         }
+        
+        tableView.delegate = self
     }
 }
 
+extension CandyShoppingCartViewModel {
+    func tapBuySubscription(identifier: String) {
+        //let identifiers: Set<String> = ["com.app.premium.monthly","com.app.premium.annual"]
+        if let recipeProduct = viewModel.getSubscription(with: identifier) {
+            buySubscription(using: recipeProduct) { (success) in
+                
+                if (success) {
+                    
+                } else {
+                    //self.coordinator?.showError(title: "", message: "The transaction could not be completed.")
+                }
+            }
+        }
+    }
+    
+    func buySubscription(using product: SKProduct?, completion: @escaping (_ success: Bool) -> Void) {
+        guard let product = product else { return }
+       
+        IAPManager.shared.buyAutoSubscriptionsProudcts(product: product) { (iapResult) in
+            switch iapResult {
+                case .success(let success):
+                    if success {
+                        let status = self.viewModel.verifyReceipt.value?.status == 0 ? true : false
+                        
+                        if (status) {
+                            //markAsPurchased
+                            
+                            //self.updateDataSource()
+                        }
+                    }
+                    completion(true)
+                case .failure(let error):
+                    print(error)
+                    completion(false)
+            }
+        }
+    }
+}
 
+// MARK:- UITableViewDelegate methods
+
+extension CandyShoppingCartViewModel: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        guard let item = dataSource.itemIdentifier(for: indexPath) else {
+          return
+        }
+        
+        tapBuySubscription(identifier: item.subscriptions?.receipt.in_app[indexPath.row].product_id ?? "")
+        
+    }
+  
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 60
+    }
+}

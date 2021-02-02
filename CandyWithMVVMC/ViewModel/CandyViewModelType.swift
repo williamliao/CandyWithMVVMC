@@ -33,4 +33,9 @@ protocol CandyViewModelType {
     var recipeProducts:Observable<[SKProduct]> { get  set }
     func getProduct(with identifier: String?) -> SKProduct?
     //func markAsPurchased(_ state: Bool , candy: Candy, amount: Double)
+    
+    var verifyReceipt:Observable<VerifyReceiptResponse?> { get  set }
+    func fetchVerifyReceipt()
+    func getSubscriptions()
+    func getSubscription(with identifier: String?) -> SKProduct?
 }

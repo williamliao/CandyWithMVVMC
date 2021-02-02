@@ -8,6 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		C82CD9B821D48148001A5772 /* CandyDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C82CD9B721D48148001A5772 /* CandyDataProvider.swift */; };
+		C83F13E725C8DDBD0053753C /* IAP_AutoSubscriptions.plist in Resources */ = {isa = PBXBuildFile; fileRef = C83F13E625C8DDBD0053753C /* IAP_AutoSubscriptions.plist */; };
+		C83F13EC25C8E0390053753C /* receiptData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C83F13EB25C8E0390053753C /* receiptData.swift */; };
+		C83F13F125C8E1990053753C /* verifyReceiptResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = C83F13F025C8E1980053753C /* verifyReceiptResponse.json */; };
+		C83F13F625C8E67F0053753C /* verifyReceiptResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C83F13F525C8E67F0053753C /* verifyReceiptResponse.swift */; };
+		C83F140125C8E73C0053753C /* In_app.swift in Sources */ = {isa = PBXBuildFile; fileRef = C83F13FD25C8E73C0053753C /* In_app.swift */; };
+		C83F140225C8E73C0053753C /* Receipt.swift in Sources */ = {isa = PBXBuildFile; fileRef = C83F13FE25C8E73C0053753C /* Receipt.swift */; };
+		C83F140325C8E73C0053753C /* Latest_receipt_info.swift in Sources */ = {isa = PBXBuildFile; fileRef = C83F13FF25C8E73C0053753C /* Latest_receipt_info.swift */; };
+		C83F140425C8E73C0053753C /* Pending_renewal_info.swift in Sources */ = {isa = PBXBuildFile; fileRef = C83F140025C8E73C0053753C /* Pending_renewal_info.swift */; };
 		C851C89921D35C9000BD718E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C851C89821D35C9000BD718E /* AppDelegate.swift */; };
 		C851C89E21D35C9000BD718E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C851C89C21D35C9000BD718E /* Main.storyboard */; };
 		C851C8A021D35C9200BD718E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C851C89F21D35C9200BD718E /* Assets.xcassets */; };
@@ -75,6 +83,15 @@
 
 /* Begin PBXFileReference section */
 		C82CD9B721D48148001A5772 /* CandyDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandyDataProvider.swift; sourceTree = "<group>"; };
+		C83F13E225C8DC3E0053753C /* Subscriptions.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Subscriptions.storekit; sourceTree = "<group>"; };
+		C83F13E625C8DDBD0053753C /* IAP_AutoSubscriptions.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = IAP_AutoSubscriptions.plist; sourceTree = "<group>"; };
+		C83F13EB25C8E0390053753C /* receiptData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = receiptData.swift; sourceTree = "<group>"; };
+		C83F13F025C8E1980053753C /* verifyReceiptResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = verifyReceiptResponse.json; sourceTree = "<group>"; };
+		C83F13F525C8E67F0053753C /* verifyReceiptResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = verifyReceiptResponse.swift; sourceTree = "<group>"; };
+		C83F13FD25C8E73C0053753C /* In_app.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = In_app.swift; sourceTree = "<group>"; };
+		C83F13FE25C8E73C0053753C /* Receipt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Receipt.swift; sourceTree = "<group>"; };
+		C83F13FF25C8E73C0053753C /* Latest_receipt_info.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Latest_receipt_info.swift; sourceTree = "<group>"; };
+		C83F140025C8E73C0053753C /* Pending_renewal_info.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pending_renewal_info.swift; sourceTree = "<group>"; };
 		C851C89521D35C9000BD718E /* CandyWithMVVMC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CandyWithMVVMC.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C851C89821D35C9000BD718E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C851C89D21D35C9000BD718E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -193,6 +210,7 @@
 				C8B2FD2025957E4D00862920 /* candies.json */,
 				C89F28E925BFAD4200D6494D /* candiesInfo.json */,
 				C867A18825AEA1840004559B /* candyShop.json */,
+				C83F13F025C8E1980053753C /* verifyReceiptResponse.json */,
 				C851C89C21D35C9000BD718E /* Main.storyboard */,
 				C851C89F21D35C9200BD718E /* Assets.xcassets */,
 				C851C8A121D35C9200BD718E /* LaunchScreen.storyboard */,
@@ -275,6 +293,13 @@
 			isa = PBXGroup;
 			children = (
 				C89F28C225BFA07A00D6494D /* NonConsumables.storekit */,
+				C83F13E225C8DC3E0053753C /* Subscriptions.storekit */,
+				C83F13EB25C8E0390053753C /* receiptData.swift */,
+				C83F13F525C8E67F0053753C /* verifyReceiptResponse.swift */,
+				C83F13FD25C8E73C0053753C /* In_app.swift */,
+				C83F140025C8E73C0053753C /* Pending_renewal_info.swift */,
+				C83F13FE25C8E73C0053753C /* Receipt.swift */,
+				C83F13FF25C8E73C0053753C /* Latest_receipt_info.swift */,
 			);
 			path = StoreKit;
 			sourceTree = "<group>";
@@ -283,6 +308,7 @@
 			isa = PBXGroup;
 			children = (
 				C89F28CA25BFA41400D6494D /* IAPManager.swift */,
+				C83F13E625C8DDBD0053753C /* IAP_AutoSubscriptions.plist */,
 				C89F28DA25BFA63400D6494D /* IAP_ProductIDs.plist */,
 			);
 			path = "IAP Manager";
@@ -430,6 +456,8 @@
 				C89F28EA25BFAD4200D6494D /* candiesInfo.json in Resources */,
 				C851C89E21D35C9000BD718E /* Main.storyboard in Resources */,
 				C8B2FD2125957E4D00862920 /* candies.json in Resources */,
+				C83F13E725C8DDBD0053753C /* IAP_AutoSubscriptions.plist in Resources */,
+				C83F13F125C8E1990053753C /* verifyReceiptResponse.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -464,6 +492,7 @@
 				C867A18E25AEA1BC0004559B /* CandyLocation.swift in Sources */,
 				C867A19825AEA3250004559B /* CandyLocationDataType.swift in Sources */,
 				C8BC62A625B7DB1400E68A74 /* CandyListTableViewCell.swift in Sources */,
+				C83F140425C8E73C0053753C /* Pending_renewal_info.swift in Sources */,
 				C851C8DA21D3645900BD718E /* CandyDetailViewData.swift in Sources */,
 				C89F28E525BFAA5C00D6494D /* CandyModel.swift in Sources */,
 				C851C8DC21D364F300BD718E /* CandyDetailViewDataType.swift in Sources */,
@@ -471,9 +500,11 @@
 				C851C8D821D360FF00BD718E /* CandyViewModelType.swift in Sources */,
 				C851C8E921D3870C00BD718E /* ApiClient.swift in Sources */,
 				C851C8EB21D3872700BD718E /* CandyService.swift in Sources */,
+				C83F140125C8E73C0053753C /* In_app.swift in Sources */,
 				C851C8C921D35CA200BD718E /* AppCoordinator.swift in Sources */,
 				C82CD9B821D48148001A5772 /* CandyDataProvider.swift in Sources */,
 				C851C8E421D37C8600BD718E /* CandyDetailViewModel.swift in Sources */,
+				C83F140325C8E73C0053753C /* Latest_receipt_info.swift in Sources */,
 				C867A19D25AEC1470004559B /* CandyMapViewModelType.swift in Sources */,
 				C867A14C25AE7E950004559B /* CandyListViewModel.swift in Sources */,
 				C851C8E221D36E3A00BD718E /* CandyDetailViewController.swift in Sources */,
@@ -483,14 +514,17 @@
 				C851C8CF21D35DAA00BD718E /* CandyViewData.swift in Sources */,
 				C851C8E621D37CF300BD718E /* CandyDetailViewModelType.swift in Sources */,
 				C851C8D121D35E2E00BD718E /* CandyViewDataType.swift in Sources */,
+				C83F140225C8E73C0053753C /* Receipt.swift in Sources */,
 				C8B2FD2B259593AB00862920 /* SearchViewController.swift in Sources */,
 				C851C8D421D35F2B00BD718E /* CandyListCoordinator.swift in Sources */,
 				C851C89921D35C9000BD718E /* AppDelegate.swift in Sources */,
 				C8A3F23E25BEA2BC008E7E2C /* CandyShoppingCartViewController.swift in Sources */,
 				C867A16F25AE8FF20004559B /* CandyMapViewController.swift in Sources */,
 				C851C8E021D366F600BD718E /* Helper.swift in Sources */,
+				C83F13EC25C8E0390053753C /* receiptData.swift in Sources */,
 				C851C8C821D35CA200BD718E /* Coordinator.swift in Sources */,
 				C851C8D621D35F6A00BD718E /* CandyViewModel.swift in Sources */,
+				C83F13F625C8E67F0053753C /* verifyReceiptResponse.swift in Sources */,
 				C867A18425AE939C0004559B /* CandyShop.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

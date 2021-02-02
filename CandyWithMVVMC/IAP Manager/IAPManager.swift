@@ -50,6 +50,17 @@ class IAPManager: NSObject {
         }
     }
     
+    func fetchAutoSubscriptionProducts() -> [String]? {
+        guard let url = Bundle.main.url(forResource: "IAP_AutoSubscriptions", withExtension: "plist") else { return nil }
+        do {
+            let data = try Data(contentsOf: url)
+            let productIDs = try PropertyListSerialization.propertyList(from: data, options: .mutableContainersAndLeaves, format: nil) as? [String] ?? []
+            return productIDs
+        } catch {
+            print(error.localizedDescription)
+            return nil
+        }
+    }
     
     func getPriceFormatted(for product: SKProduct, amount:Double) -> String? {
         let formatter = NumberFormatter()
@@ -97,11 +108,38 @@ class IAPManager: NSObject {
         request.start()
     }
     
+    func getAutoSubscriptionProducts(withHandler productsReceiveHandler: @escaping (_ result: Swift.Result<[SKProduct], IAPManagerError>) -> Void) {
+        // Keep the handler (closure) that will be called when requesting for
+        // products on the App Store is finished.
+        onReceiveProductsHandler = productsReceiveHandler
+
+        // Get the product identifiers.
+        //let identifiers: Set<String> = ["com.app.premium.monthly","com.app.premium.annual"]
+        guard let productIDs = fetchAutoSubscriptionProducts() else {
+            productsReceiveHandler(.failure(.noProductIDsFound))
+            return
+        }
+
+        // Initialize a product request.
+        let request = SKProductsRequest(productIdentifiers: Set(productIDs))
+
+        // Set self as the its delegate.
+        request.delegate = self
+
+        // Make the request.
+        request.start()
+    }
+    
     
     
     // MARK: - Purchase Products
     
     func buy(product: SKProduct, withHandler handler: @escaping ((_ result: Swift.Result<Bool, Error>) -> Void)) {
+        
+        guard SKPaymentQueue.canMakePayments() else {
+            return
+        }
+        
         let payment = SKPayment(product: product)
         SKPaymentQueue.default().add(payment)
 
@@ -110,6 +148,11 @@ class IAPManager: NSObject {
     }
     
     func buyWithMulitAmount(product: SKProduct, amount: Int , withHandler handler: @escaping ((_ result: Swift.Result<Bool, Error>) -> Void)) {
+        
+        guard SKPaymentQueue.canMakePayments() else {
+            return
+        }
+        
         let payment = SKMutablePayment(product: product)
         
         guard let dictionary = Bundle.main.infoDictionary else { return }
@@ -121,6 +164,13 @@ class IAPManager: NSObject {
         //payment.paymentDiscount = SKPaymentDiscount(identifier: "", keyIdentifier: "", nonce: UUID(), signature: "", timestamp: NSNumber(value: Int64(Date().timeIntervalSince1970 * 1000)))
         SKPaymentQueue.default().add(payment)
 
+        // Keep the completion handler.
+        onBuyProductHandler = handler
+    }
+    
+    func buyAutoSubscriptionsProudcts(product: SKProduct , withHandler handler: @escaping ((_ result: Swift.Result<Bool, Error>) -> Void)) {
+        let payment = SKPayment(product: product)
+        SKPaymentQueue.default().add(payment)
         // Keep the completion handler.
         onBuyProductHandler = handler
     }
@@ -139,12 +189,15 @@ extension IAPManager: SKPaymentTransactionObserver {
         transactions.forEach { (transaction) in
             switch transaction.transactionState {
             case .purchased:
-                
+                let originalTransactionId = transaction.original?.transactionIdentifier ?? transaction.transactionIdentifier ?? ""
+                print("IAP: restored (\(originalTransactionId))")
                 onBuyProductHandler?(.success(true))
                 SKPaymentQueue.default().finishTransaction(transaction)
                 
             case .restored:
                 totalRestoredPurchases += 1
+                let restoredTransactionId = transaction.original?.transactionIdentifier ?? transaction.transactionIdentifier ?? ""
+                print("IAP: restored (\(restoredTransactionId))")
                 SKPaymentQueue.default().finishTransaction(transaction)
                 
             case .failed:
@@ -158,7 +211,7 @@ extension IAPManager: SKPaymentTransactionObserver {
                 }
                 SKPaymentQueue.default().finishTransaction(transaction)
                 
-            case .deferred, .purchasing: break
+            case .deferred, .purchasing: print("IAP: Waiting response")
             @unknown default: break
             }
         }
@@ -191,7 +244,7 @@ extension IAPManager: SKPaymentTransactionObserver {
 extension IAPManager: SKProductsRequestDelegate {
     func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
         // Get the available products contained in the response.
-        let products = response.products
+        let products: [SKProduct] = response.products
 
         // Check if there are any products available.
         if products.count > 0 {

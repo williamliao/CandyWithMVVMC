@@ -1,0 +1,75 @@
+{
+    "status": 0,
+    "environment": "Sandbox",
+    "receipt": {
+        "receipt_type": "ProductionSandbox",
+        "adam_id": 0,
+        "app_item_id": 0,
+        "bundle_id": "william.CandyWithMVVMC",
+        "application_version": "3583",
+        "download_id": 0,
+        "version_external_identifier": 0,
+        "receipt_creation_date": "2019-09-23 10:30:21 Etc/GMT",
+        "receipt_creation_date_ms": "1569234621000",
+        "receipt_creation_date_pst": "2019-09-23 03:30:21 America/Los_Angeles",
+        "request_date": "2019-09-24 11:43:54 Etc/GMT",
+        "request_date_ms": "1569325434386",
+        "request_date_pst": "2019-09-24 04:43:54 America/Los_Angeles",
+        "original_purchase_date": "2013-08-01 07:00:00 Etc/GMT",
+        "original_purchase_date_ms": "1375340400000",
+        "original_purchase_date_pst": "2013-08-01 00:00:00 America/Los_Angeles",
+        "original_application_version": "1.0",
+        "in_app": [
+            {
+                "quantity": "1",
+                "product_id": "william.candy.premium.monthly",
+                "transaction_id": "100000051220938",
+                "original_transaction_id": "100000051220938",
+                "purchase_date": "2019-09-23 09:43:53 Etc/GMT",
+                "purchase_date_ms": "1569231833000",
+                "purchase_date_pst": "2019-09-23 02:43:53 America/Los_Angeles",
+                "original_purchase_date": "2019-09-23 09:43:54 Etc/GMT",
+                "original_purchase_date_ms": "1569231834000",
+                "original_purchase_date_pst": "2019-09-23 02:43:54 America/Los_Angeles",
+                "expires_date": "2019-09-23 09:48:53 Etc/GMT",
+                "expires_date_ms": "1569232133000",
+                "expires_date_pst": "2019-09-23 02:48:53 America/Los_Angeles",
+                "web_order_line_item_id": "100000004083879",
+                "is_trial_period": "false",
+                "is_in_intro_offer_period": "false"
+            }
+        ]
+    },
+    "latest_receipt_info": [
+        {
+            "quantity": "1",
+            "product_id": "william.candy.premium.monthly",
+            "transaction_id": "100000051220938",
+            "original_transaction_id": "100000051220938",
+            "purchase_date": "2019-09-23 09:43:53 Etc/GMT",
+            "purchase_date_ms": "1569231833000",
+            "purchase_date_pst": "2019-09-23 02:43:53 America/Los_Angeles",
+            "original_purchase_date": "2019-09-23 09:43:54 Etc/GMT",
+            "original_purchase_date_ms": "1569231834000",
+            "original_purchase_date_pst": "2019-09-23 02:43:54 America/Los_Angeles",
+            "expires_date": "2019-09-23 09:48:53 Etc/GMT",
+            "expires_date_ms": "1569232133000",
+            "expires_date_pst": "2019-09-23 02:48:53 America/Los_Angeles",
+            "web_order_line_item_id": "1000000047083879",
+            "is_trial_period": "false",
+            "is_in_intro_offer_period": "false",
+            "subscription_group_identifier": "205957"
+        }
+    ],
+    "latest_receipt": "MIIqaQYJKoZIhvcNAQcCoIIqWjCCKlYCAQExCzAJ...",
+    "pending_renewal_info": [
+        {
+            "expiration_intent": "0",
+            "auto_renew_product_id": "william.candy.premium.monthly",
+            "original_transaction_id": "100000051220938",
+            "is_in_billing_retry_period": "0",
+            "product_id": "com.app.premium.monthly",
+            "auto_renew_status": "1"
+        }
+    ]
+}

@@ -14,7 +14,10 @@ class CandyViewModel:NSObject {
     // MARK: - Properties
     private var cancellable: AnyCancellable?
     
+    var verifyReceipt:Observable<VerifyReceiptResponse?> = Observable(nil)
     var recipeProducts:Observable<[SKProduct]> = Observable([])
+    
+    var recipeSubscriptionsProducts:Observable<[SKProduct]> = Observable([])
     
     var candies: Observable<[Candy]> = Observable([])
     var buyCandies: Observable<Set<Candy>> = Observable(Set<Candy>())
@@ -71,6 +74,18 @@ class CandyViewModel:NSObject {
         }
     }
     
+    func fetchVerifyReceipt() {
+        self.service.getVerifyReceipt { [weak self] (result) in
+            switch result {
+            case .value(let verifyReceipt):
+                self?.verifyReceipt.value = verifyReceipt
+            case .error(let error):
+                self?.setError(error)
+                break
+            }
+        }
+    }
+    
     func getProducts() {
         IAPManager.shared.getProducts { (productResults) in
             DispatchQueue.main.async {
@@ -83,9 +98,27 @@ class CandyViewModel:NSObject {
         }
     }
     
+    func getSubscriptions() {
+        IAPManager.shared.getAutoSubscriptionProducts { (productResults) in
+            DispatchQueue.main.async {
+                switch productResults {
+                    case .success(let fetchedProducts):
+                        self.recipeSubscriptionsProducts.value = fetchedProducts
+                    case .failure(let error):
+                        print(error.localizedDescription)
+                }
+            }
+        }
+    }
+    
     func getProduct(with identifier: String?) -> SKProduct? {
         guard let id = identifier else { return nil }
         return recipeProducts.value.filter({ $0.productIdentifier == id }).first
+    }
+    
+    func getSubscription(with identifier: String?) -> SKProduct? {
+        guard let id = identifier else { return nil }
+        return recipeSubscriptionsProducts.value.filter({ $0.productIdentifier == id }).first
     }
     
     func resetPurchasedState() {

@@ -38,6 +38,17 @@ class CandyShoppingCartViewController: UIViewController, Storyboarded {
             }
         }
         
+        viewModel.verifyReceipt.bind { [weak self] (_) in
+            if #available(iOS 13.0, *) {
+                cartViewModel.applyInitialSnapshots()
+            } else {
+                self?.candyTableView.reloadData()
+            }
+        }
+        
+        viewModel.fetchVerifyReceipt()
+        self.viewModel.getSubscriptions()
+        
         candyTableView.register(CandyListTableViewCell.self,
             forCellReuseIdentifier: CandyListTableViewCell.reuseIdentifier
         )
