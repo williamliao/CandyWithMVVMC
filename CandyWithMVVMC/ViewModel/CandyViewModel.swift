@@ -137,6 +137,10 @@ class CandyViewModel:NSObject {
         UserDefaults.standard.set(state, forKey: "\(id)")
     }
     
+    func clearProducts() {
+        buyCandies.value.removeAll()
+    }
+    
     func setError(_ error: Error) {
         self.errorMessage = Observable(error.localizedDescription)
         self.error = Observable(error)

@@ -18,14 +18,7 @@ class CandyListViewModel: NSObject {
     
     var viewModel: CandyViewModel!
     var coordinator :CandyListCoordinator?
-   // private var searchFooter: SearchFooter!
-    
-    // MARK: - Properties
-  //  fileprivate var isSearching: Bool = false
-//    var filterCandies: Observable<[Candy]> = Observable([])
-//    var filterBuyCandies: Observable<Set<Candy>> = Observable(Set<Candy>())
-   // var buyCandies: Observable<Set<Candy>> = Observable(Set<Candy>())
-    
+
     @available(iOS 13.0, *)
     lazy var dataSource  = makeDataSource(tableView: UITableView())
     
@@ -156,7 +149,7 @@ extension CandyListViewModel:  UITableViewDataSource {
             case 0:
                 let candy = viewModel.isSearching.value ? viewModel.filterCandies.value[indexPath.row] : viewModel.candies.value[indexPath.row]
                 
-                let items = Item(candy: candy, candyProducts: [SKProduct](), subscriptions: nil)
+                let items = Item(candy: candy, candyProducts: viewModel.recipeProducts.value, subscriptions: nil)
                 
                 let cell = self.configureCell(tableView: tableView, items: items, indexPath: indexPath)
                
@@ -165,7 +158,7 @@ extension CandyListViewModel:  UITableViewDataSource {
             case 1:
                 let candy = viewModel.isSearching.value ? Array(viewModel.filterCandies.value)[indexPath.row] : Array(viewModel.buyCandies.value)[indexPath.row]
                 
-                let items = Item(candy: candy, candyProducts: [SKProduct](), subscriptions: nil)
+                let items = Item(candy: candy, candyProducts: viewModel.recipeProducts.value, subscriptions: nil)
                 
                 let cell = self.configureCell(tableView: tableView, items: items, indexPath: indexPath)
                 
@@ -283,6 +276,9 @@ extension CandyListViewModel {
         cell?.titleLabel.backgroundColor = UIColor.clear
         cell?.subTitleLabel.backgroundColor = UIColor.clear
         cell?.amountLabel.backgroundColor = UIColor.clear
+        
+        //let product = self.viewModel.getProduct(with: items.candy?.productID)
+       // print("localizedTitle \(product?.localizedTitle)")
         
         let candyName = items.candy?.name
         cell?.titleLabel.text = candyName

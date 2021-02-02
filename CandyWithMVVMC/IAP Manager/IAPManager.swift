@@ -251,26 +251,39 @@ extension IAPManager: SKProductsRequestDelegate {
     func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
         // Get the available products contained in the response.
         let products: [SKProduct] = response.products
-
+        
         // Check if there are any products available.
         if products.count > 0 {
+            
+//            for prod in products {
+//              print("Found product: \(prod.productIdentifier) \(prod.localizedTitle) \(prod.price.floatValue)")
+//            }
+            
             // Call the following handler passing the received products.
             onReceiveProductsHandler?(.success(products))
         } else {
             // No products were found.
             onReceiveProductsHandler?(.failure(.noProductsFound))
         }
+        
+        clearRequestAndHandler()
     }
     
     
     func request(_ request: SKRequest, didFailWithError error: Error) {
         onReceiveProductsHandler?(.failure(.productRequestFailed))
+        clearRequestAndHandler()
     }
     
     
     func requestDidFinish(_ request: SKRequest) {
         // Implement this method OPTIONALLY and add any custom logic
         // you want to apply when a product request is finished.
+    }
+    
+    private func clearRequestAndHandler() {
+        onReceiveProductsHandler = nil
+        onBuyProductHandler = nil
     }
 }
 
@@ -281,7 +294,11 @@ extension IAPManager {
 
         var unhandledTransactions: [SKPaymentTransaction] = []
         for transaction in transactions {
-            print("productId \(transaction.transactionIdentifier) , quantity \(transaction.payment.quantity)")
+            guard let productIdentifier = transaction.original?.payment.productIdentifier else {
+                return unhandledTransactions
+            }
+            print("productId \(String(describing: transaction.transactionIdentifier)) , quantity \(transaction.payment.quantity)")
+            print("restore... \(productIdentifier)")
             unhandledTransactions.append(transaction)
         }
         return unhandledTransactions

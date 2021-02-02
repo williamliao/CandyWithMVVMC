@@ -155,7 +155,7 @@ extension CandyShoppingCartViewModel {
             
             cell?.titleLabel.text = items.subscriptions?.receipt.in_app[indexPath.row].product_id
             
-            let active: Bool = items.subscriptions?.receipt.in_app.count ?? 0 > 0 ? true : false
+            let active: Bool = self.daysExpiresOnSubscription(items: items, row: indexPath.row) > 0 ? true : false
             
             cell?.subTitleLabel.text = active ? "Subscription Active" : "Subscription Un Active"
             
@@ -183,6 +183,20 @@ extension CandyShoppingCartViewModel {
         }
         
         tableView.delegate = self
+    }
+    
+    func daysExpiresOnSubscription(items: Item, row: Int) -> Int {
+        if let expiryDate = items.subscriptions?.receipt.in_app[row].expires_date {
+            let dateFormatter = DateFormatter()
+            dateFormatter.locale = Locale(identifier: "en_US_POSIX") // set locale to reliable US_POSIX
+            dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss VV"
+            let dateFormatterDate = dateFormatter.date(from:expiryDate)
+            guard let formatterDate = dateFormatterDate else {
+                return 0
+            }
+            return Calendar.current.dateComponents([.day], from: Date(), to: formatterDate).day!
+        }
+        return 0
     }
 }
 
