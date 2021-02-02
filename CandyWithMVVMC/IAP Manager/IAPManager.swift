@@ -29,7 +29,7 @@ class IAPManager: NSObject {
     var onBuyProductHandler: ((Swift.Result<Bool, Error>) -> Void)?
     
     var totalRestoredPurchases = 0
-    
+ 
     // MARK: - Init
     
     private override init() {
@@ -197,7 +197,12 @@ extension IAPManager: SKPaymentTransactionObserver {
             case .restored:
                 totalRestoredPurchases += 1
                 let restoredTransactionId = transaction.original?.transactionIdentifier ?? transaction.transactionIdentifier ?? ""
-                print("IAP: restored (\(restoredTransactionId))")
+                print("IAP: restored id (\(restoredTransactionId))")
+                
+                let pay: [SKPaymentTransaction] = self.processTransactions(transactions)
+                
+                print("IAP: restored pay (\(pay))")
+                
                 SKPaymentQueue.default().finishTransaction(transaction)
                 
             case .failed:
@@ -238,6 +243,7 @@ extension IAPManager: SKPaymentTransactionObserver {
             }
         }
     }
+    
 }
 
 // MARK: - SKProductsRequestDelegate
@@ -265,5 +271,19 @@ extension IAPManager: SKProductsRequestDelegate {
     func requestDidFinish(_ request: SKRequest) {
         // Implement this method OPTIONALLY and add any custom logic
         // you want to apply when a product request is finished.
+    }
+}
+
+// MARK: - restorePurchases
+extension IAPManager {
+    
+    func processTransactions(_ transactions: [SKPaymentTransaction]) -> [SKPaymentTransaction] {
+
+        var unhandledTransactions: [SKPaymentTransaction] = []
+        for transaction in transactions {
+            print("productId \(transaction.transactionIdentifier) , quantity \(transaction.payment.quantity)")
+            unhandledTransactions.append(transaction)
+        }
+        return unhandledTransactions
     }
 }

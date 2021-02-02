@@ -28,6 +28,8 @@ class CandyShoppingCartViewController: UIViewController, Storyboarded {
         
         cartViewModel.configureTableView(tableView: candyTableView, Add: view)
         
+        cartViewModel.createBarItem(navItem: self.navigationItem)
+        
         cartViewModel.makeDateSourceForTableView(tableView: candyTableView)
         
         viewModel.buyCandies.bind { [weak self] (_) in

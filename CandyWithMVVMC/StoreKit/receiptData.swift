@@ -2,8 +2,8 @@
 //  receiptData.swift
 //  CandyWithMVVMC
 //
-//  Created by 雲端開發部-廖彥勛 on 2021/2/2.
-//  Copyright © 2021 雲端開發部-廖彥勛. All rights reserved.
+//  Created by William on 2021/2/2.
+//  Copyright © 2021 William. All rights reserved.
 //
 
 import Foundation

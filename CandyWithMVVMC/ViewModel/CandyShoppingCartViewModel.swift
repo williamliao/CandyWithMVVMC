@@ -41,6 +41,22 @@ extension CandyShoppingCartViewModel {
             tableView.bottomAnchor.constraint(equalTo: to.safeAreaLayoutGuide.bottomAnchor),
         ])
     }
+    
+    func createBarItem(navItem: UINavigationItem) {
+        let refresh = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshTapped))
+        navItem.setRightBarButton(refresh, animated: true)
+    }
+    
+    @objc func refreshTapped() {
+        IAPManager.shared.restorePurchases { (result) in
+            switch result {
+                case .success(let products):
+                    print("restorePurchases success \(products)")
+                case .failure(let error):
+                    print(error.localizedDescription)
+            }
+        }
+    }
 }
 
 // MARK:- Cell methods
