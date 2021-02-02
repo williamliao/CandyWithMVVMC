@@ -293,10 +293,10 @@ extension CandyListViewModel {
         }
         
         if isPurchased {
-            if (indexPath.section == 1) {
-                cell?.showShowDiscount(show: false)
+            if (indexPath.section == 0) {
+                cell?.showShowDiscount(show: shouldShowDiscount ?? false)
             } else {
-                cell?.showShowDiscount(show: true)
+                cell?.showShowDiscount(show: false)
             }
         } else {
             cell?.showShowDiscount(show: shouldShowDiscount ?? false)

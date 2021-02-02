@@ -190,9 +190,12 @@ extension IAPManager: SKPaymentTransactionObserver {
             switch transaction.transactionState {
             case .purchased:
                 let originalTransactionId = transaction.original?.transactionIdentifier ?? transaction.transactionIdentifier ?? ""
-                print("IAP: restored (\(originalTransactionId))")
+                print("IAP: purchased (\(originalTransactionId))")
                 onBuyProductHandler?(.success(true))
-                SKPaymentQueue.default().finishTransaction(transaction)
+                
+                if let receiptURL = Bundle.main.appStoreReceiptURL, FileManager.default.fileExists(atPath: receiptURL.path) {
+                    SKPaymentQueue.default().finishTransaction(transaction)
+                }
                 
             case .restored:
                 totalRestoredPurchases += 1
