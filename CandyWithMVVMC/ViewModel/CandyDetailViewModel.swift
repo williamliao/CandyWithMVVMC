@@ -9,7 +9,7 @@
 import UIKit
 import StoreKit
 
-class CandyDetailViewModel {
+class CandyDetailViewModel:NSObject {
 
     var coordinator :CandyListCoordinator?
     
@@ -26,6 +26,13 @@ class CandyDetailViewModel {
     var buyButton: UIButton!
     
     private var product: SKProduct?
+    
+    var viewModel: CandyViewModel!
+    
+    init(viewModel: CandyViewModel) {
+        self.viewModel = viewModel
+        super.init()
+    }
 }
 
 extension CandyDetailViewModel: CandyDetailViewModelType {
@@ -47,14 +54,78 @@ extension CandyDetailViewModel {
     
     @objc func didTapBuyButton() {
         
-        guard var item = selectItem() else {
+        guard let item = selectItem() else {
             return
         }
         
         coordinator?.checkWantBuyAlert(item: item,amount:amoutSetpper.value , completionClosure: { [weak self] (_) in
-            self?.coordinator?.gobackToListView()
-            self?.coordinator?.candyDetailViewController(didBuy: &item, amount: (self?.amoutSetpper.value)!)
+            
+            if #available(iOS 13.0, *) {
+               
+                guard let candy = item.candy else {
+                    return
+                }
+
+                if candy.isPurchased {
+                    return
+                }
+
+                //viewModel.candies.value.filter ({ $0.productID == candy.productID }).forEach { $0.isPurchased = true }
+                
+                self?.viewModel.buyCandies.value.insert(candy)
+                
+                if let recipeProduct = self?.viewModel.getProduct(with: candy.productID) {
+                   
+                    self?.buyCandies(using: recipeProduct, amount: self?.amoutSetpper.value ?? 1) { (success) in
+                        //print("success \(success)")
+                        
+                        if (success) {
+                            self?.coordinator?.gobackToListView()
+                            self?.coordinator?.candyDetailViewController(didBuy: item, amount: (self?.amoutSetpper.value)!)
+                        } else {
+                            self?.viewModel.buyCandies.value.remove(candy)
+                            self?.coordinator?.showError(title: "", message: "The transaction could not be completed.")
+                        }
+                        
+                    }
+                    
+                }
+             
+            } else {
+                
+                guard let candy = item.candy else {
+                    return
+                }
+                
+                candy.amount = self?.amoutSetpper.value
+                self?.viewModel.buyCandies.value.insert(candy)
+            }
+            
         })
+    }
+    
+    func buyCandies(using product: SKProduct?,amount: Double, completion: @escaping (_ success: Bool) -> Void) {
+        guard let product = product else { return }
+       
+        IAPManager.shared.buyWithMulitAmount(product: product, amount: Int(amount)) { (iapResult) in
+            switch iapResult {
+                case .success(let success):
+                    if success {
+                        let candy = self.viewModel.buyCandies.value.filter({ $0.productID == product.productIdentifier }).first
+                        
+                        guard let buyCandy = candy else {
+                            return
+                        }
+                        
+                        self.viewModel.markAsPurchased(true, candy: buyCandy, amount:amount)
+                        
+                    }
+                    completion(true)
+                case .failure(let error):
+                    print(error)
+                    completion(false)
+            }
+        }
     }
     
     @IBAction func didTapAmountStepperValueChanged(_ sender: UIStepper) {

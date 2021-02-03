@@ -72,6 +72,8 @@ class CandyListViewController: UIViewController, Storyboarded {
         candyTableView.separatorStyle = .none
         candyTableView.separatorColor = UIColor.clear
         
+        self.candyListViewModel.createBarItem(navItem: self.navigationItem)
+        
         candyTableView.register(CandyListTableViewCell.self,
             forCellReuseIdentifier: CandyListTableViewCell.reuseIdentifier
         )

@@ -295,6 +295,13 @@ extension CandyListViewModel {
         if isPurchased {
             if (indexPath.section == 0) {
                 cell?.showShowDiscount(show: shouldShowDiscount ?? false)
+                
+                //let product = self.viewModel.getProduct(with: items.candy?.productID)
+                
+                //let item = Item(candy: items.candy, candyProducts: product, subscriptions: nil)
+                
+                //self.viewModel.buyCandies.value.insert(candy)
+                
             } else {
                 cell?.showShowDiscount(show: false)
             }
@@ -318,6 +325,40 @@ extension CandyListViewModel {
         }
         tableView.delegate = self
     }
+    
+    func restorePurchases() {
+        let userDefaults = UserDefaults.standard
+        let products = self.viewModel.recipeProducts.value
+        
+        for product in products {
+            do{
+                let saveCandy = try userDefaults.getObject(forKey: product.productIdentifier, castTo: Candy.self)
+                viewModel.buyCandies.value.insert(saveCandy)
+
+            }catch (let error){
+                #if DEBUG
+                    print("Failed to convert UIColor to Data : \(error.localizedDescription)")
+                #endif
+            }
+        }
+    }
+    
+    func createBarItem(navItem: UINavigationItem) {
+        let refresh = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshTapped))
+        navItem.setRightBarButton(refresh, animated: true)
+    }
+    
+    @objc func refreshTapped() {
+        restorePurchases()
+        IAPManager.shared.restorePurchases { (result) in
+            switch result {
+                case .success(let products):
+                    print("restorePurchases success \(products)")
+                case .failure(let error):
+                    print(error.localizedDescription)
+            }
+        }
+    }
 }
 
 // MARK:- CandyViewModelCoordinatorDelegate methods
@@ -330,72 +371,12 @@ extension CandyListViewModel {
 
 // MARK:- Candy Did Buy methods
 extension CandyListViewModel {
-    func candyDidBuy(didBuy item: inout Item, amount: Double) {
-       
-        if #available(iOS 13.0, *) {
-           
-            guard let candy = item.candy else {
-                return
-            }
-
-            if candy.isPurchased {
-                return
-            }
-
-            //viewModel.candies.value.filter ({ $0.productID == candy.productID }).forEach { $0.isPurchased = true }
-            
-            self.viewModel.buyCandies.value.insert(candy)
-            
-            if let recipeProduct = viewModel.getProduct(with: candy.productID) {
-               
-                buyCandies(using: recipeProduct, amount: amount) { (success) in
-                    print("success \(success)")
-                    
-                    if (success) {
-                        
-                    } else {
-                        self.viewModel.buyCandies.value.remove(candy)
-                        self.coordinator?.showError(title: "", message: "The transaction could not be completed.")
-                    }
-                    
-                }
-                
-            }
-         
-            
-        } else {
-            
-            guard var candy = item.candy else {
-                return
-            }
-            
-            candy.amount = amount
-            viewModel.buyCandies.value.insert(candy)
+    func candyDidBuy(didBuy item: Item, amount: Double) {
+        
+        guard let candy = item.candy else {
+            return
         }
-    }
-    
-    func buyCandies(using product: SKProduct?,amount: Double, completion: @escaping (_ success: Bool) -> Void) {
-        guard let product = product else { return }
-       
-        IAPManager.shared.buyWithMulitAmount(product: product, amount: Int(amount)) { (iapResult) in
-            switch iapResult {
-                case .success(let success):
-                    if success {
-                        let candy = self.viewModel.buyCandies.value.filter({ $0.productID == product.productIdentifier }).first
-                        
-                        guard let buyCandy = candy else {
-                            return
-                        }
-                        
-                        self.viewModel.markAsPurchased(true, candy: buyCandy, amount:amount)
-                        
-                        self.updateDataSource(for: buyCandy)
-                    }
-                    completion(true)
-                case .failure(let error):
-                    print(error)
-                    completion(false)
-            }
-        }
+        
+        self.updateDataSource(for: candy)
     }
 }

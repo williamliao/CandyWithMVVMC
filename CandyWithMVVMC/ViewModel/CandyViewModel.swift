@@ -131,10 +131,17 @@ class CandyViewModel:NSObject {
     }
     
     func markAsPurchased(_ state: Bool = true, candy: Candy, amount: Double) {
-        guard let id = candy.id else { return }
+        guard let id = candy.productID else { return }
         candy.isPurchased = state
         candy.amount = amount
-        UserDefaults.standard.set(state, forKey: "\(id)")
+        DispatchQueue.main.async {
+            do {
+                let userDefaults = UserDefaults.standard
+                try userDefaults.setObject(candy, forKey: "\(id)")
+            } catch  {
+                print(error)
+            }
+        }
     }
     
     func clearProducts() {

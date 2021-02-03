@@ -206,6 +206,8 @@ extension IAPManager: SKPaymentTransactionObserver {
                 
                 print("IAP: restored pay (\(pay))")
                 
+                //transaction.originalTransaction?.payment.productIdentifier
+                
                 SKPaymentQueue.default().finishTransaction(transaction)
                 
             case .failed:
@@ -305,5 +307,17 @@ extension IAPManager {
             unhandledTransactions.append(transaction)
         }
         return unhandledTransactions
+    }
+}
+
+// MARK: - IAPManagerError Localized Error Descriptions
+extension IAPManager.IAPManagerError: LocalizedError {
+    var errorDescription: String? {
+        switch self {
+        case .noProductIDsFound: return "No In-App Purchase product identifiers were found."
+        case .noProductsFound: return "No In-App Purchases were found."
+        case .productRequestFailed: return "Unable to fetch available In-App Purchase products at the moment."
+        case .paymentWasCancelled: return "In-App Purchase process was cancelled."
+        }
     }
 }

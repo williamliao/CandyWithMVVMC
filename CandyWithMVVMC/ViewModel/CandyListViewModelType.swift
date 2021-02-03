@@ -19,5 +19,12 @@ protocol CandyListViewModelType {
     @available(iOS 13.0, *)
     func applyInitialSnapshots()
     
-    func candyDidBuy(didBuy item: inout Item, amount: Double)
+    func candyDidBuy(didBuy item: Item, amount: Double)
+    
+    func restorePurchases()
+    
+    func createBarItem(navItem: UINavigationItem)
+    
+    @available(iOS 13.0, *)
+    func updateDataSource(for candy: Candy)
 }

@@ -84,16 +84,21 @@ extension Item: Equatable, Hashable {
     }
 }
 
+protocol ObjectSavable {
+    func setObject<Object>(_ object: Object, forKey: String) throws where Object: Encodable
+    func getObject<Object>(forKey: String, castTo type: Object.Type) throws -> Object where Object: Decodable
+}
+
 class Candy: Codable {
     var id: Int?
     let name: String
     let category: Category
     let shouldShowDiscount: Bool
-    var amount: Double? = 0.0
+    var amount: Double?
     var productID: String?
     var isPurchased = false
     
-    init(id: Int?, name: String, category: Category, shouldShowDiscount: Bool, amount: Double? = 0.0, productID: String?, isPurchased: Bool) {
+    init(id: Int?, name: String, category: Category, shouldShowDiscount: Bool, amount: Double?, productID: String?, isPurchased: Bool) {
         self.id = id
         self.name = name
         self.category = category
@@ -111,14 +116,21 @@ class Candy: Codable {
         shouldShowDiscount = try container.decode(Bool.self, forKey: .shouldShowDiscount)
         amount = try container.decode(Double.self, forKey: .amount)
         productID = try container.decode(String.self, forKey: .productID)
-        getPurchasedState()
+        isPurchased = try container.decode(Bool.self, forKey: .isPurchased)
     }
     
-    fileprivate func getPurchasedState() {
-        guard let id = id else { return }
-        isPurchased = UserDefaults.standard.bool(forKey: "\(id)")
+    required convenience init(coder aDecoder: NSCoder) {
+        let id = aDecoder.decodeInteger(forKey: "id")
+        let name = aDecoder.decodeObject(forKey: "name") as! String
+        let category = aDecoder.decodeObject(forKey: "category") as! Category
+        let shouldShowDiscount = aDecoder.decodeBool(forKey: "shouldShowDiscount")
+        let amount = aDecoder.decodeDouble(forKey: "amount")
+        let productID = aDecoder.decodeObject(forKey: "productID") as! String
+        let isPurchased = aDecoder.decodeBool(forKey: "isPurchased")
+        self.init(id: id, name: name, category: category, shouldShowDiscount: shouldShowDiscount, amount: amount, productID: productID, isPurchased: isPurchased)
     }
-   
+    
+    
   enum Category: Codable {
     case all
     case chocolate
@@ -143,6 +155,23 @@ extension Candy: Equatable, Hashable {
         hasher.combine(productID)
     }
 }
+/*
+extension Candy: NSCoding {
+    func encode(with coder: NSCoder) {
+        coder.encode(name, forKey: "name")
+        coder.encode(name, forKey: "name")
+        coder.encode(category, forKey: "category")
+        coder.encode(isPurchased, forKey: "isPurchased")
+        coder.encode(shouldShowDiscount, forKey: "shouldShowDiscount")
+        coder.encode(amount, forKey: "amount")
+        coder.encode(productID, forKey: "productID")
+    }
+    
+    
+    func encode(to encoder: Encoder) throws {
+        
+    }
+}*/
 
 extension Candy.Category: CaseIterable { }
 

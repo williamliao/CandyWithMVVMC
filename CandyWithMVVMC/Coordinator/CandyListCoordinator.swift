@@ -30,7 +30,7 @@ class CandyListCoordinator: Coordinator {
     }()
     
     lazy var candyDetailViewModel: CandyDetailViewModel! = {
-        let viewdModel = CandyDetailViewModel()
+        let viewdModel = CandyDetailViewModel(viewModel: candyViewModel)
         return viewdModel
     }()
 
@@ -129,8 +129,8 @@ extension CandyListCoordinator {
         }
     }
     
-    func candyDetailViewController(didBuy item: inout Item, amount: Double) {
-        candyListViewModel.candyDidBuy(didBuy: &item, amount: amount)
+    func candyDetailViewController(didBuy item:Item, amount: Double) {
+        candyListViewModel.candyDidBuy(didBuy: item, amount: amount)
     }
     
     func showError(title:String, message:String) {
